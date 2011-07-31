@@ -2,6 +2,7 @@
 
 	require_once('init.php');
 	//Snowblozm::$debug = true;
+	Snowblozm::$setmime = 'html';
 	
 	/**
 	 *	WorkflowKernel instance and initialization
