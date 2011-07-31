@@ -8,7 +8,7 @@
 	/**
 	 * 	@initialize ThunderSky
 	**/
-	require_once(EXROOT. '../thundersky/init.php');
+	require_once(EXROOT. '../services/thundersky/init.php');
 
 	/**
 	 * 	@initialize Service roots

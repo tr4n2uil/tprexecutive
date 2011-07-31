@@ -19,12 +19,17 @@
 		));
 		
 		$memory = $kernel->execute($workflow);
+		$result = array();
 		
 		if($memory['valid']) {
 			setcookie(COOKIENAME, $memory['sessionid'], time() + (COOKIEEXPIRY * 86400));
+			$result['firespark'] = array(
+				array(
+					'service' => 'reload'
+				)
+			);
 		}
 		
-		$result = array();
 		$result['valid'] = $memory['valid'];
 		$result['msg'] = $memory['msg'];
 		$result['status'] = $memory['status'];
@@ -39,7 +44,7 @@
 			'sessionid' => $_COOKIE[COOKIENAME]
 		);
 		
-		$memory = $kernel->execute($workflow);
+		$memory = $kernel->run($service);
 		
 		if($memory['valid']) {
 			header('Location: '. EXECUTIVEPATH);
