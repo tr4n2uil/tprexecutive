@@ -24,7 +24,7 @@
 	}		
 	
 	$memory = array(
-		'reqtype' => 'post',
+		'reqtype' => isset($_GET['request']) ? $_GET['request'] : 'post',
 		'restype' => 'json',
 		'crypt' => 'none',
 		'hash' => 'none',

@@ -43,11 +43,11 @@
 		'jQuery Core' => 'jquery-1.6.1.min.js',
 	//	'jQuery UI' => 'jquery-ui-1.8.13.min.js',
 		'jQuery Templates' => 'jquery.tmpl.min.js',
-	//	'jQuery Cookie' => 'jquery.cookie.js',
+		'jQuery Cookie' => 'jquery.cookie.js',
 		'JSON Library' => 'json2.js',
 		'jQuery FireSpark' => 'jquery-firespark.js',
-	//	'TPR Executive Extensions' => 'thundersky-jquery.js',
-		'TPR Executive Templates' => 'thundersky-templates.js'
+	//	'TPR Executive Extensions' => 'executive-jquery.js',
+		'TPR Executive Templates' => 'executive-templates.js'
 	));
 	
 ?>
@@ -60,7 +60,7 @@
 			FireSpark.Registry.add('#tplload', FireSpark.jquery.workflow.ElementTemplate);
 			FireSpark.Registry.add('#formsubmit', FireSpark.jquery.workflow.FormSubmit);
 			
-			FireSpark.Registry.save('reload', FireSpark.core.service.WindowReload);
+			FireSpark.Registry.save('login', FireSpark.jquery.workflow.CookieLogin);
 			
 			/*FireSpark.Registry.save('tpl-test', FireSpark.jquery.template.Test);
 			FireSpark.Registry.save('tpl-usr-all', ThunderSky.jquery.template.UserAll);

@@ -9,6 +9,7 @@ require_once(SBSERVICE);
  *	@param name string Company name [memory]
  *	@param type integer Company type [memory] (1, 2)
  *	@param eligibility float Eligibility CGPA [memory]
+ *	@param margin float Margin CGPA [memory]
  *	@param max integer Maximum applications [memory]
  *	@param rejection string Rejection list [memory]
  *	@param deadline string Deadline [memory] (YYYY-MM-DD hh:mm:ss format)
@@ -24,7 +25,7 @@ class CompanyEditWorkflow implements Service {
 	**/
 	public function input(){
 		return array(
-			'required' => array('keyid', 'comid', 'name', 'type', 'eligibility', 'deadline', 'max', 'rejection')
+			'required' => array('keyid', 'comid', 'name', 'type', 'eligibility', 'margin', 'deadline', 'max', 'rejection')
 		);
 	}
 	
@@ -39,14 +40,15 @@ class CompanyEditWorkflow implements Service {
 		$workflow = array(
 		array(
 			'service' => 'sb.reference.authorize.workflow',
-			'id' => 0
+			'id' => 0,
+			'type' => 'edit'
 		),
 		array(
 			'service' => 'sb.relation.update.workflow',
-			'args' => array('comid', 'name', 'type', 'eligibility', 'deadline', 'max', 'rejection'),
+			'args' => array('comid', 'name', 'type', 'eligibility', 'margin', 'deadline', 'max', 'rejection'),
 			'conn' => 'exconn',
 			'relation' => '`companies`',
-			'sqlcnd' => "set `name`='\${name}', `type`=\${type}, `eligibility`=\${eligibility}, `deadline`='\${deadline}', `max`=\${max}, `rejection`='\${rejection}' where `comid`=\${comid}",
+			'sqlcnd' => "set `name`='\${name}', `type`=\${type}, `eligibility`=\${eligibility}, `margin`=\{margin}, `deadline`='\${deadline}', `max`=\${max}, `rejection`='\${rejection}' where `comid`=\${comid}",
 			'escparam' => array('name', 'deadline', 'rejection')
 		),
 		array(

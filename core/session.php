@@ -1,6 +1,6 @@
 <?php
 
-	require_once('init.php');
+	require_once('../init.php');
 	
 	$kernel = new WorkflowKernel();
 	
@@ -22,10 +22,12 @@
 		$result = array();
 		
 		if($memory['valid']) {
-			setcookie(COOKIENAME, $memory['sessionid'], time() + (COOKIEEXPIRY * 86400));
 			$result['firespark'] = array(
 				array(
-					'service' => 'reload'
+					'service' => 'login',
+					'key' => COOKIENAME,
+					'value' => $memory['sessionid'],
+					'expires' => COOKIEEXPIRY
 				)
 			);
 		}

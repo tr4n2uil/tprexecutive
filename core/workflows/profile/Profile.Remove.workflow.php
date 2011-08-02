@@ -2,23 +2,23 @@
 require_once(SBSERVICE);
 
 /**
- *	@class CompanyRemoveWorkflow
- *	@desc Removes company by ID
+ *	@class ProfileRemoveWorkflow
+ *	@desc Removes profile by ID
  *
- *	@param comid long int Company ID [memory]
+ *	@param prid long int Profile ID [memory]
  *	@param keyid long int Usage Key ID [memory]
  *
  *	@author Vibhaj Rajan <vibhaj8@gmail.com>
  *
 **/
-class CompanyRemoveWorkflow implements Service {
+class ProfileRemoveWorkflow implements Service {
 	
 	/**
 	 *	@interface Service
 	**/
 	public function input(){
 		return array(
-			'required' => array('keyid', 'comid')
+			'required' => array('keyid', 'prid')
 		);
 	}
 	
@@ -28,22 +28,22 @@ class CompanyRemoveWorkflow implements Service {
 	public function run($memory){
 		$kernel = new WorkflowKernel();
 	
-		$memory['msg'] = 'Company removed successfully';
+		$memory['msg'] = 'Profile removed successfully';
 		
 		$workflow = array(
 		array(
 			'service' => 'sb.reference.remove.workflow',
 			'parent' => 0,
 			'type' => 'child',
-			'input' => array('id' => 'comid')
+			'input' => array('id' => 'prid')
 		),
 		array(
 			'service' => 'sb.relation.delete.workflow',
-			'args' => array('comid'),
+			'args' => array('prid'),
 			'conn' => 'exconn',
-			'relation' => '`companies`',
-			'sqlcnd' => "where `comid`=\${comid}",
-			'errormsg' => 'Invalid Company ID'
+			'relation' => '`profiles`',
+			'sqlcnd' => "where `prid`=\${prid}",
+			'errormsg' => 'Invalid Profile ID'
 		));
 		
 		return $kernel->execute($workflow, $memory);

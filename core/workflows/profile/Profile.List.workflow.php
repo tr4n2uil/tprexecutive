@@ -2,17 +2,17 @@
 require_once(SBSERVICE);
 
 /**
- *	@class CompanyListWorkflow
- *	@desc Returns all companies information in group 0
+ *	@class ProfileListWorkflow
+ *	@desc Returns all profiles information in group 0
  *
  *	@param keyid long int Usage Key ID [memory]
  *
- *	@return companies array Companies information [memory]
+ *	@return profiles array Profiles information [memory]
  *
  *	@author Vibhaj Rajan <vibhaj8@gmail.com>
  *
 **/
-class CompanyListWorkflow implements Service {
+class ProfileListWorkflow implements Service {
 	
 	/**
 	 *	@interface Service
@@ -29,7 +29,7 @@ class CompanyListWorkflow implements Service {
 	public function run($memory){
 		$kernel = new WorkflowKernel();
 	
-		$memory['msg'] = 'Companies information given successfully';
+		$memory['msg'] = 'Profile information given successfully';
 		
 		$workflow = array(
 		array(
@@ -45,11 +45,10 @@ class CompanyListWorkflow implements Service {
 			'service' => 'sb.relation.select.workflow',
 			'args' => array('list'),
 			'conn' => 'exconn',
-			'relation' => '`companies`',
-			'sqlcnd' => "where `comid` in \${list} order by `deadline` desc",
+			'relation' => '`profiles`',
+			'sqlcnd' => "where `prid` in \${list} order by `cgpa` desc",
 			'escparam' => array('list'),
-			'check' => false,
-			'output' => array('result' => 'companies')
+			'output' => array('result' => 'profiles')
 		));
 		
 		return $kernel->execute($workflow, $memory);
@@ -59,7 +58,7 @@ class CompanyListWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function output(){
-		return array('companies');
+		return array('profiles');
 	}
 	
 }

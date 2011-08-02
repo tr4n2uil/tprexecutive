@@ -8,6 +8,7 @@ require_once(SBSERVICE);
  *	@param name string Company name [memory]
  *	@param type integer Company type [memory] (1, 2)
  *	@param eligibility float Eligibility CGPA [memory]
+ *	@param margin float Margin CGPA [memory] optional default 0.0
  *	@param max integer Maximum applications [memory] optional default 85
  *	@param rejection string Rejection list [memory] optional default '0'
  *	@param deadline string Deadline [memory] (YYYY-MM-DD hh:mm:ss format)
@@ -26,7 +27,7 @@ class CompanyAddWorkflow implements Service {
 	public function input(){
 		return array(
 			'required' => array('keyid', 'name', 'type', 'eligibility', 'deadline'),
-			'optional' => array('max' => 85, 'rejection' => '0')
+			'optional' => array('max' => 85, 'rejection' => '0', 'margin' => 0.0)
 		);
 	}
 	
@@ -42,6 +43,8 @@ class CompanyAddWorkflow implements Service {
 		array(
 			'service' => 'sb.reference.add.workflow',
 			'parent' => 0,
+			'level' => 1,
+			'type' => 'child',
 			'output' => array('id' => 'comid')
 		),
 		array(
@@ -57,10 +60,10 @@ class CompanyAddWorkflow implements Service {
 		),
 		array(
 			'service' => 'sb.relation.insert.workflow',
-			'args' => array('comid', 'name', 'type', 'deadline', 'eligibility', 'max', 'rejection', 'home'),
+			'args' => array('comid', 'name', 'type', 'deadline', 'eligibility', 'margin', 'max', 'rejection', 'home'),
 			'conn' => 'exconn',
 			'relation' => '`companies`',
-			'sqlcnd' => "(`comid`, `name`, `type`, `deadline`, `eligibility`, `max`, `rejection`, `home`) values (\${comid}, '\${name}', \${type}, '\${deadline}', \${eligibility}, \${max}, '\${rejection}', \${home})",
+			'sqlcnd' => "(`comid`, `name`, `type`, `deadline`, `eligibility`, `margin`, `max`, `rejection`, `home`) values (\${comid}, '\${name}', \${type}, '\${deadline}', \${eligibility}, \${margin}, \${max}, '\${rejection}', \${home})",
 			'escparam' => array('name', 'deadline', 'rejection')
 		));
 		

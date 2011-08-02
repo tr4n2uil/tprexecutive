@@ -14,12 +14,12 @@
 	 * 	@initialize Service roots
 	**/
 	Snowblozm::add('excore', array(
-		'root' => EXROOT.'core/services',
+		'root' => EXROOT.'core/services/',
 		'location' => 'local'
 	));
 	
 	Snowblozm::add('executive', array(
-		'root' => EXROOT.'core/workflows',
+		'root' => EXROOT.'core/workflows/',
 		'location' => 'local'
 	));
 	
