@@ -34,8 +34,7 @@ class ProfileListWorkflow implements Service {
 		$workflow = array(
 		array(
 			'service' => 'sb.reference.children.workflow',
-			'id' => 0,
-			'type' => 'list'
+			'id' => 0
 		),
 		array(
 			'service' => 'sbcore.data.list.service',

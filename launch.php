@@ -13,7 +13,7 @@
 	if(isset($_COOKIE[COOKIENAME])){
 		
 		$service = array(
-			'service' => 'cloudcore.session.info.workflow',
+			'service' => 'gridutil.session.info.workflow',
 			'sessionid' => $_COOKIE[COOKIENAME]
 		);
 		
@@ -30,7 +30,7 @@
 		'hash' => 'none',
 		'email' => $email,
 		'access' => array(
-			'root' => array('sbdemo', 'cloudid', 'cloudview', 'executive')
+			'root' => array('sbdemo', 'gridid', 'gridview', 'executive')
 		)
 	);
 	

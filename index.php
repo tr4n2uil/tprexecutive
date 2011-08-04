@@ -17,7 +17,7 @@
 			$email = false;
 			if(isset($_COOKIE[COOKIENAME])){
 				$service = array(
-					'service' => 'cloudcore.session.info.workflow',
+					'service' => 'gridutil.session.info.workflow',
 					'sessionid' => $_COOKIE[COOKIENAME]
 				);
 				$memory = $kernel->run($service);
@@ -46,8 +46,8 @@
 		'jQuery Cookie' => 'jquery.cookie.js',
 		'JSON Library' => 'json2.js',
 		'jQuery FireSpark' => 'jquery-firespark.js',
-	//	'TPR Executive Extensions' => 'executive-jquery.js',
-		'TPR Executive Templates' => 'executive-templates.js'
+	//	'Executive Extensions' => 'executive-jquery.js',
+		'Executive Templates' => 'executive-templates.js'
 	));
 	
 ?>

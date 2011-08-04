@@ -44,11 +44,10 @@ class CompanyAddWorkflow implements Service {
 			'service' => 'sb.reference.add.workflow',
 			'parent' => 0,
 			'level' => 1,
-			'type' => 'child',
 			'output' => array('id' => 'comid')
 		),
 		array(
-			'service' => 'cloudview.content.add.workflow',
+			'service' => 'gridview.content.add.workflow',
 			'cntname' => 'home-'.$memory['name'],
 			'cntstype' => 2,
 			'cntstyle' => 'style-company-home',

@@ -42,7 +42,7 @@ class CompanyInfoWorkflow implements Service {
 			'args' => array('keyid', 'eligibility', 'max', 'rejection'),
 			'conn' => 'exconn',
 			'relation' => '`profiles`',
-			'sqlcnd' => "where `cgpa` >= (\${cgpa} - \${margin}) and `prid` not in (\${rejection}) and (case \type when 1 then (select count(`slotid`)<5 from `slots` where `owner`=\${keyid} and `type`=1) when 2 then (select count(`slotid`)<2 from `slots` where `owner`=\${keyid} and `type`=2) end) limit \${max}",
+			'sqlcnd' => "where `cgpa` >= (\${cgpa} - \${margin}) and `owner` not in (\${rejection}) and (case \type when 1 then (select count(`slotid`)<5 from `slots` where `owner`=\${keyid} and `type`=1) when 2 then (select count(`slotid`)<2 from `slots` where `owner`=\${keyid} and `type`=2) end) limit \${max}",
 			'escparam' => array('rejection'),
 			'errormsg' => 'Invalid Eligibility Parameters',
 			'output' => array('result' => 'profiles')

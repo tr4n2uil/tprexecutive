@@ -13,7 +13,7 @@
 			'key' => $_POST['password']
 		),
 		array(
-			'service' => 'cloudcore.session.add.workflow',
+			'service' => 'gridutil.session.add.workflow',
 			'email' => $_POST['email'],
 			'expiry' => COOKIEEXPIRY
 		));
@@ -42,7 +42,7 @@
 	else if(isset($_COOKIE[COOKIENAME])){
 	
 		$service = array(
-			'service' => 'cloudcore.session.remove.workflow',
+			'service' => 'gridutil.session.remove.workflow',
 			'sessionid' => $_COOKIE[COOKIENAME]
 		);
 		

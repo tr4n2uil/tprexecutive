@@ -13,6 +13,7 @@ require_once(SBSERVICE);
  *	@param course string Course [memory] optional default 'B Tech' ('B Tech', 'IDD')
  *	@param cgpa float CGPA [memory] optional default '0.0'
  *	@param keyid long int Usage Key ID [memory]
+ *	@param owner long int Owner Key ID [memory] optional default keyid
  *
  *	@return prid long int Profile ID [memory]
  *
@@ -27,7 +28,7 @@ class ProfileAddWorkflow implements Service {
 	public function input(){
 		return array(
 			'required' => array('keyid', 'name', 'email', 'password', 'rollno'),
-			'optional' => array('phone' => '', 'course' => 'B Tech', 'cgpa' => 0.0)
+			'optional' => array('phone' => '', 'course' => 'B Tech', 'cgpa' => 0.0, 'owner' => false)
 		);
 	}
 	
@@ -37,6 +38,7 @@ class ProfileAddWorkflow implements Service {
 	public function run($memory){
 		$kernel = new WorkflowKernel();
 		
+		$memory['owner'] = $memory['owner'] ? $memory['owner'] : $memory['keyid'];
 		$memory['msg'] = 'Profile added successfully';
 		
 		$workflow = array(
@@ -49,7 +51,7 @@ class ProfileAddWorkflow implements Service {
 			'output' => array('id' => 'prid')
 		),
 		array(
-			'service' => 'clouddata.storage.add.workflow',
+			'service' => 'griddata.storage.add.workflow',
 			'stgname' => '['.$memory['rollno'].'] '.$memory['name'].'.pdf',
 			'filepath' => EXROOT.'storage/resumes/',
 			'filename' => '['.$memory['rollno'].'] '.$memory['name'].'.pdf',
@@ -58,10 +60,10 @@ class ProfileAddWorkflow implements Service {
 		),
 		array(
 			'service' => 'sb.relation.insert.workflow',
-			'args' => array('prid', 'name', 'email', 'phone', 'rollno', 'course', 'cgpa', 'resume'),
+			'args' => array('prid', 'name', 'owner', 'email', 'phone', 'rollno', 'course', 'cgpa', 'resume'),
 			'conn' => 'exconn',
 			'relation' => '`profiles`',
-			'sqlcnd' => "(`prid`, `name`, `email`, `phone`, `rollno`, `course`, `cgpa`, `resume`) values (\${prid}, '\${name}', '\${email}', '\${phone}', '\${rollno}', '\${course}', \${cgpa}, \${resume})",
+			'sqlcnd' => "(`prid`, `name`, `owner`, `email`, `phone`, `rollno`, `course`, `cgpa`, `resume`) values (\${prid}, '\${name}', \${owner}, '\${email}', '\${phone}', '\${rollno}', '\${course}', \${cgpa}, \${resume})",
 			'escparam' => array('name', 'email', 'phone', 'rollno', 'course')
 		));
 		
