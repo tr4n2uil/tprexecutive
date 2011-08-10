@@ -2,14 +2,17 @@
 require_once(SBSERVICE);
 
 /**
- *	@class ProfileEditWorkflow
- *	@desc Edits profile using ID
+ *	@class StudentEditWorkflow
+ *	@desc Edits student using ID
  *
- *	@param prid long int Profile ID [memory]
+ *	@param stuid long int Student ID [memory]
+ *	@param name string Profile name [memory]
  *	@param rollno string Roll number [memory]
  *	@param phone string Phone [memory]
+ *	@param year integer Enrolment Year [memory]
  *	@param course string Course [memory]
  *	@param cgpa float CGPA [memory]
+ *	@param interests string Interests [memory]
  *	@param sgpa1 float SGPA I [memory]
  *	@param sgpa2 float SGPA II [memory]
  *	@param sgpa3 float SGPA III [memory]
@@ -30,14 +33,14 @@ require_once(SBSERVICE);
  *	@author Vibhaj Rajan <vibhaj8@gmail.com>
  *
 **/
-class ProfileEditWorkflow implements Service {
+class StudentEditWorkflow implements Service {
 	
 	/**
 	 *	@interface Service
 	**/
 	public function input(){
 		return array(
-			'required' => array('keyid', 'prid', 'name', 'phone', 'rollno', 'course', 'cgpa', 'sgpa1', 'sgpa2', 'sgpa3', 'sgpa4', 'sgpa5', 'sgpa6', 'sgpa7', 'sgpa8', 'sgpa9', 'sgpa10', 'ygpa1', 'ygpa2', 'ygpa3', 'ygpa4', 'ygpa5')
+			'required' => array('keyid', 'stuid', 'name', 'phone', 'rollno', 'course', 'year', 'cgpa', 'interests', 'sgpa1', 'sgpa2', 'sgpa3', 'sgpa4', 'sgpa5', 'sgpa6', 'sgpa7', 'sgpa8', 'sgpa9', 'sgpa10', 'ygpa1', 'ygpa2', 'ygpa3', 'ygpa4', 'ygpa5')
 		);
 	}
 	
@@ -47,25 +50,25 @@ class ProfileEditWorkflow implements Service {
 	public function run($memory){
 		$kernel = new WorkflowKernel();
 	
-		$memory['msg'] = 'Profile edited successfully';
+		$memory['msg'] = 'Student edited successfully';
 		
 		$workflow = array(
 		array(
 			'service' => 'sb.reference.authorize.workflow',
-			'input' => array('id' => 'prid'),
+			'id' => 0,
 			'type' => 'edit'
 		),
 		array(
 			'service' => 'sb.relation.update.workflow',
-			'args' => array('prid', 'name', 'phone', 'rollno', 'course', 'cgpa'),
+			'args' => array('stuid', 'name', 'phone', 'rollno', 'course', 'year', 'cgpa', 'interests', 'sgpa1', 'sgpa2', 'sgpa3', 'sgpa4', 'sgpa5', 'sgpa6', 'sgpa7', 'sgpa8', 'sgpa9', 'sgpa10', 'ygpa1', 'ygpa2', 'ygpa3', 'ygpa4', 'ygpa5'),
 			'conn' => 'exconn',
-			'relation' => '`profiles`',
-			'sqlcnd' => "set `name`='\${name}', `phone`='\${phone}', `rollno`='\${rollno}', `course`='\${course}', `cgpa`=\${cgpa} where `prid`=\${prid}",
-			'escparam' => array('name', 'phone', 'rollno', 'course')
+			'relation' => '`students`',
+			'sqlcnd' => "set `name`='\${name}', `phone`='\${phone}', `rollno`='\${rollno}', `course`='\${course}', `year`=\${year}, `cgpa`=\${cgpa}, `interests`='\${interests}', `sgpa1`=\${sgpa1}, `sgpa2`=\${sgpa2}, `sgpa3`=\${sgpa3}, `sgpa4`=\${sgpa4}, `sgpa5`=\${sgpa5}, `sgpa6`=\${sgpa6}, `sgpa7`=\${sgpa7}, `sgpa8`=\${sgpa8}, `sgpa9`=\${sgpa9}, `sgpa10`=\${sgpa10}, `ygpa1`=\${ygpa1}, `ygpa2`=\${ygpa2}, `ygpa3`=\${ygpa3}, `ygpa4`=\${ygpa4}, `ygpa5`=\${ygpa5} where `stuid`=\${stuid}",
+			'escparam' => array('name', 'phone', 'rollno', 'course', 'interests')
 		),
 		array(
 			'service' => 'sb.reference.write.workflow',
-			'input' => array('id' => 'prid')
+			'input' => array('id' => 'stuid')
 		));
 		
 		return $kernel->execute($workflow, $memory);

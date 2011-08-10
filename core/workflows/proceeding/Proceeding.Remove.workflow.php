@@ -2,23 +2,24 @@
 require_once(SBSERVICE);
 
 /**
- *	@class ProfileRemoveWorkflow
- *	@desc Removes profile by ID
+ *	@class ProceedingRemoveWorkflow
+ *	@desc Removes proceeding by ID
  *
- *	@param prid long int Profile ID [memory]
+ *	@param comid long int Company ID [memory]
+ *	@param procid long int Proceeding ID [memory]
  *	@param keyid long int Usage Key ID [memory]
  *
  *	@author Vibhaj Rajan <vibhaj8@gmail.com>
  *
 **/
-class ProfileRemoveWorkflow implements Service {
+class ProceedingRemoveWorkflow implements Service {
 	
 	/**
 	 *	@interface Service
 	**/
 	public function input(){
 		return array(
-			'required' => array('keyid', 'prid')
+			'required' => array('keyid', 'comid', 'procid')
 		);
 	}
 	
@@ -28,22 +29,20 @@ class ProfileRemoveWorkflow implements Service {
 	public function run($memory){
 		$kernel = new WorkflowKernel();
 	
-		$memory['msg'] = 'Profile removed successfully';
+		$memory['msg'] = 'Proceeding removed successfully';
 		
 		$workflow = array(
 		array(
-			'service' => 'sb.reference.remove.workflow',
-			'parent' => 0,
-			'type' => 'child',
-			'input' => array('id' => 'prid')
+			'service' => 'gridevent.event.remove.workflow',
+			'input' => array('seriesid' => 'comid', 'eventid' => 'procid')
 		),
 		array(
 			'service' => 'sb.relation.delete.workflow',
-			'args' => array('prid'),
+			'args' => array('procid'),
 			'conn' => 'exconn',
-			'relation' => '`profiles`',
-			'sqlcnd' => "where `prid`=\${prid}",
-			'errormsg' => 'Invalid Profile ID'
+			'relation' => '`proceedings`',
+			'sqlcnd' => "where `procid`=\${procid}",
+			'errormsg' => 'Invalid Proceeding ID'
 		));
 		
 		return $kernel->execute($workflow, $memory);

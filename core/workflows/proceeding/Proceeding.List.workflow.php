@@ -2,24 +2,25 @@
 require_once(SBSERVICE);
 
 /**
- *	@class ProfileListWorkflow
- *	@desc Returns all profiles information in group 0
+ *	@class ProceedingListWorkflow
+ *	@desc Returns all proceedings information for company
  *
  *	@param keyid long int Usage Key ID [memory]
+ *	@param comid long int Company ID [memory]
  *
- *	@return profiles array Profiles information [memory]
+ *	@return proceedings array Proceedings information [memory]
  *
  *	@author Vibhaj Rajan <vibhaj8@gmail.com>
  *
 **/
-class ProfileListWorkflow implements Service {
+class ProceedingListWorkflow implements Service {
 	
 	/**
 	 *	@interface Service
 	**/
 	public function input(){
 		return array(
-			'required' => array('keyid')
+			'required' => array('keyid', 'comid')
 		);
 	}
 	
@@ -29,12 +30,12 @@ class ProfileListWorkflow implements Service {
 	public function run($memory){
 		$kernel = new WorkflowKernel();
 	
-		$memory['msg'] = 'Profile information given successfully';
+		$memory['msg'] = 'Proceedings information given successfully';
 		
 		$workflow = array(
 		array(
 			'service' => 'sb.reference.children.workflow',
-			'id' => 0
+			'input' => array('id' => 'comid')
 		),
 		array(
 			'service' => 'sbcore.data.list.service',
@@ -44,10 +45,11 @@ class ProfileListWorkflow implements Service {
 			'service' => 'sb.relation.select.workflow',
 			'args' => array('list'),
 			'conn' => 'exconn',
-			'relation' => '`profiles`',
-			'sqlcnd' => "where `prid` in \${list} order by `cgpa` desc",
+			'relation' => '`proceedings`',
+			'sqlcnd' => "where `procid` in \${list} order by `deadline` desc",
 			'escparam' => array('list'),
-			'output' => array('result' => 'profiles')
+			'check' => false,
+			'output' => array('result' => 'proceedings')
 		));
 		
 		return $kernel->execute($workflow, $memory);
@@ -57,7 +59,7 @@ class ProfileListWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function output(){
-		return array('profiles');
+		return array('proceedings');
 	}
 	
 }

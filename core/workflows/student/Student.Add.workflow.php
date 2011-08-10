@@ -1,0 +1,100 @@
+<?php 
+require_once(SBSERVICE);
+
+/**
+ *	@class StudentAddWorkflow
+ *	@desc Adds new student
+ *
+ *	@param name string Profile name [memory]
+ *	@param email string Email [memory]
+ *	@param password string Password [memory]
+ *	@param rollno string Roll number [memory]
+ *	@param phone string Phone [memory] optional default ''
+ *	@param course string Course [memory] optional default 'B Tech' ('B Tech', 'IDD')
+ *	@param year integer Enrolment year [memory]
+ *	@param cgpa float CGPA [memory] optional default '0.0'
+ *	@param interests string Interests [memory] optional default ''
+ *	@param keyid long int Usage Key ID [memory]
+ *
+ *	@return stuid long int Student ID [memory]
+ *
+ *	@author Vibhaj Rajan <vibhaj8@gmail.com>
+ *
+**/
+class StudentAddWorkflow implements Service {
+	
+	/**
+	 *	@interface Service
+	**/
+	public function input(){
+		return array(
+			'required' => array('keyid', 'name', 'email', 'password', 'rollno', 'year'),
+			'optional' => array('phone' => '', 'course' => 'B Tech', 'cgpa' => 0.0, 'interests' => '')
+		);
+	}
+	
+	/**
+	 *	@interface Service
+	**/
+	public function run($memory){
+		$kernel = new WorkflowKernel();
+	
+		$memory['msg'] = 'Student added successfully';
+		
+		$workflow = array(
+		array(
+			'service' => 'sb.reference.create.workflow',
+			'input' => array('keyvalue' => 'password'),
+			'parent' => 0,
+			'level' => 1,
+			'output' => array('id' => 'stuid')
+		),
+		array(
+			'service' => 'gridview.content.add.workflow',
+			'cntname' => 'home-'.$memory['name'],
+			'cntstype' => 1,
+			'cntstyle' => '',
+			'cntttype' => 1,
+			'cnttpl' => '<h3>Welcome to ${content.name}\'s Home Page</h3>',
+			'cntdtype' => 1,
+			'cntdata' => json_encode(array('name' => $memory['name'])),
+			'output' => array('cntid' => 'home')
+		),
+		array(
+			'service' => 'griddata.storage.add.workflow',
+			'stgname' => '['.$memory['rollno'].'] '.$memory['name'].'.pdf',
+			'filepath' => EXROOT.'storage/resumes/',
+			'filename' => '['.$memory['rollno'].'] '.$memory['name'].'.pdf',
+			'mime' => 'application/pdf',
+			'output' => array('stgid' => 'resume')
+		),
+		array(
+			'service' => 'griddata.storage.add.workflow',
+			'stgname' => '['.$memory['rollno'].'] '.$memory['name'].'.png',
+			'filepath' => EXROOT.'storage/photos/',
+			'filename' => '['.$memory['rollno'].'] '.$memory['name'].'.png',
+			'mime' => 'image/png',
+			'output' => array('stgid' => 'photo')
+		),
+		array(
+			'service' => 'sb.relation.insert.workflow',
+			'args' => array('stuid', 'name', 'owner', 'email', 'phone', 'rollno', 'course', 'year', 'cgpa', 'interests', 'resume', 'photo', 'home'),
+			'conn' => 'exconn',
+			'relation' => '`students`',
+			'sqlcnd' => "(`stuid`, `name`, `owner`, `email`, `phone`, `rollno`, `course`, `year`, `cgpa`, `interests`, `resume`, `photo`, `home`) values (\${stuid}, '\${name}', \${owner}, '\${email}', '\${phone}', '\${rollno}', '\${course}', \${year}, \${cgpa}, '\${interests}', \${resume}, \${photo}, \${home})",
+			'escparam' => array('name', 'email', 'phone', 'rollno', 'course', 'interests')
+		));
+		
+		return $kernel->execute($workflow, $memory);
+	}
+	
+	/**
+	 *	@interface Service
+	**/
+	public function output(){
+		return array('stuid');
+	}
+	
+}
+
+?>

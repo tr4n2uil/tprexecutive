@@ -2,26 +2,27 @@
 require_once(SBSERVICE);
 
 /**
- *	@class CompanyInfoWorkflow
- *	@desc Returns company information by ID
+ *	@class StudentInfoWorkflow
+ *	@desc Returns student information by ID
  *
- *	@param comid long int Company ID [memory]
+ *	@param stuid long int Student ID [memory] optional default false
  *	@param keyid long int Usage Key ID [memory]
  *
- *	@return company array Company information [memory]
+ *	@return student array Student information [memory]
  *	@return admin integer Is admin [memory]
  *
  *	@author Vibhaj Rajan <vibhaj8@gmail.com>
  *
 **/
-class CompanyInfoWorkflow implements Service {
+class StudentInfoWorkflow implements Service {
 	
 	/**
 	 *	@interface Service
 	**/
 	public function input(){
 		return array(
-			'required' => array('keyid', 'comid')
+			'required' => array('keyid'),
+			'optional' => array('stuid' => false)
 		);
 	}
 	
@@ -31,31 +32,33 @@ class CompanyInfoWorkflow implements Service {
 	public function run($memory){
 		$kernel = new WorkflowKernel();
 	
-		$memory['msg'] = 'Company information given successfully';
+		$memory['msg'] = 'Student information given successfully';
+		$attr = $memory['stuid'] ? 'stuid' : 'owner';
+		$memory['stuid'] = $memory['stuid'] ? $memory['stuid'] : $memory['keyid'];
 		
 		$workflow = array(
 		array(
 			'service' => 'sb.relation.unique.workflow',
-			'args' => array('comid'),
+			'args' => array('stuid'),
 			'conn' => 'exconn',
-			'relation' => '`companies`',
-			'sqlcnd' => "where `comid`=\${comid}",
-			'errormsg' => 'Invalid Company ID'
+			'relation' => '`students`',
+			'sqlcnd' => "where `$attr`=\${stuid}",
+			'errormsg' => 'Invalid Student ID'
 		),
 		array(
 			'service' => 'sbcore.data.select.service',
 			'args' => array('result'),
-			'params' => array('result.0' => 'company')
+			'params' => array('result.0' => 'student', 'result.0.stuid' => 'stuid')
 		),
 		array(
 			'service' => 'sb.reference.read.workflow',
-			'input' => array('id' => 'comid')
+			'input' => array('id' => 'stuid')
 		),
 		array(
 			'service' => 'sb.reference.authorize.workflow',
-			'input' => array('id' => 'comid'),
+			'id' => 0,
 			'admin' => true,
-			'action' => 'edit'
+			'action' => 'child'
 		));
 		
 		return $kernel->execute($workflow, $memory);
@@ -65,7 +68,7 @@ class CompanyInfoWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function output(){
-		return array('company', 'admin');
+		return array('student', 'admin');
 	}
 	
 }

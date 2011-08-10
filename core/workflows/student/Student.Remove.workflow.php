@@ -2,23 +2,23 @@
 require_once(SBSERVICE);
 
 /**
- *	@class SlotRemoveWorkflow
- *	@desc Removes slot by ID
+ *	@class StudentRemoveWorkflow
+ *	@desc Removes student by ID
  *
- *	@param slotid long int Slot ID [memory]
+ *	@param stuid long int Student ID [memory]
  *	@param keyid long int Usage Key ID [memory]
  *
  *	@author Vibhaj Rajan <vibhaj8@gmail.com>
  *
 **/
-class SlotRemoveWorkflow implements Service {
+class StudentRemoveWorkflow implements Service {
 	
 	/**
 	 *	@interface Service
 	**/
 	public function input(){
 		return array(
-			'required' => array('keyid', 'slotid')
+			'required' => array('keyid', 'stuid')
 		);
 	}
 	
@@ -28,22 +28,21 @@ class SlotRemoveWorkflow implements Service {
 	public function run($memory){
 		$kernel = new WorkflowKernel();
 	
-		$memory['msg'] = 'Slot removed successfully';
+		$memory['msg'] = 'Student removed successfully';
 		
 		$workflow = array(
 		array(
-			'service' => 'sb.reference.remove.workflow',
+			'service' => 'sb.reference.delete.workflow',
 			'parent' => 0,
-			'type' => 'child',
-			'input' => array('id' => 'slotid')
+			'input' => array('id' => 'stuid')
 		),
 		array(
-			'service' => 'sb.relation.update.workflow',
-			'args' => array('slotid'),
+			'service' => 'sb.relation.delete.workflow',
+			'args' => array('stuid'),
 			'conn' => 'exconn',
-			'relation' => '`slots`',
-			'sqlcnd' => "set status=0, dtime=now() where `slotid`=\${slotid}",
-			'errormsg' => 'Invalid Slot ID'
+			'relation' => '`students`',
+			'sqlcnd' => "where `stuid`=\${stuid}",
+			'errormsg' => 'Invalid Student ID'
 		));
 		
 		return $kernel->execute($workflow, $memory);

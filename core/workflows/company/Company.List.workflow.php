@@ -3,11 +3,12 @@ require_once(SBSERVICE);
 
 /**
  *	@class CompanyListWorkflow
- *	@desc Returns all companies information in group 0
+ *	@desc Returns all companies information
  *
  *	@param keyid long int Usage Key ID [memory]
  *
  *	@return companies array Companies information [memory]
+ *	@return admin integer Is admin [memory]
  *
  *	@author Vibhaj Rajan <vibhaj8@gmail.com>
  *
@@ -33,22 +34,18 @@ class CompanyListWorkflow implements Service {
 		
 		$workflow = array(
 		array(
-			'service' => 'sb.reference.children.workflow',
-			'id' => 0
-		),
-		array(
-			'service' => 'sbcore.data.list.service',
-			'args' => array('children')
-		),
-		array(
 			'service' => 'sb.relation.select.workflow',
-			'args' => array('list'),
 			'conn' => 'exconn',
 			'relation' => '`companies`',
-			'sqlcnd' => "where `comid` in \${list} order by `deadline` desc",
-			'escparam' => array('list'),
+			'sqlcnd' => 'order by `name`',
 			'check' => false,
 			'output' => array('result' => 'companies')
+		),
+		array(
+			'service' => 'sb.reference.authorize.workflow',
+			'id' => 0,
+			'admin' => true,
+			'action' => 'child'
 		));
 		
 		return $kernel->execute($workflow, $memory);
@@ -58,7 +55,7 @@ class CompanyListWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function output(){
-		return array('companies');
+		return array('companies', 'admin');
 	}
 	
 }

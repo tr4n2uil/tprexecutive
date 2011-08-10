@@ -2,17 +2,17 @@
 require_once(SBSERVICE);
 
 /**
- *	@class SlotListWorkflow
- *	@desc Returns all slots information for owner
+ *	@class StudentBatchWorkflow
+ *	@desc Returns all students enrolment year information
  *
  *	@param keyid long int Usage Key ID [memory]
  *
- *	@return slots array Slots information [memory]
+ *	@return batches array Students enrolment year information [memory]
  *
  *	@author Vibhaj Rajan <vibhaj8@gmail.com>
  *
 **/
-class SlotListWorkflow implements Service {
+class StudentBatchWorkflow implements Service {
 	
 	/**
 	 *	@interface Service
@@ -28,16 +28,17 @@ class SlotListWorkflow implements Service {
 	**/
 	public function run($memory){
 		$kernel = new WorkflowKernel();
-	
-		$memory['msg'] = 'Slots information given successfully';
+		
+		$memory['msg'] = 'Student enrolment year information given successfully';
 		
 		$service = array(
 			'service' => 'sb.relation.select.workflow',
-			'args' => array('keyid'),
 			'conn' => 'exconn',
-			'relation' => '`slots`',
-			'sqlcnd' => "where `owner`=\${keyid} order by `type`, `status` desc",
-			'output' => array('result' => 'slots')
+			'relation' => '`students`',
+			'sqlprj' => 'distinct `year`',
+			'sqlcnd' => "order by `year` desc",
+			'check' => false,
+			'output' => array('result' => 'batches')
 		);
 		
 		return $kernel->run($service, $memory);
@@ -47,7 +48,7 @@ class SlotListWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function output(){
-		return array('slots');
+		return array('batches');
 	}
 	
 }

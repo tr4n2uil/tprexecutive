@@ -6,12 +6,10 @@ require_once(SBSERVICE);
  *	@desc Adds new company
  *
  *	@param name string Company name [memory]
- *	@param type integer Company type [memory] (1, 2)
- *	@param eligibility float Eligibility CGPA [memory]
- *	@param margin float Margin CGPA [memory] optional default 0.0
- *	@param max integer Maximum applications [memory] optional default 85
- *	@param rejection string Rejection list [memory] optional default '0'
- *	@param deadline string Deadline [memory] (YYYY-MM-DD hh:mm:ss format)
+ *	@param email string Email [memory]
+ *	@param password string Password [memory]
+ *	@param site string Website URL [memory] optional default ''
+ *	@param interests string Interests [memory] optional default ''
  *	@param keyid long int Usage Key ID [memory]
  *
  *	@return comid long int Company ID [memory]
@@ -26,8 +24,8 @@ class CompanyAddWorkflow implements Service {
 	**/
 	public function input(){
 		return array(
-			'required' => array('keyid', 'name', 'type', 'eligibility', 'deadline'),
-			'optional' => array('max' => 85, 'rejection' => '0', 'margin' => 0.0)
+			'required' => array('keyid', 'name', 'email', 'password'),
+			'optional' => array('site' => '', 'interests' => '')
 		);
 	}
 	
@@ -41,29 +39,28 @@ class CompanyAddWorkflow implements Service {
 		
 		$workflow = array(
 		array(
-			'service' => 'sb.reference.add.workflow',
+			'service' => 'sb.reference.create.workflow',
+			'input' => array('keyvalue' => 'password'),
 			'parent' => 0,
 			'level' => 1,
+			'authorize' => 'edit:child',
 			'output' => array('id' => 'comid')
 		),
 		array(
-			'service' => 'gridview.content.add.workflow',
-			'cntname' => 'home-'.$memory['name'],
-			'cntstype' => 2,
-			'cntstyle' => 'style-company-home',
-			'cntttype' => 2,
-			'cnttpl' => 'tpl-company-home',
-			'cntdtype' => 1,
-			'cntdata' => json_encode(array('threshold' => 3)),
-			'output' => array('cntid' => 'home')
+			'service' => 'griddata.storage.add.workflow',
+			'stgname' => '['.$memory['email'].'] '.$memory['name'].'.png',
+			'filepath' => EXROOT.'storage/photos/',
+			'filename' => '['.$memory['email'].'] '.$memory['name'].'.png',
+			'mime' => 'image/png',
+			'output' => array('stgid' => 'photo')
 		),
 		array(
 			'service' => 'sb.relation.insert.workflow',
-			'args' => array('comid', 'name', 'type', 'deadline', 'eligibility', 'margin', 'max', 'rejection', 'home'),
+			'args' => array('comid', 'name', 'owner', 'email', 'site', 'interests', 'photo'),
 			'conn' => 'exconn',
 			'relation' => '`companies`',
-			'sqlcnd' => "(`comid`, `name`, `type`, `deadline`, `eligibility`, `margin`, `max`, `rejection`, `home`) values (\${comid}, '\${name}', \${type}, '\${deadline}', \${eligibility}, \${margin}, \${max}, '\${rejection}', \${home})",
-			'escparam' => array('name', 'deadline', 'rejection')
+			'sqlcnd' => "(`comid`, `name`, `owner`, `email`, `site`, `interests`, `photo`) values (\${comid}, '\${name}', \${owner}, '\${email}', '\${site}', '\${interests}', \${photo})",
+			'escparam' => array('name', 'email', 'site', 'interests')
 		));
 		
 		return $kernel->execute($workflow, $memory);

@@ -34,7 +34,6 @@ class CompanyRemoveWorkflow implements Service {
 		array(
 			'service' => 'sb.reference.remove.workflow',
 			'parent' => 0,
-			'type' => 'child',
 			'input' => array('id' => 'comid')
 		),
 		array(
