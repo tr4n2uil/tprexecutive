@@ -15,8 +15,7 @@ Executive.jquery.template.ProceedingList = $.template('\
 		<div class="panel">\
 			<p class="subhead">${name}</p>\
 			<p>\
-				<a href="#tplload:cntr=#proceeding-child-container:url=core/content/view.php:arg=cntid~${home}" \
-					class="navigate" >Details</a>\
+				<a href="#tplload:cntr=#proceeding-child-container:key=template:url=launch.php:arg=service~gridview.content.view&cntid~${home}" class="navigate" >Details</a>\
 				<a href="#tplload:cntr=#proceeding-child-container:tpl=tpl-sta-lst:url=launch.php:arg=service~gridevent.stage.list&eventid~${eventid}&ename~${name}" class="navigate" >Stages</a>\
 				{{if FireSpark.core.helper.equals(message.admin, 1)}}\
 				<a href="#tplload:cntr=#proceeding-child-container:url=launch.php:arg=service~executive.proceeding.init&procid~${eventid}" \

@@ -12,7 +12,7 @@ Executive.jquery.template.StudentEdit = $.template('\
 			</li>\
 			<li><a href="#tplbind:cntr=#file-panel:tpl=tpl-stg-edt:arg=spname~Photo&stgid~${message.student.photo}" class="navigate" >Photo</a>\
 			</li>\
-			<li><a href="#tplload:cntr=#main-container:url=core/content/view.php:arg=cntid~${message.student.home}" class="navigate" >Home Page</a>\</li>\
+			<li><a href="#tplload:cntr=#file-panel:key=template:url=launch.php:arg=service~gridview.content.view&cntid~${message.student.home}" class="navigate" >Home Page</a>\</li>\
 		</ul>\
 	</div>\
 	<div id="student-key-container" class="panel form-panel">\

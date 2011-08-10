@@ -101,16 +101,13 @@
 			FireSpark.Registry.save('tpl-stg-lst', Executive.jquery.template.StorageList);
 			FireSpark.Registry.save('tpl-stg-edt', Executive.jquery.template.StorageEdit);
 			
-			/*FireSpark.Registry.save('tpl-test', FireSpark.jquery.template.Test);
-			FireSpark.Registry.save('tpl-usr-all', ThunderSky.jquery.template.UserAll);
-			FireSpark.Registry.save('tpl-usr-edt', ThunderSky.jquery.template.UserEdit);
-			FireSpark.Registry.save('tpl-spc-all', ThunderSky.jquery.template.SpaceAll);
-			FireSpark.Registry.save('tpl-spe-all', ThunderSky.jquery.template.SpaceEntryAll);
-			FireSpark.Registry.save('tpl-spc-edt', ThunderSky.jquery.template.SpaceEdit);
-			FireSpark.Registry.save('tpl-rsrc-all', ThunderSky.jquery.template.ResourceAll);
-			FireSpark.Registry.save('tpl-rsrc-edt', ThunderSky.jquery.template.ResourceEdit);
-			FireSpark.Registry.save('tpl-cnt-all', ThunderSky.jquery.template.ContentAll);
-			FireSpark.Registry.save('tpl-cnt-edt', ThunderSky.jquery.template.ContentEdit);*/
+			FireSpark.Registry.save('tpl-rsc-add', Executive.jquery.template.ResourceAdd);
+			FireSpark.Registry.save('tpl-rsc-lst', Executive.jquery.template.ResourceList);
+			FireSpark.Registry.save('tpl-rsc-edt', Executive.jquery.template.ResourceEdit);
+			
+			FireSpark.Registry.save('tpl-cnt-add', Executive.jquery.template.ContentAdd);
+			FireSpark.Registry.save('tpl-cnt-lst', Executive.jquery.template.ContentList);
+			FireSpark.Registry.save('tpl-cnt-edt', Executive.jquery.template.ContentEdit);
 
 			FireSpark.Kernel.execute([{
 				service : FireSpark.jquery.service.NavigatorInit,

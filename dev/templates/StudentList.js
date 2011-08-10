@@ -68,8 +68,7 @@ Executive.jquery.template.StudentList = $.template('\
 				<tr><td class="italic"><span>Interests :</span> ${interests}</td></tr>\
 				<tr><td>\
 					<a href="launch.php?request=get&service=griddata.storage.read&stgid=${resume}" target="_blank">Resume</a>\
-					<a href="#tplload:cntr=#student-child-container:url=core/content/view.php:arg=cntid~${home}" \
-							class="navigate" >Home Page</a>\
+					<a href="#tplload:cntr=#student-child-container:key=template:url=launch.php:arg=service~gridview.content.view&cntid~${home}" class="navigate" >Home Page</a>\
 					{{if FireSpark.core.helper.equals(message.admin, 1)}}\
 					<a href="#tplload:cntr=#student-child-container:tpl=tpl-std-edt:url=launch.php:arg=service~executive.student.info&stuid~${stuid}" class="navigate">Edit</a>\
 					<a href="#tplload:cntr=#student-child-container:url=launch.php:arg=service~executive.student.remove&stuid~${stuid}:cf=true" class="navigate">Remove</a>\

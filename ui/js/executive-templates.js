@@ -101,6 +101,129 @@ Executive.jquery.template.CompanyList = $.template('\
 	{{/if}}\
 </div>');
 /**
+ *	@template ContentAdd
+ *
+**/
+Executive.jquery.template.ContentAdd = $.template('\
+	<div id="content-add-container" class="panel form-panel">\
+		<p class="head">Add Content in ${stname}</p>\
+		<form action="launch.php" method="post" class="navigate" id="_formsubmit:sel._content-add-container">\
+				<input type="hidden" name="service" value="gridview.content.add">\
+				<input type="hidden" name="siteid" value="${siteid}">\
+				<label>Name\
+					<input type="text" name="cntname" size="50" class="required" />\
+				</label>\
+					<p class="error hidden margin5">Invalid Name</p>\
+				<label>Style Type\
+					<select name="cntstype">\
+						<option value="1">Inline</option>\
+						<option value="2">Resource</option>\
+					</select>\
+				</label>\
+				<label>Style</label>\
+				<textarea name="cntstyle" rows="15"></textarea>\
+				<label>Template Type\
+					<select name="cntttype">\
+						<option value="1" >Inline</option>\
+						<option value="2" >Resource</option>\
+					</select>\
+				</label>\
+				<label>Template</label>\
+				<textarea name="cnttpl" rows="15"></textarea>\
+				<label>Data Type\
+					<select name="cntdtype" >\
+						<option value="1" >Inline</option>\
+						<option value="2" >Resource</option>\
+						<option value="3" >Query</option>\
+					</select>\
+				</label>\
+				<label>Data</label>\
+				<textarea name="cntdata" rows="15"></textarea>\
+				<input name="submit" type="submit" value="Submit"  class="margin5"/>\
+				<input name="reset" type="reset" value="Reset"  class="margin5"/>\
+				<div class="status"></div>\
+		</form>\
+	</div>\
+');
+/**
+ *	@template ContentEdit
+ *
+**/
+Executive.jquery.template.ContentEdit = $.template('\
+	{{if valid}}\
+	<div id="content-edit-container" class="panel form-panel">\
+		<p class="head">Edit Content #${message.content.cntid} in ${message.stname}</p>\
+		<form action="launch.php" method="post" class="navigate" id="_formsubmit:sel._content-edit-container">\
+				<input type="hidden" name="service" value="gridview.content.{{if FireSpark.core.helper.equals(message.admin, 1)}}edit{{else}}update{{/if}}">\
+				<input type="hidden" name="cntid" value="${message.content.cntid}">\
+				<input type="hidden" name="siteid" value="${message.siteid}">\
+				<label>Name\
+					<input type="text" name="cntname" size="50" disabled="disabled" value="${message.content.cntname}" />\
+				</label>\
+				<label>Style Type\
+					<select name="cntstype" {{if FireSpark.core.helper.equals(message.admin, 1)}} {{else}}disabled="disabled"{{/if}}>\
+						<option value="1" {{if FireSpark.core.helper.equals(message.content.cntstype, 1)}}selected="selected"{{/if}}>Inline</option>\
+						<option value="2" {{if FireSpark.core.helper.equals(message.content.cntstype, 2)}}selected="selected"{{/if}}>Resource</option>\
+					</select>\
+				</label>\
+				<label>Style</label>\
+				<textarea name="cntstyle" rows="15">${message.content.cntstyle}</textarea>\
+				<label>Template Type\
+					<select name="cntttype" {{if FireSpark.core.helper.equals(message.admin, 1)}} {{else}}disabled="disabled"{{/if}}>\
+						<option value="1" {{if FireSpark.core.helper.equals(message.content.cntttype, 1)}}selected="selected"{{/if}}>Inline</option>\
+						<option value="2" {{if FireSpark.core.helper.equals(message.content.cntttype, 2)}}selected="selected"{{/if}}>Resource</option>\
+					</select>\
+				</label>\
+				<label>Template</label>\
+				<textarea name="cnttpl" rows="15">${message.content.cnttpl}</textarea>\
+				<label>Data Type\
+					<select name="cntdtype" {{if FireSpark.core.helper.equals(message.admin, 1)}} {{else}}disabled="disabled"{{/if}}>\
+						<option value="1" {{if FireSpark.core.helper.equals(message.content.cntdtype, 1)}}selected="selected"{{/if}}>Inline</option>\
+						<option value="2" {{if FireSpark.core.helper.equals(message.content.cntdtype, 2)}}selected="selected"{{/if}}>Resource</option>\
+						<option value="3" {{if FireSpark.core.helper.equals(message.content.cntdtype, 3)}}selected="selected"{{/if}}>Query</option>\
+					</select>\
+				</label>\
+				<label>Data</label>\
+				<textarea name="cntdata" rows="15">${message.content.cntdata}</textarea>\
+				<input name="submit" type="submit" value="Submit"  class="margin5"/>\
+				<input name="reset" type="reset" value="Reset"  class="margin5"/>\
+				<div class="status"></div>\
+		</form>\
+	</div>\
+	{{else}}\
+	<p class="error">${msg}</p>\
+	{{/if}}\
+');
+/**
+ *	@template ContentList
+ *
+**/
+Executive.jquery.template.ContentList = $.template('\
+<div id="content-container">\
+	{{if valid}}\
+	<div id="content-child-container"></div>\
+	<div id="content-list-container" class="panel left">\
+		<p class="head">Contents for ${message.stname}</p>\
+		{{if FireSpark.core.helper.equals(message.admin, 1)}}\
+		<p><a href="#tplbind:cntr=#content-child-container:tpl=tpl-cnt-add:arg=stname~${message.stname}&siteid~${message.siteid}" class="navigate" >Add New ...</a></p>\
+		{{/if}}\
+		{{each message.contents}}\
+		<div class="panel">\
+			<p class="subhead">${$index+1}. ${cntname}</p>\
+			<p>\
+				<a href="#tplload:cntr=#content-child-container:key=template:url=launch.php:arg=service~gridview.content.view&stname~${message.stname}&cntid~${cntid}" class="navigate" >View</a>\
+				{{if FireSpark.core.helper.equals(message.admin, 1)}}\
+				<a href="#tplload:cntr=#content-child-container:tpl=tpl-cnt-edt:url=launch.php:arg=service~gridview.content.info&stname~${message.stname}&cntid~${cntid}" class="navigate" >Edit</a>\
+				<a href="#tplload:cntr=#content-child-container:url=launch.php:arg=service~gridview.content.remove&cntid~${cntid}&siteid~${message.siteid}:cf=true" class="navigate" >Remove</a>\
+				{{/if}}\
+			</p>\
+		</div>\
+		{{/each}}\
+	{{else}}\
+	<p class="error">${msg}</p>\
+	{{/if}}\
+</div>');
+/**
  *	@template NoteAdd
  *
 **/
@@ -298,8 +421,7 @@ Executive.jquery.template.ProceedingList = $.template('\
 		<div class="panel">\
 			<p class="subhead">${name}</p>\
 			<p>\
-				<a href="#tplload:cntr=#proceeding-child-container:url=core/content/view.php:arg=cntid~${home}" \
-					class="navigate" >Details</a>\
+				<a href="#tplload:cntr=#proceeding-child-container:key=template:url=launch.php:arg=service~gridview.content.view&cntid~${home}" class="navigate" >Details</a>\
 				<a href="#tplload:cntr=#proceeding-child-container:tpl=tpl-sta-lst:url=launch.php:arg=service~gridevent.stage.list&eventid~${eventid}&ename~${name}" class="navigate" >Stages</a>\
 				{{if FireSpark.core.helper.equals(message.admin, 1)}}\
 				<a href="#tplload:cntr=#proceeding-child-container:url=launch.php:arg=service~executive.proceeding.init&procid~${eventid}" \
@@ -308,6 +430,81 @@ Executive.jquery.template.ProceedingList = $.template('\
 				<a href="#tplload:cntr=#proceeding-child-container:url=launch.php:arg=service~executive.proceeding.remove&procid~${eventid}&comid~${message.seriesid}:cf=true" class="navigate" >Remove</a>\
 				{{/if}}\
 			</p>\
+		</div>\
+		{{/each}}\
+	{{else}}\
+	<p class="error">${msg}</p>\
+	{{/if}}\
+</div>');
+/**
+ *	@template ResourceAdd
+ *
+**/
+Executive.jquery.template.ResourceAdd = $.template('\
+	<div id="resource-add-container" class="panel form-panel">\
+		<p class="head">Add Resource in ${stname}</p>\
+		<form action="launch.php" method="post" class="navigate" id="_formsubmit:sel._resource-add-container">\
+				<input type="hidden" name="service" value="gridview.resource.add">\
+				<input type="hidden" name="siteid" value="${siteid}">\
+				<label>Name\
+					<input type="text" name="rsrcname" size="50" class="required" />\
+				</label>\
+					<p class="error hidden margin5">Invalid Name</p>\
+				<label>Resource</label>\
+				<textarea name="resource" rows="15" cols="80"></textarea>\
+				<input name="submit" type="submit" value="Submit"  class="margin5"/>\
+				<input name="reset" type="reset" value="Reset"  class="margin5"/>\
+				<div class="status"></div>\
+		</form>\
+	</div>\
+');
+/**
+ *	@template ResourceEdit
+ *
+**/
+Executive.jquery.template.ResourceEdit = $.template('\
+	{{if valid}}\
+	<div id="resource-edit-container" class="panel form-panel">\
+		<p class="head">Edit Resource #${message.resource.rsrcid} in ${stname}</p>\
+		<form action="launch.php" method="post" class="navigate" id="_formsubmit:sel._resource-edit-container">\
+				<input type="hidden" name="service" value="gridview.resource.edit">\
+				<input type="hidden" name="rsrcid" value="${message.resource.rsrcid}">\
+				<label>Name\
+					<input type="text" name="rsrcname" size="50" disabled="disabled" value="${message.resource.rsrcname}" />\
+				</label>\
+				<label>Resource</label>\
+				<textarea name="resource" rows="15" cols="80">${message.resource.resource}</textarea>\
+				<input name="submit" type="submit" value="Submit"  class="margin5"/>\
+				<input name="reset" type="reset" value="Reset"  class="margin5"/>\
+				<div class="status"></div>\
+		</form>\
+	</div>\
+	{{else}}\
+	<p class="error">${msg}</p>\
+	{{/if}}\
+');
+/**
+ *	@template ResourceList
+ *
+**/
+Executive.jquery.template.ResourceList = $.template('\
+<div id="resource-container">\
+	{{if valid}}\
+	<div id="resource-child-container"></div>\
+	<div id="resource-list-container" class="panel left">\
+		<p class="head">Resources for ${message.stname}</p>\
+		{{if FireSpark.core.helper.equals(message.admin, 1)}}\
+		<p><a href="#tplbind:cntr=#resource-child-container:tpl=tpl-rsc-add:arg=stname~${message.stname}&siteid~${message.siteid}" class="navigate" >Add New ...</a></p>\
+		{{/if}}\
+		{{each message.resources}}\
+		<div class="panel">\
+			<p class="subhead">${$index+1}. ${rsrcname}</p>\
+			{{if FireSpark.core.helper.equals(message.admin, 1)}}\
+			<p>\
+				<a href="#tplload:cntr=#resource-child-container:tpl=tpl-rsc-edt:url=launch.php:arg=service~gridview.resource.info&stname~${message.stname}&rsrcid~${rsrcid}" class="navigate" >Edit</a>\
+				<a href="#tplload:cntr=#resource-child-container:url=launch.php:arg=service~gridview.resource.remove&rsrcid~${rsrcid}&siteid~${message.siteid}:cf=true" class="navigate" >Remove</a>\
+			</p>\
+			{{/if}}\
 		</div>\
 		{{/each}}\
 	{{else}}\
@@ -328,8 +525,7 @@ Executive.jquery.template.SelectionList = $.template('\
 		<div class="panel">\
 			<p class="subhead">${ename} : ${stname} (Stage ${stage})</p>\
 			<p>\
-				<a href="#tplload:cntr=#selection-child-container:url=core/content/view.php:arg=cntid~${home}" \
-					class="navigate" >Details</a>\
+				<a href="#tplload:cntr=#selection-child-container:key=template:url=launch.php:arg=service~gridview.content.view&cntid~${home}" class="navigate" >Details</a>\
 				<a href="#tplload:cntr=#selection-child-container:tpl=tpl-sta-lst:url=launch.php:arg=service~gridevent.stage.list&eventid~${eventid}&ename~${ename}" \
 					class="navigate" >Stages</a>\
 				{{if FireSpark.core.helper.equals(open & ongoing & status, 1)}}\
@@ -528,7 +724,7 @@ Executive.jquery.template.StorageEdit = $.template('\
 Executive.jquery.template.StorageList = $.template('\
 <div id="storage-container">\
 	{{if valid}}\
-	<div id="storage-child-container" class="editor"></div>\
+	<div id="storage-child-container"></div>\
 	<div id="storage-list-container" class="panel left">\
 		<p class="head">${message.spname}s</p>\
 		{{if FireSpark.core.helper.equals(message.admin, 1)}}\
@@ -638,7 +834,7 @@ Executive.jquery.template.StudentEdit = $.template('\
 			</li>\
 			<li><a href="#tplbind:cntr=#file-panel:tpl=tpl-stg-edt:arg=spname~Photo&stgid~${message.student.photo}" class="navigate" >Photo</a>\
 			</li>\
-			<li><a href="#tplload:cntr=#main-container:url=core/content/view.php:arg=cntid~${message.student.home}" class="navigate" >Home Page</a>\</li>\
+			<li><a href="#tplload:cntr=#file-panel:key=template:url=launch.php:arg=service~gridview.content.view&cntid~${message.student.home}" class="navigate" >Home Page</a>\</li>\
 		</ul>\
 	</div>\
 	<div id="student-key-container" class="panel form-panel">\
@@ -823,8 +1019,7 @@ Executive.jquery.template.StudentList = $.template('\
 				<tr><td class="italic"><span>Interests :</span> ${interests}</td></tr>\
 				<tr><td>\
 					<a href="launch.php?request=get&service=griddata.storage.read&stgid=${resume}" target="_blank">Resume</a>\
-					<a href="#tplload:cntr=#student-child-container:url=core/content/view.php:arg=cntid~${home}" \
-							class="navigate" >Home Page</a>\
+					<a href="#tplload:cntr=#student-child-container:key=template:url=launch.php:arg=service~gridview.content.view&cntid~${home}" class="navigate" >Home Page</a>\
 					{{if FireSpark.core.helper.equals(message.admin, 1)}}\
 					<a href="#tplload:cntr=#student-child-container:tpl=tpl-std-edt:url=launch.php:arg=service~executive.student.info&stuid~${stuid}" class="navigate">Edit</a>\
 					<a href="#tplload:cntr=#student-child-container:url=launch.php:arg=service~executive.student.remove&stuid~${stuid}:cf=true" class="navigate">Remove</a>\

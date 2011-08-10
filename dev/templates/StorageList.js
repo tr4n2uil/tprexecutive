@@ -5,7 +5,7 @@
 Executive.jquery.template.StorageList = $.template('\
 <div id="storage-container">\
 	{{if valid}}\
-	<div id="storage-child-container" class="editor"></div>\
+	<div id="storage-child-container"></div>\
 	<div id="storage-list-container" class="panel left">\
 		<p class="head">${message.spname}s</p>\
 		{{if FireSpark.core.helper.equals(message.admin, 1)}}\

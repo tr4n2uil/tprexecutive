@@ -12,8 +12,7 @@ Executive.jquery.template.SelectionList = $.template('\
 		<div class="panel">\
 			<p class="subhead">${ename} : ${stname} (Stage ${stage})</p>\
 			<p>\
-				<a href="#tplload:cntr=#selection-child-container:url=core/content/view.php:arg=cntid~${home}" \
-					class="navigate" >Details</a>\
+				<a href="#tplload:cntr=#selection-child-container:key=template:url=launch.php:arg=service~gridview.content.view&cntid~${home}" class="navigate" >Details</a>\
 				<a href="#tplload:cntr=#selection-child-container:tpl=tpl-sta-lst:url=launch.php:arg=service~gridevent.stage.list&eventid~${eventid}&ename~${ename}" \
 					class="navigate" >Stages</a>\
 				{{if FireSpark.core.helper.equals(open & ongoing & status, 1)}}\
