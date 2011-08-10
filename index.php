@@ -29,7 +29,7 @@
 				if($email){
 					include(EXROOT. 'ui/html/quick-student.html');
 					if(in_array($email, array('admin@executive.org', 'vibhaj@gmail.com'))){
-						include(EXROOT. 'ui/html/quick-admin.html');
+						include(EXROOT. 'ui/html/quick-console.html');
 					}
 				}
 				else {
@@ -52,6 +52,8 @@
 		'jQuery Templates' => 'jquery.tmpl.min.js',
 		'jQuery Cookie' => 'jquery.cookie.js',
 		'JSON Library' => 'json2.js',
+		'CKEditor' => 'ckeditor/ckeditor.js',
+		'jQuery CKEditor' => 'ckeditor/adapters/jquery.js',
 		'jQuery FireSpark' => 'jquery-firespark.js',
 		'Executive Extensions' => 'executive-jquery.js',
 		'Executive Templates' => 'executive-templates.js'
@@ -90,9 +92,14 @@
 			FireSpark.Registry.save('tpl-prc-lst', Executive.jquery.template.ProceedingList);
 			FireSpark.Registry.save('tpl-prc-edt', Executive.jquery.template.ProceedingEdit);
 			
-			FireSpark.Registry.save('tpl-upd-add', Executive.jquery.template.UpdateAdd);
-			FireSpark.Registry.save('tpl-upd-lst', Executive.jquery.template.UpdateList);
-			FireSpark.Registry.save('tpl-upd-edt', Executive.jquery.template.UpdateEdit);
+			FireSpark.Registry.save('tpl-nte-add', Executive.jquery.template.NoteAdd);
+			FireSpark.Registry.save('tpl-nte-lst', Executive.jquery.template.NoteList);
+			FireSpark.Registry.save('tpl-nte-inf', Executive.jquery.template.NoteInfo);
+			FireSpark.Registry.save('tpl-nte-edt', Executive.jquery.template.NoteEdit);
+			
+			FireSpark.Registry.save('tpl-stg-add', Executive.jquery.template.StorageAdd);
+			FireSpark.Registry.save('tpl-stg-lst', Executive.jquery.template.StorageList);
+			FireSpark.Registry.save('tpl-stg-edt', Executive.jquery.template.StorageEdit);
 			
 			/*FireSpark.Registry.save('tpl-test', FireSpark.jquery.template.Test);
 			FireSpark.Registry.save('tpl-usr-all', ThunderSky.jquery.template.UserAll);
@@ -124,6 +131,15 @@
 				duration : 1500,
 				delay : 500
 			}]);
+			
+			$('#main-container div').live('load' , function(){
+				if($(this).hasClass('editor')){
+					FireSpark.Kernel.run({
+						service : FireSpark.jquery.service.ElementEditor,
+						selector : 'textarea.editor'
+					}, {});
+				}
+			});
 			
 		});
 	</script>

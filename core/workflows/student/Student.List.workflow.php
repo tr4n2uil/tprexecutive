@@ -50,7 +50,7 @@ class StudentListWorkflow implements Service {
 			'service' => 'sb.reference.authorize.workflow',
 			'id' => 0,
 			'admin' => true,
-			'action' => 'child'
+			'action' => 'add'
 		));
 		
 		return $kernel->execute($workflow, $memory);

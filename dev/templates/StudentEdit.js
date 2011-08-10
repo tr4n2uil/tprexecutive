@@ -8,9 +8,9 @@ Executive.jquery.template.StudentEdit = $.template('\
 	<div id="student-options-container" class="panel left">\
 		<p class="head">{{if FireSpark.core.helper.equals(message.admin, 1)}}Student #${message.student.stuid}{{else}}Profile{{/if}} Options</p>\
 		<ul class="horizontal menu">\
-			<li><a href="#tplload:cntr=#file-panel:tpl=tpl-spc-edt:url=core/admin/space.php:arg=do~get&spid~${message.student.resume}" class="navigate" >Resume</a>\
+			<li><a href="#tplbind:cntr=#file-panel:tpl=tpl-stg-edt:arg=spname~Resume&stgid~${message.student.resume}" class="navigate" >Resume</a>\
 			</li>\
-			<li><a href="#tplload:cntr=#file-panel:tpl=tpl-spc-edt:url=core/admin/space.php:arg=do~get&spid~${message.student.photo}" class="navigate" >Photo</a>\
+			<li><a href="#tplbind:cntr=#file-panel:tpl=tpl-stg-edt:arg=spname~Photo&stgid~${message.student.photo}" class="navigate" >Photo</a>\
 			</li>\
 			<li><a href="#tplload:cntr=#main-container:url=core/content/view.php:arg=cntid~${message.student.home}" class="navigate" >Home Page</a>\</li>\
 		</ul>\

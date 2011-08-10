@@ -57,21 +57,19 @@ class StudentAddWorkflow implements Service {
 			'cntttype' => 1,
 			'cnttpl' => '<h3>Welcome to ${content.name}\'s Home Page</h3>',
 			'cntdtype' => 1,
-			'cntdata' => json_encode(array('name' => $memory['name'])),
+			'cntdata' => '{"name"="'.$memory['name'].'"}',
 			'output' => array('cntid' => 'home')
 		),
 		array(
 			'service' => 'griddata.storage.add.workflow',
-			'stgname' => '['.$memory['rollno'].'] '.$memory['name'].'.pdf',
-			'filepath' => EXROOT.'storage/resumes/',
+			'filepath' => 'storage/resumes/',
 			'filename' => '['.$memory['rollno'].'] '.$memory['name'].'.pdf',
 			'mime' => 'application/pdf',
 			'output' => array('stgid' => 'resume')
 		),
 		array(
 			'service' => 'griddata.storage.add.workflow',
-			'stgname' => '['.$memory['rollno'].'] '.$memory['name'].'.png',
-			'filepath' => EXROOT.'storage/photos/',
+			'filepath' => 'storage/photos/',
 			'filename' => '['.$memory['rollno'].'] '.$memory['name'].'.png',
 			'mime' => 'image/png',
 			'output' => array('stgid' => 'photo')

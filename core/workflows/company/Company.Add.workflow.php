@@ -48,8 +48,7 @@ class CompanyAddWorkflow implements Service {
 		),
 		array(
 			'service' => 'griddata.storage.add.workflow',
-			'stgname' => '['.$memory['email'].'] '.$memory['name'].'.png',
-			'filepath' => EXROOT.'storage/photos/',
+			'filepath' => 'storage/photos/',
 			'filename' => '['.$memory['email'].'] '.$memory['name'].'.png',
 			'mime' => 'image/png',
 			'output' => array('stgid' => 'photo')

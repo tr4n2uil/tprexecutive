@@ -16,7 +16,7 @@ Executive.jquery.template.StudentList = $.template('\
 		<table class="margin5 full">\
 			<tbody>\
 				<tr>\
-					<td rowspan="5" valign="top"><img src="core/space/read.php?spid=${stphoto}" alt="" height="100" ></td>\
+					<td rowspan="5" valign="top"><img src="launch.php?request=get&service=griddata.storage.read&stgid=${photo}" alt="" height="100" ></td>\
 					<td class="bold subhead">${$index+1}. ${name}</td>\
 					<td rowspan="5">\
 						<table class="glass-white right round grid">\
@@ -67,19 +67,12 @@ Executive.jquery.template.StudentList = $.template('\
 				<tr><td>${rollno}  |  <span class="bold">${cgpa}</span></td></tr>\
 				<tr><td class="italic"><span>Interests :</span> ${interests}</td></tr>\
 				<tr><td>\
-					{{if rssize}}\
-						<a href="core/space/read.php?spid=${resume}" target="_blank">\
-							Resume [${ServiceClient.jquery.helper.readFileSize(rssize)}]\
-						</a>\
-					{{/if}}\
-					{{if home}}\
-						<a href="#tplload:cntr=#student-child-container:url=core/content/view.php:arg=cntid~${home}" \
+					<a href="launch.php?request=get&service=griddata.storage.read&stgid=${resume}" target="_blank">Resume</a>\
+					<a href="#tplload:cntr=#student-child-container:url=core/content/view.php:arg=cntid~${home}" \
 							class="navigate" >Home Page</a>\
-					{{/if}}\
 					{{if FireSpark.core.helper.equals(message.admin, 1)}}\
-						<a href="#tplload:cntr=#student-child-container:tpl=tpl-std-edt:url=launch.php:arg=service~executive.student.info&stuid~${stuid}" \
-							class="navigate">Edit</a>\<a href="#tplload:cntr=#student-child-container:url=launch.php:arg=service~executive.student.remove&stuid~${stuid}:cf=true" \
-							class="navigate">Remove</a>\
+					<a href="#tplload:cntr=#student-child-container:tpl=tpl-std-edt:url=launch.php:arg=service~executive.student.info&stuid~${stuid}" class="navigate">Edit</a>\
+					<a href="#tplload:cntr=#student-child-container:url=launch.php:arg=service~executive.student.remove&stuid~${stuid}:cf=true" class="navigate">Remove</a>\
 					{{/if}}\
 				</td></tr>\
 				</tbody>\

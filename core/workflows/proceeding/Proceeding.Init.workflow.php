@@ -40,7 +40,7 @@ class ProceedingInitWorkflow implements Service {
 		array(
 			'service' => 'sbcore.data.select.service',
 			'args' => array('result'),
-			'params' => array('result.0.eligibility' => 'eligibility', 'result.0.margin' => 'margin', 'result.0.max' => 'max', 'result.0.owner' => 'superuser')
+			'params' => array('result.0.eligibility' => 'eligibility', 'result.0.margin' => 'margin', 'result.0.max' => 'max', 'result.0.owner' => 'superuser', 'result.0.year' => 'year', 'result.0.type' => 'proctype')
 		),
 		array(
 			'service' => 'gridevent.event.info.workflow',
@@ -73,11 +73,11 @@ class ProceedingInitWorkflow implements Service {
 		),
 		array(
 			'service' => 'sb.relation.select.workflow',
-			'args' => array('eligibility', 'margin', 'max', 'rejection'),
+			'args' => array('eligibility', 'margin', 'max', 'rejection', 'proctype', 'year'),
 			'conn' => 'exconn',
 			'relation' => '`students`',
 			'sqlprj' => 'owner',
-			'sqlcnd' => "where `cgpa` >= (\${eligibility} - \${margin}) and `owner` not in (\${rejection}) limit \${max}",
+			'sqlcnd' => "where (case \${proctype} when 'Internship' then `year`=\${year} when 'Placement' then ((`year`=\${year} and `course`='B Tech') or (`year`=\${year}-1 and `course`='IDD')) else false end) and `cgpa` >= (\${eligibility} - \${margin}) and `owner` not in (\${rejection}) limit \${max}",
 			'escparam' => array('rejection'),
 			'check' => false,
 			'output' => array('result' => 'eligible')

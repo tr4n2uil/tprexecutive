@@ -101,6 +101,100 @@ Executive.jquery.template.CompanyList = $.template('\
 	{{/if}}\
 </div>');
 /**
+ *	@template NoteAdd
+ *
+**/
+Executive.jquery.template.NoteAdd = $.template('\
+<div id="note-add-container" class="panel form-panel">\
+	<p class="head">Add ${bname}</p>\
+		<form action="launch.php" method="post" class="navigate" id="_formsubmit:sel._note-add-container">\
+				<input type="hidden" name="service" value="gridshare.note.add">\
+				<input type="hidden" name="boardid" value="${boardid}">\
+				<label>Title\
+					<input type="text" name="title" class="required" size="50" />\
+				</label>\
+					<p class="error hidden margin5">Invalid Title</p>\
+				<label>Message</label>\
+				<textarea name="note" rows="5" cols="80" class="editor"></textarea>\
+				<input name="submit" type="submit" value="Submit"  class="margin5"/>\
+				<input name="reset" type="reset" value="Reset"  class="margin5"/>\
+				<div class="status"></div>\
+		</form>\
+	</div>\
+');/**
+ *	@template NoteEdit
+ *
+**/
+Executive.jquery.template.NoteEdit = $.template('\
+	{{if valid}}\
+	<div id="note-edit-container" class="panel form-panel">\
+		<p class="head">Edit ${bname} #${message.note.noteid}</p>\
+		<form action="launch.php" method="post" class="navigate" id="_formsubmit:sel._note-edit-container">\
+				<input type="hidden" name="service" value="gridshare.note.edit">\
+				<input type="hidden" name="noteid" value="${message.note.noteid}">\
+				<label>Title\
+					<input type="text" name="title" class="required" size="50" value="${message.note.title}" />\
+				</label>\
+					<p class="error hidden margin5">Invalid Title</p>\
+				<label>Message</label>\
+				<textarea name="note" rows="5" cols="80" class="editor">${message.note.note}</textarea>\
+				<input name="submit" type="submit" value="Submit"  class="margin5"/>\
+				<input name="reset" type="reset" value="Reset"  class="margin5"/>\
+				<div class="status"></div>\
+		</form>\
+	</div>\
+	{{else}}\
+	<p class="error">${msg}</p>\
+	{{/if}}\
+');
+/**
+ *	@template NoteInfo
+ *
+**/
+Executive.jquery.template.NoteInfo = $.template('\
+	{{if valid}}\
+	<div id="note-info-container" class="panel left">\
+		<p class="head">${message.note.title}</p>\
+		<p>${message.note.time}</p>\
+		<div class="panel">\
+			<p>{{html message.note.note}}</p>\
+		</div>\
+		{{if FireSpark.core.helper.equals(message.admin, 1)}}\
+		<p>\
+		<a href="#tplload:cntr=#note-child-container:tpl=tpl-nte-edt:url=launch.php:arg=service~gridshare.note.info&noteid~${message.note.noteid}&bname~${message.bname}" class="navigate" >Edit</a>\
+		<a href="#tplload:cntr=#note-child-container:url=launch.php:arg=service~gridshare.note.remove&noteid~${message.note.noteid}&boardid~${message.boardid}:cf=true" class="navigate" >Remove</a>\
+		</p>\
+		{{/if}}\
+	{{else}}\
+	<p class="error">${msg}</p>\
+	{{/if}}\
+');
+/**
+ *	@template NoteList
+ *
+**/
+Executive.jquery.template.NoteList = $.template('\
+<div id="note-container">\
+	{{if valid}}\
+	<div id="note-child-container" class="editor"></div>\
+	<div id="note-list-container" class="panel left">\
+		<p class="head">${message.bname}s</p>\
+		{{if FireSpark.core.helper.equals(message.admin, 1)}}\
+		<p><a href="#tplbind:cntr=#note-child-container:tpl=tpl-nte-add:arg=bname~${message.bname}&boardid~${message.boardid}" class="navigate" >Add New ...</a></p>\
+		{{/if}}\
+		{{each message.notes}}\
+		<div class="panel">\
+			<p class="subhead">${$index+1}. ${title}</p>\
+			<p>\
+				<a href="#tplload:cntr=#note-child-container:tpl=tpl-nte-inf:url=launch.php:arg=service~gridshare.note.info&noteid~${noteid}&bname~${message.bname}&boardid~${message.boardid}" class="navigate" >View</a>\ (Last Updated on ${time})\
+			</p>\
+		</div>\
+		{{/each}}\
+	{{else}}\
+	<p class="error">${msg}</p>\
+	{{/if}}\
+</div>');
+/**
  *	@template ProceedingAdd
  *
 **/
@@ -387,6 +481,76 @@ Executive.jquery.template.StageList = $.template('\
 	{{/if}}\
 </div>');
 /**
+ *	@template StorageAdd
+ *
+**/
+Executive.jquery.template.StorageAdd = $.template('\
+<div id="storage-add-container" class="panel form-panel">\
+	<p class="head">Add ${spname}</p>\
+		<form action="launch.php" method="post" class="navigate" enctype="multipart/form-data"  id="_formsubmit:sel._storage-add-container:iframe=true">\
+				<input type="hidden" name="service" value="griddata.storage.add">\
+				<input type="hidden" name="spaceid" value="${spaceid}">\
+				<input type="hidden" name="filekey" value="storage">\
+				<input type="hidden" name="filepath" value="${sppath}">\
+				<label>File\
+					<input type="file" name="storage" class="required"/>\
+				</label>\
+					<p class="error hidden margin5">Invalid File</p>\
+				<input name="submit" type="submit" value="Submit"  class="margin5"/>\
+				<input name="reset" type="reset" value="Reset"  class="margin5"/>\
+				<div class="status"></div>\
+		</form>\
+	</div>\
+');/**
+ *	@template StorageEdit
+ *
+**/
+Executive.jquery.template.StorageEdit = $.template('\
+<div id="storage-edit-container" class="panel form-panel">\
+	<p class="head">Edit ${spname}</p>\
+		<form action="launch.php" method="post" class="navigate" enctype="multipart/form-data"  id="_formsubmit:sel._storage-edit-container:iframe=true">\
+				<input type="hidden" name="service" value="griddata.storage.write">\
+				<input type="hidden" name="filekey" value="storage">\
+				<input type="hidden" name="stgid" value="${stgid}">\
+				<label>File\
+					<input type="file" name="storage" class="required"/>\
+				</label>\
+					<p class="error hidden margin5">Invalid File</p>\
+				<input name="submit" type="submit" value="Submit"  class="margin5"/>\
+				<input name="reset" type="reset" value="Reset"  class="margin5"/>\
+				<div class="status"></div>\
+		</form>\
+	</div>\
+');/**
+ *	@template StorageList
+ *
+**/
+Executive.jquery.template.StorageList = $.template('\
+<div id="storage-container">\
+	{{if valid}}\
+	<div id="storage-child-container" class="editor"></div>\
+	<div id="storage-list-container" class="panel left">\
+		<p class="head">${message.spname}s</p>\
+		{{if FireSpark.core.helper.equals(message.admin, 1)}}\
+		<p><a href="#tplbind:cntr=#storage-child-container:tpl=tpl-stg-add:arg=spname~${message.spname}&spaceid~${message.spaceid}&sppath~${message.sppath}" class="navigate" >Add New ...</a></p>\
+		{{/if}}\
+		{{each message.storages}}\
+		<div class="panel">\
+			<p class="subhead">${$index+1}. ${stgname}</p>\
+			<p>\
+				<a href="launch.php?request=get&service=griddata.storage.read&stgid=${stgid}" target="_blank">Download</a>\ (${FireSpark.core.helper.readFileSize(size)})\
+				{{if FireSpark.core.helper.equals(message.admin, 1)}}\
+				<a href="#tplbind:cntr=#storage-child-container:tpl=tpl-stg-edt:arg=spname~${message.spname}&stgid~${stgid}" class="navigate" >Edit</a>\
+				<a href="#tplload:cntr=#storage-child-container:url=launch.php:arg=service~griddata.storage.remove&stgid~${stgid}&spaceid~${message.spaceid}:cf=true" class="navigate" >Remove</a>\
+				{{/if}}\
+			</p>\
+		</div>\
+		{{/each}}\
+	{{else}}\
+	<p class="error">${msg}</p>\
+	{{/if}}\
+</div>');
+/**
  *	@template StudentAdd
  *
 **/
@@ -470,9 +634,9 @@ Executive.jquery.template.StudentEdit = $.template('\
 	<div id="student-options-container" class="panel left">\
 		<p class="head">{{if FireSpark.core.helper.equals(message.admin, 1)}}Student #${message.student.stuid}{{else}}Profile{{/if}} Options</p>\
 		<ul class="horizontal menu">\
-			<li><a href="#tplload:cntr=#file-panel:tpl=tpl-spc-edt:url=core/admin/space.php:arg=do~get&spid~${message.student.resume}" class="navigate" >Resume</a>\
+			<li><a href="#tplbind:cntr=#file-panel:tpl=tpl-stg-edt:arg=spname~Resume&stgid~${message.student.resume}" class="navigate" >Resume</a>\
 			</li>\
-			<li><a href="#tplload:cntr=#file-panel:tpl=tpl-spc-edt:url=core/admin/space.php:arg=do~get&spid~${message.student.photo}" class="navigate" >Photo</a>\
+			<li><a href="#tplbind:cntr=#file-panel:tpl=tpl-stg-edt:arg=spname~Photo&stgid~${message.student.photo}" class="navigate" >Photo</a>\
 			</li>\
 			<li><a href="#tplload:cntr=#main-container:url=core/content/view.php:arg=cntid~${message.student.home}" class="navigate" >Home Page</a>\</li>\
 		</ul>\
@@ -607,7 +771,7 @@ Executive.jquery.template.StudentList = $.template('\
 		<table class="margin5 full">\
 			<tbody>\
 				<tr>\
-					<td rowspan="5" valign="top"><img src="core/space/read.php?spid=${stphoto}" alt="" height="100" ></td>\
+					<td rowspan="5" valign="top"><img src="launch.php?request=get&service=griddata.storage.read&stgid=${photo}" alt="" height="100" ></td>\
 					<td class="bold subhead">${$index+1}. ${name}</td>\
 					<td rowspan="5">\
 						<table class="glass-white right round grid">\
@@ -658,100 +822,16 @@ Executive.jquery.template.StudentList = $.template('\
 				<tr><td>${rollno}  |  <span class="bold">${cgpa}</span></td></tr>\
 				<tr><td class="italic"><span>Interests :</span> ${interests}</td></tr>\
 				<tr><td>\
-					{{if rssize}}\
-						<a href="core/space/read.php?spid=${resume}" target="_blank">\
-							Resume [${ServiceClient.jquery.helper.readFileSize(rssize)}]\
-						</a>\
-					{{/if}}\
-					{{if home}}\
-						<a href="#tplload:cntr=#student-child-container:url=core/content/view.php:arg=cntid~${home}" \
+					<a href="launch.php?request=get&service=griddata.storage.read&stgid=${resume}" target="_blank">Resume</a>\
+					<a href="#tplload:cntr=#student-child-container:url=core/content/view.php:arg=cntid~${home}" \
 							class="navigate" >Home Page</a>\
-					{{/if}}\
 					{{if FireSpark.core.helper.equals(message.admin, 1)}}\
-						<a href="#tplload:cntr=#student-child-container:tpl=tpl-std-edt:url=launch.php:arg=service~executive.student.info&stuid~${stuid}" \
-							class="navigate">Edit</a>\<a href="#tplload:cntr=#student-child-container:url=launch.php:arg=service~executive.student.remove&stuid~${stuid}:cf=true" \
-							class="navigate">Remove</a>\
+					<a href="#tplload:cntr=#student-child-container:tpl=tpl-std-edt:url=launch.php:arg=service~executive.student.info&stuid~${stuid}" class="navigate">Edit</a>\
+					<a href="#tplload:cntr=#student-child-container:url=launch.php:arg=service~executive.student.remove&stuid~${stuid}:cf=true" class="navigate">Remove</a>\
 					{{/if}}\
 				</td></tr>\
 				</tbody>\
 		</table>\
-		</div>\
-		{{/each}}\
-	{{else}}\
-	<p class="error">${msg}</p>\
-	{{/if}}\
-</div>');
-/**
- *	@template UpdateAdd
- *
-**/
-Executive.jquery.template.UpdateAdd = $.template('\
-<div id="update-add-container" class="panel form-panel">\
-	<p class="head">Add Update</p>\
-		<form action="launch.php" method="post" class="navigate" id="_formsubmit:sel._update-add-container">\
-				<input type="hidden" name="service" value="gridshare.note.add">\
-				<input type="hidden" name="boardid" value="2">\
-				<label>Title\
-					<input type="text" name="title" class="required" size="50" />\
-				</label>\
-					<p class="error hidden margin5">Invalid Title</p>\
-				<label>Message</label>\
-				<textarea name="note" rows="5" cols="80"></textarea>\
-				<input name="submit" type="submit" value="Submit"  class="margin5"/>\
-				<input name="reset" type="reset" value="Reset"  class="margin5"/>\
-				<div class="status"></div>\
-		</form>\
-	</div>\
-');/**
- *	@template UpdateEdit
- *
-**/
-Executive.jquery.template.UpdateEdit = $.template('\
-	{{if valid}}\
-	<div id="update-edit-container" class="panel form-panel">\
-		<p class="head">Edit Update #${message.note.noteid}</p>\
-		<form action="launch.php" method="post" class="navigate" id="_formsubmit:sel._update-edit-container">\
-				<input type="hidden" name="service" value="gridshare.note.edit">\
-				<input type="hidden" name="noteid" value="${message.note.noteid}">\
-				<label>Title\
-					<input type="text" name="title" class="required" size="50" value="${message.note.title}" />\
-				</label>\
-					<p class="error hidden margin5">Invalid Title</p>\
-				<label>Message</label>\
-				<textarea name="note" rows="5" cols="80">${message.note.note}</textarea>\
-				<input name="submit" type="submit" value="Submit"  class="margin5"/>\
-				<input name="reset" type="reset" value="Reset"  class="margin5"/>\
-				<div class="status"></div>\
-		</form>\
-	</div>\
-	{{else}}\
-	<p class="error">${msg}</p>\
-	{{/if}}\
-');
-/**
- *	@template UpdateList
- *
-**/
-Executive.jquery.template.UpdateList = $.template('\
-<div id="update-container">\
-	{{if valid}}\
-	<div id="update-child-container"></div>\
-	<div id="update-list-container" class="panel left">\
-		<p class="head">Updates</p>\
-		{{if FireSpark.core.helper.equals(message.admin, 1)}}\
-		<p><a href="#tplbind:cntr=#update-child-container:tpl=tpl-upd-add" class="navigate" >Add New ...</a></p>\
-		{{/if}}\
-		{{each message.notes}}\
-		<div class="panel">\
-			<p class="subhead">${title}</p>\
-			<p>${time}</p>\
-			<p>{{html note}}</p>\
-			{{if FireSpark.core.helper.equals(message.admin, 1)}}\
-			<p>\
-			<a href="#tplload:cntr=#update-child-container:tpl=tpl-upd-edt:url=launch.php:arg=service~gridshare.note.info&noteid~${noteid}" class="navigate" >Edit</a>\
-			<a href="#tplload:cntr=#update-child-container:url=launch.php:arg=service~gridshare.note.remove&noteid~${noteid}:cf=true" class="navigate" >Remove</a>\
-			</p>\
-			{{/if}}\
 		</div>\
 		{{/each}}\
 	{{else}}\
