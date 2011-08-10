@@ -22,6 +22,13 @@ Executive.jquery.template.SelectionStage = $.template('\
 			{{/if}}\
 			</div>\
 		{{/each}}\
+		{{if FireSpark.core.helper.equals(message.admin, 1)}}\
+			<div class="form-panel">\
+				<p>CSV Export\
+					<textarea name="note" rows="5" cols="80">${message.csv}</textarea>\
+				</p>\
+			</div>\
+		{{/if}}\
 	{{else}}\
 	<p class="error">${msg}</p>\
 	{{/if}}\

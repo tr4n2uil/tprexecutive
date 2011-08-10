@@ -39,7 +39,8 @@ class ProceedingListWorkflow implements Service {
 		),
 		array(
 			'service' => 'sbcore.data.list.service',
-			'args' => array('children')
+			'args' => array('children'),
+			'attr' => 'child'
 		),
 		array(
 			'service' => 'sb.relation.select.workflow',

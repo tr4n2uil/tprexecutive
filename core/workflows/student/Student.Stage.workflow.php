@@ -16,6 +16,7 @@ require_once(SBSERVICE);
  *	@return eventid long int Event ID [memory]
  *	@return stname string Stage name [memory]
  *	@return admin integer Is admin [memory]
+ *	@return csv string CSV exported data [memory]
  *
  *	@author Vibhaj Rajan <vibhaj8@gmail.com>
  *
@@ -59,6 +60,13 @@ class StudentStageWorkflow implements Service {
 			'escparam' => array('list'),
 			'check' => false,
 			'output' => array('result' => 'students')
+		),
+		array(
+			'service' => 'sbcore.data.export.service',
+			'input' => array('data' => 'students'),
+			'type' => 'csv',
+			'default' => "Student ID,Owner,Name,Email,Phone,Roll No,Course,Year,CGPA,Interests,Resume,Photo,Home,SGPA I,SGPA II,SGPA III,SGPA IV,SGPA V,SGPA VI,SGPA VII,SGPA VIII,SGPA IX,SGPA X,YGPA I,YGPA II,YGPA III,YGPA IV,YGPA V\r\n",
+			'output' => array('result' => 'csv')
 		));
 		
 		return $kernel->execute($workflow, $memory);
@@ -68,7 +76,7 @@ class StudentStageWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function output(){
-		return array('students', 'ename', 'eventid', 'stname', 'admin');
+		return array('students', 'ename', 'eventid', 'stname', 'admin', 'csv');
 	}
 	
 }

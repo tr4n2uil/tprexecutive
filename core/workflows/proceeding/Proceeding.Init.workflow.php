@@ -69,6 +69,7 @@ class ProceedingInitWorkflow implements Service {
 		array(
 			'service' => 'sbcore.data.list.service',
 			'args' => array('selections'),
+			'attr' => 'owner',
 			'output' => array('result' => 'selected')
 		),
 		array(
@@ -85,6 +86,7 @@ class ProceedingInitWorkflow implements Service {
 		array(
 			'service' => 'sbcore.data.list.service',
 			'args' => array('eligible'),
+			'attr' => 'owner',
 			'output' => array('result' => 'eligible')
 		));
 		
