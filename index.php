@@ -46,7 +46,7 @@
 	<div id="bottom-panel" class="panel">
 <?php
 	
-	Document::footer('<p>Powered by enhanCSE Development Team</p>', array(
+	Document::footer('<div class="fleft"><div class="panel"><p>Developed by enhanCSE Development Team</p><p>2011 <a href="http://www.github.com/tr4n2uil/tprexecutive" target="_blank">Open Source</a><a href="mailto:enhancse@gmail.com">enhancse@gmail.com</a></p></div></div><div class="fleft panel" style="background:white"><img src="ui/img/officials/opensource.png" alt="opensource_logo"><img src="ui/img/officials/php.png" alt="php_logo"><img src="ui/img/officials/mysql.png" alt="mysql_logo"><img src="ui/img/officials/jquery.png" alt="jquery_logo"></div>', array(
 		'jQuery Core' => 'jquery-1.6.1.min.js',
 	//	'jQuery UI' => 'jquery-ui-1.8.13.min.js',
 		'jQuery Templates' => 'jquery.tmpl.min.js',

@@ -8,9 +8,6 @@ Executive.jquery.template.StudentList = $.template('\
 	<div id="student-child-container"></div>\
 	<div id="student-list-container" class="panel left">\
 		<p class="head">All ${message.course} Students Enrolled in ${message.year}</p>\
-		{{if FireSpark.core.helper.equals(message.admin, 1)}}\
-		<p><a href="#tplbind:cntr=#student-child-container:tpl=tpl-std-add" class="navigate" >Add New ...</a></p>\
-		{{/if}}\
 		{{each message.students}}\
 		<div class="panel">\
 		<table class="margin5 full">\

@@ -807,6 +807,9 @@ Executive.jquery.template.StudentBatch = $.template('\
 	<div id="grid-panel"></div>\
 	<div id="student-menu-container" class="panel left">\
 			<p class="head">All Students by Enrollment year</p>\
+			{{if FireSpark.core.helper.equals(message.admin, 1)}}\
+				<p><a href="#tplbind:cntr=#student-child-container:tpl=tpl-std-add" class="navigate" >Add New ...</a></p>\
+			{{/if}}\
 			{{each message.batches}}\
 			<span class="bold">${year}</span>\
 			<ul class="horizontal menu">\
@@ -967,9 +970,6 @@ Executive.jquery.template.StudentList = $.template('\
 	<div id="student-child-container"></div>\
 	<div id="student-list-container" class="panel left">\
 		<p class="head">All ${message.course} Students Enrolled in ${message.year}</p>\
-		{{if FireSpark.core.helper.equals(message.admin, 1)}}\
-		<p><a href="#tplbind:cntr=#student-child-container:tpl=tpl-std-add" class="navigate" >Add New ...</a></p>\
-		{{/if}}\
 		{{each message.students}}\
 		<div class="panel">\
 		<table class="margin5 full">\

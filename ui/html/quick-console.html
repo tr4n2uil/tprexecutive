@@ -1,4 +1,4 @@
-<div id="admin-panel"  class="panel">
+<div id="console-panel"  class="panel">
 		<p class="headdark">Console</p>
 		<ul class="vertical menu">
 			<li><a href="#tplload:cntr=#main-container:tpl=tpl-stg-lst:url=launch.php:arg=service~griddata.storage.list&spaceid~0&spname~Storage" 
@@ -7,5 +7,14 @@
 				class="navigate" >Resources</a></li>
 			<li><a href="#tplload:cntr=#main-container:tpl=tpl-cnt-lst:url=launch.php:arg=service~gridview.content.list&siteid~0&stname~Executive" 
 				class="navigate" >Contents</a></li>
+		</ul>
+</div>
+
+<div id="archives-panel"  class="panel">
+		<p class="headdark">Archives</p>
+		<ul class="vertical menu">
+			<li><a href="launch.php?request=get&service=griddata.storage.archive&spaceid=0&sppath=storage/resumes/&asname=Resumes.zip" target="_blank">Resumes</a></li>
+			<li><a href="launch.php?request=get&service=griddata.storage.archive&spaceid=0&sppath=storage/photos/&asname=Photos.zip" target="_blank">Photos</a></li>
+			<li><a href="launch.php?request=get&service=griddata.storage.archive&spaceid=4&sppath=storage/downloads/&asname=Downloads.zip" target="_blank">Downloads</a></li>
 		</ul>
 </div>

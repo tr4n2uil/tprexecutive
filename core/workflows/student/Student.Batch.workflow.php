@@ -8,6 +8,7 @@ require_once(SBSERVICE);
  *	@param keyid long int Usage Key ID [memory]
  *
  *	@return batches array Students enrolment year information [memory]
+ *	@return admin integer Is admin [memory]
  *
  *	@author Vibhaj Rajan <vibhaj8@gmail.com>
  *
@@ -31,7 +32,8 @@ class StudentBatchWorkflow implements Service {
 		
 		$memory['msg'] = 'Student enrolment year information given successfully';
 		
-		$service = array(
+		$workflow = array(
+		array(
 			'service' => 'sb.relation.select.workflow',
 			'conn' => 'exconn',
 			'relation' => '`students`',
@@ -39,16 +41,22 @@ class StudentBatchWorkflow implements Service {
 			'sqlcnd' => "order by `year` desc",
 			'check' => false,
 			'output' => array('result' => 'batches')
-		);
+		),
+		array(
+			'service' => 'sb.reference.authorize.workflow',
+			'id' => 0,
+			'admin' => true,
+			'action' => 'add'
+		));
 		
-		return $kernel->run($service, $memory);
+		return $kernel->execute($workflow, $memory);
 	}
 	
 	/**
 	 *	@interface Service
 	**/
 	public function output(){
-		return array('batches');
+		return array('batches', 'admin');
 	}
 	
 }
