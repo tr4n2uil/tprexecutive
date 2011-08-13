@@ -7,7 +7,7 @@ Executive.jquery.template.NoteList = $.template('\
 	{{if valid}}\
 	<div id="note-child-container" class="editor"></div>\
 	<div id="note-list-container" class="panel left">\
-		<p class="head">${message.bname}s</p>\
+		<p class="head">Notes in ${message.bname} Board</p>\
 		{{if FireSpark.core.helper.equals(message.admin, 1)}}\
 		<p><a href="#tplbind:cntr=#note-child-container:tpl=tpl-nte-add:arg=bname~${message.bname}&boardid~${message.boardid}" class="navigate" >Add New ...</a></p>\
 		{{/if}}\

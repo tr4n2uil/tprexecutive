@@ -4,7 +4,7 @@
 **/
 Executive.jquery.template.ResourceAdd = $.template('\
 	<div id="resource-add-container" class="panel form-panel">\
-		<p class="head">Add Resource in ${stname}</p>\
+		<p class="head">Add Resource in ${stname} Site</p>\
 		<form action="launch.php" method="post" class="navigate" id="_formsubmit:sel._resource-add-container">\
 				<input type="hidden" name="service" value="gridview.resource.add">\
 				<input type="hidden" name="siteid" value="${siteid}">\

@@ -7,7 +7,7 @@ Executive.jquery.template.ContentList = $.template('\
 	{{if valid}}\
 	<div id="content-child-container"></div>\
 	<div id="content-list-container" class="panel left">\
-		<p class="head">Contents for ${message.stname}</p>\
+		<p class="head">Contents in ${message.stname} Site</p>\
 		{{if FireSpark.core.helper.equals(message.admin, 1)}}\
 		<p><a href="#tplbind:cntr=#content-child-container:tpl=tpl-cnt-add:arg=stname~${message.stname}&siteid~${message.siteid}" class="navigate" >Add New ...</a></p>\
 		{{/if}}\

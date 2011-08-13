@@ -4,7 +4,7 @@
 **/
 Executive.jquery.template.NoteAdd = $.template('\
 <div id="note-add-container" class="panel form-panel">\
-	<p class="head">Add ${bname}</p>\
+	<p class="head">Add Note in ${bname} Board</p>\
 		<form action="launch.php" method="post" class="navigate" id="_formsubmit:sel._note-add-container">\
 				<input type="hidden" name="service" value="gridshare.note.add">\
 				<input type="hidden" name="boardid" value="${boardid}">\

@@ -7,13 +7,16 @@ Executive.jquery.template.StudentList = $.template('\
 	{{if valid}}\
 	<div id="student-child-container"></div>\
 	<div id="student-list-container" class="panel left">\
-		<p class="head">All ${message.course} Students Enrolled in ${message.year}</p>\
+		<p class="head">All ${message.course} Students in ${message.btname} Batch</p>\
+		{{if FireSpark.core.helper.equals(message.admin, 1)}}\
+			<p><a href="#tplbind:cntr=#student-child-container:tpl=tpl-std-add:arg=batchid~${message.batchid}&btname~${message.btname}" class="navigate" >Add New ...</a></p>\
+		{{/if}}\
 		{{each message.students}}\
 		<div class="panel">\
 		<table class="margin5 full">\
 			<tbody>\
 				<tr>\
-					<td rowspan="5" valign="top"><img src="launch.php?request=get&service=griddata.storage.read&stgid=${photo}" alt="" height="100" ></td>\
+					<td rowspan="5" valign="top"><img src="launch.php?request=get&service=griddata.storage.read&stgid=${photo}&spaceid=${message.btphoto}" alt="" height="100" ></td>\
 					<td class="bold subhead">${$index+1}. ${name}</td>\
 					<td rowspan="5">\
 						<table class="glass-white right round grid">\
@@ -64,11 +67,11 @@ Executive.jquery.template.StudentList = $.template('\
 				<tr><td>${rollno}  |  <span class="bold">${cgpa}</span></td></tr>\
 				<tr><td class="italic"><span>Interests :</span> ${interests}</td></tr>\
 				<tr><td>\
-					<a href="launch.php?request=get&service=griddata.storage.read&stgid=${resume}" target="_blank">Resume</a>\
+					<a href="launch.php?request=get&service=griddata.storage.read&stgid=${resume}&spaceid=${message.btresume}" target="_blank">Resume</a>\
 					<a href="#tplload:cntr=#student-child-container:key=template:url=launch.php:arg=service~gridview.content.view&cntid~${home}" class="navigate" >Home Page</a>\
 					{{if FireSpark.core.helper.equals(message.admin, 1)}}\
-					<a href="#tplload:cntr=#student-child-container:tpl=tpl-std-edt:url=launch.php:arg=service~executive.student.info&stuid~${stuid}" class="navigate">Edit</a>\
-					<a href="#tplload:cntr=#student-child-container:url=launch.php:arg=service~executive.student.remove&stuid~${stuid}:cf=true" class="navigate">Remove</a>\
+					<a href="#tplload:cntr=#student-child-container:tpl=tpl-std-edt:url=launch.php:arg=service~executive.student.info&stuid~${stuid}&batchid~${message.batchid}&btname~${message.btname}" class="navigate">Edit</a>\
+					<a href="#tplload:cntr=#student-child-container:url=launch.php:arg=service~executive.student.remove&stuid~${stuid}&batchid~${message.batchid}:cf=true" class="navigate">Remove</a>\
 					{{/if}}\
 				</td></tr>\
 				</tbody>\

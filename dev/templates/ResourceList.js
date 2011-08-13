@@ -7,7 +7,7 @@ Executive.jquery.template.ResourceList = $.template('\
 	{{if valid}}\
 	<div id="resource-child-container"></div>\
 	<div id="resource-list-container" class="panel left">\
-		<p class="head">Resources for ${message.stname}</p>\
+		<p class="head">Resources in ${message.stname} Site</p>\
 		{{if FireSpark.core.helper.equals(message.admin, 1)}}\
 		<p><a href="#tplbind:cntr=#resource-child-container:tpl=tpl-rsc-add:arg=stname~${message.stname}&siteid~${message.siteid}" class="navigate" >Add New ...</a></p>\
 		{{/if}}\

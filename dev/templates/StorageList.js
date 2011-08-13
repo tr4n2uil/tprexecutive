@@ -7,9 +7,9 @@ Executive.jquery.template.StorageList = $.template('\
 	{{if valid}}\
 	<div id="storage-child-container"></div>\
 	<div id="storage-list-container" class="panel left">\
-		<p class="head">${message.spname}s</p>\
+		<p class="head">Storages in ${message.spname} Space</p>\
 		{{if FireSpark.core.helper.equals(message.admin, 1)}}\
-		<p><a href="#tplbind:cntr=#storage-child-container:tpl=tpl-stg-add:arg=spname~${message.spname}&spaceid~${message.spaceid}&sppath~${message.sppath}" class="navigate" >Add New ...</a></p>\
+		<p><a href="#tplbind:cntr=#storage-child-container:tpl=tpl-stg-add:arg=spname~${message.spname}&spaceid~${message.spaceid}" class="navigate" >Add New ...</a></p>\
 		{{/if}}\
 		{{each message.storages}}\
 		<div class="panel">\

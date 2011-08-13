@@ -9,6 +9,7 @@ require_once(SBSERVICE);
  *	@param keyid long int Usage Key ID [memory]
  *
  *	@return company array Company information [memory]
+ *	@return photo long int Company Photo [memory]
  *	@return admin integer Is admin [memory]
  *
  *	@author Vibhaj Rajan <vibhaj8@gmail.com>
@@ -45,7 +46,7 @@ class CompanyInfoWorkflow implements Service {
 		array(
 			'service' => 'sbcore.data.select.service',
 			'args' => array('result'),
-			'params' => array('result.0' => 'company')
+			'params' => array('result.0' => 'company', 'result.0.photo' => 'photo')
 		),
 		array(
 			'service' => 'sb.reference.read.workflow',
@@ -65,7 +66,7 @@ class CompanyInfoWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function output(){
-		return array('company', 'admin');
+		return array('company', 'admin', 'photo');
 	}
 	
 }

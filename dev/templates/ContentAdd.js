@@ -4,7 +4,7 @@
 **/
 Executive.jquery.template.ContentAdd = $.template('\
 	<div id="content-add-container" class="panel form-panel">\
-		<p class="head">Add Content in ${stname}</p>\
+		<p class="head">Add Content in ${stname} Site</p>\
 		<form action="launch.php" method="post" class="navigate" id="_formsubmit:sel._content-add-container">\
 				<input type="hidden" name="service" value="gridview.content.add">\
 				<input type="hidden" name="siteid" value="${siteid}">\

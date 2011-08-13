@@ -4,7 +4,7 @@
 **/
 Executive.jquery.template.StorageAdd = $.template('\
 <div id="storage-add-container" class="panel form-panel">\
-	<p class="head">Add ${spname}</p>\
+	<p class="head">Add Storage in ${spname} Space</p>\
 		<form action="launch.php" method="post" class="navigate" enctype="multipart/form-data"  id="_formsubmit:sel._storage-add-container:iframe=true">\
 				<input type="hidden" name="service" value="griddata.storage.add">\
 				<input type="hidden" name="spaceid" value="${spaceid}">\

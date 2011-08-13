@@ -28,7 +28,7 @@
 				}
 				if($email){
 					include(EXROOT. 'ui/html/quick-student.html');
-					if(in_array($email, array('admin@executive.org', 'vibhaj@gmail.com'))){
+					if(in_array($email, array('admin@executive.org', 'vibhaj@gmail.com', 'vibhaj8@gmail.com'))){
 						include(EXROOT. 'ui/html/quick-console.html');
 					}
 				}
@@ -72,6 +72,10 @@
 			
 			FireSpark.Registry.save('login', FireSpark.jquery.workflow.CookieLogin);
 			
+			FireSpark.Registry.save('tpl-bth-add', Executive.jquery.template.BatchAdd);
+			FireSpark.Registry.save('tpl-bth-lst', Executive.jquery.template.BatchList);
+			FireSpark.Registry.save('tpl-bth-edt', Executive.jquery.template.BatchEdit);
+			
 			FireSpark.Registry.save('tpl-std-add', Executive.jquery.template.StudentAdd);
 			FireSpark.Registry.save('tpl-std-bth', Executive.jquery.template.StudentBatch);
 			FireSpark.Registry.save('tpl-std-lst', Executive.jquery.template.StudentList);
@@ -96,6 +100,10 @@
 			FireSpark.Registry.save('tpl-nte-lst', Executive.jquery.template.NoteList);
 			FireSpark.Registry.save('tpl-nte-inf', Executive.jquery.template.NoteInfo);
 			FireSpark.Registry.save('tpl-nte-edt', Executive.jquery.template.NoteEdit);
+			
+			FireSpark.Registry.save('tpl-spc-add', Executive.jquery.template.SpaceAdd);
+			FireSpark.Registry.save('tpl-spc-lst', Executive.jquery.template.SpaceList);
+			FireSpark.Registry.save('tpl-spc-edt', Executive.jquery.template.SpaceEdit);
 			
 			FireSpark.Registry.save('tpl-stg-add', Executive.jquery.template.StorageAdd);
 			FireSpark.Registry.save('tpl-stg-lst', Executive.jquery.template.StorageList);

@@ -1,4 +1,77 @@
 /**
+ *	@template BatchAdd
+ *
+**/
+Executive.jquery.template.BatchAdd = $.template('\
+<div id="batch-add-container" class="panel form-panel">\
+	<p class="head">Add Batch to ${deptname} Department</p>\
+		<form action="launch.php" method="post" class="navigate" id="_formsubmit:sel._batch-add-container">\
+				<input type="hidden" name="service" value="executive.batch.add">\
+				<input type="hidden" name="deptid" value="${deptid}">\
+				<label>Name\
+					<input type="text" name="btname" class="required" size="50" />\
+				</label>\
+					<p class="error hidden margin5">Invalid Name</p>\
+					<p class="desc">Batch Enrollment year suggested as name eg. 2008</p>\
+				<input name="submit" type="submit" value="Submit"  class="margin5"/>\
+				<input name="reset" type="reset" value="Reset"  class="margin5"/>\
+				<div class="status"></div>\
+		</form>\
+	</div>\
+');
+/**
+ *	@template BatchEdit
+ *
+**/
+Executive.jquery.template.BatchEdit = $.template('\
+<div id="batch-edit-container" class="panel form-panel">\
+	<p class="head">Edit Batch #${batchid}</p>\
+		<form action="launch.php" method="post" class="navigate" id="_formsubmit:sel._batch-edit-container">\
+				<input type="hidden" name="service" value="executive.batch.edit">\
+				<input type="hidden" name="batchid" value="${batchid}">\
+				<label>Name\
+					<input type="text" name="btname" class="required" size="50" value="${btname}"/>\
+				</label>\
+					<p class="error hidden margin5">Invalid Name</p>\
+					<p class="desc">Batch Enrollment year suggested as name eg. 2008</p>\
+				<input name="submit" type="submit" value="Submit"  class="margin5"/>\
+				<input name="reset" type="reset" value="Reset"  class="margin5"/>\
+				<div class="status"></div>\
+		</form>\
+	</div>\
+');
+/**
+ *	@template BatchList
+ *
+**/
+Executive.jquery.template.BatchList = $.template('\
+<div id="batch-container">\
+	{{if valid}}\
+	<div id="batch-child-container"></div>\
+	<div id="batch-list-container" class="panel left">\
+		<p class="head">Batches in ${message.deptname} Department</p>\
+		{{if FireSpark.core.helper.equals(message.admin, 1)}}\
+		<p><a href="#tplbind:cntr=#batch-child-container:tpl=tpl-bth-add:arg=deptname~${message.deptname}&deptid~${message.deptid}" class="navigate" >Add New ...</a></p>\
+		{{/if}}\
+		{{each message.batches}}\
+		<div class="panel">\
+			<p class="subhead">${btname}</p>\
+			<p>\
+				<a href="#tplload:cntr=#batch-child-container:tpl=tpl-std-lst:url=launch.php:arg=service~executive.student.list&batchid~${batchid}&btname~${btname}&course~B Tech" class="navigate" >Students B Tech</a>\
+				<a href="#tplload:cntr=#batch-child-container:tpl=tpl-std-lst:url=launch.php:arg=service~executive.student.list&batchid~${batchid}&btname~${btname}&course~IDD" class="navigate" >Students IDD</a>\
+				{{if FireSpark.core.helper.equals(message.admin, 1)}}\
+				<a href="#tplbind:cntr=#batch-child-container:tpl=tpl-bth-edt:arg=btname~${btname}&deptname~${message.deptname}&batchid~${batchid}" class="navigate" >Edit</a>\
+				<a href="#tplload:cntr=#batch-child-container:url=launch.php:arg=service~executive.batch.remove&deptid~${message.deptid}&batchid~${batchid}:cf=true" class="navigate" >Remove</a>\
+				<a href="launch.php?request=get&service=griddata.space.archive&spaceid=${resume}&asname=${btname}.zip" target="_blank">Resumes</a>\
+				{{/if}}\
+			</p>\
+		</div>\
+		{{/each}}\
+	{{else}}\
+	<p class="error">${msg}</p>\
+	{{/if}}\
+</div>');
+/**
  *	@template CompanyAdd
  *
 **/
@@ -79,7 +152,7 @@ Executive.jquery.template.CompanyList = $.template('\
 		<table class="margin5 full">\
 			<tbody>\
 				<tr>\
-					<td rowspan="4" valign="top"><img src="launch.php?request=get&service=griddata.storage.read&stgid=${photo}" alt="" height="100" ></td>\
+					<td rowspan="4" valign="top"><img src="launch.php?request=get&service=griddata.storage.read&stgid=${photo}&spaceid=0" alt="" height="100" ></td>\
 					<td class="bold subhead">${name}</td>\
 				</tr>\
 				<tr><td><a href="${site}" target="_blank">${site}</a></td></tr>\
@@ -88,7 +161,7 @@ Executive.jquery.template.CompanyList = $.template('\
 				<a href="#tplload:cntr=#company-child-container:tpl=tpl-prc-lst:url=launch.php:arg=service~gridevent.event.list&seriesid~${comid}&srname~${name}" \
 					class="navigate" >Proceedings</a>\
 				{{if FireSpark.core.helper.equals(message.admin, 1)}}\
-				<a href="#tplbind:cntr=#company-child-container:tpl=tpl-stg-edt:arg=spname~Photo&stgid~${photo}" class="navigate" >Photo</a>\
+				<a href="#tplbind:cntr=#company-child-container:tpl=tpl-stg-edt:arg=spname~Photo&stgid~${photo}&spaceid~0" class="navigate" >Photo</a>\
 				<a href="#tplload:cntr=#company-child-container:tpl=tpl-com-edt:url=launch.php:arg=service~executive.company.info&comid~${comid}" class="navigate" >Edit</a>\
 				<a href="#tplload:cntr=#company-child-container:url=launch.php:arg=service~executive.company.remove&comid~${comid}:cf=true" class="navigate" >Remove</a>\
 		{{/if}}\
@@ -107,7 +180,7 @@ Executive.jquery.template.CompanyList = $.template('\
 **/
 Executive.jquery.template.ContentAdd = $.template('\
 	<div id="content-add-container" class="panel form-panel">\
-		<p class="head">Add Content in ${stname}</p>\
+		<p class="head">Add Content in ${stname} Site</p>\
 		<form action="launch.php" method="post" class="navigate" id="_formsubmit:sel._content-add-container">\
 				<input type="hidden" name="service" value="gridview.content.add">\
 				<input type="hidden" name="siteid" value="${siteid}">\
@@ -153,7 +226,7 @@ Executive.jquery.template.ContentAdd = $.template('\
 Executive.jquery.template.ContentEdit = $.template('\
 	{{if valid}}\
 	<div id="content-edit-container" class="panel form-panel">\
-		<p class="head">Edit Content #${message.content.cntid} in ${message.stname}</p>\
+		<p class="head">Edit Content #${message.content.cntid}</p>\
 		<form action="launch.php" method="post" class="navigate" id="_formsubmit:sel._content-edit-container">\
 				<input type="hidden" name="service" value="gridview.content.{{if FireSpark.core.helper.equals(message.admin, 1)}}edit{{else}}update{{/if}}">\
 				<input type="hidden" name="cntid" value="${message.content.cntid}">\
@@ -204,7 +277,7 @@ Executive.jquery.template.ContentList = $.template('\
 	{{if valid}}\
 	<div id="content-child-container"></div>\
 	<div id="content-list-container" class="panel left">\
-		<p class="head">Contents for ${message.stname}</p>\
+		<p class="head">Contents in ${message.stname} Site</p>\
 		{{if FireSpark.core.helper.equals(message.admin, 1)}}\
 		<p><a href="#tplbind:cntr=#content-child-container:tpl=tpl-cnt-add:arg=stname~${message.stname}&siteid~${message.siteid}" class="navigate" >Add New ...</a></p>\
 		{{/if}}\
@@ -230,7 +303,7 @@ Executive.jquery.template.ContentList = $.template('\
 **/
 Executive.jquery.template.NoteAdd = $.template('\
 <div id="note-add-container" class="panel form-panel">\
-	<p class="head">Add ${bname}</p>\
+	<p class="head">Add Note in ${bname} Board</p>\
 		<form action="launch.php" method="post" class="navigate" id="_formsubmit:sel._note-add-container">\
 				<input type="hidden" name="service" value="gridshare.note.add">\
 				<input type="hidden" name="boardid" value="${boardid}">\
@@ -252,7 +325,7 @@ Executive.jquery.template.NoteAdd = $.template('\
 Executive.jquery.template.NoteEdit = $.template('\
 	{{if valid}}\
 	<div id="note-edit-container" class="panel form-panel">\
-		<p class="head">Edit ${bname} #${message.note.noteid}</p>\
+		<p class="head">Edit Note #${message.note.noteid}</p>\
 		<form action="launch.php" method="post" class="navigate" id="_formsubmit:sel._note-edit-container">\
 				<input type="hidden" name="service" value="gridshare.note.edit">\
 				<input type="hidden" name="noteid" value="${message.note.noteid}">\
@@ -302,7 +375,7 @@ Executive.jquery.template.NoteList = $.template('\
 	{{if valid}}\
 	<div id="note-child-container" class="editor"></div>\
 	<div id="note-list-container" class="panel left">\
-		<p class="head">${message.bname}s</p>\
+		<p class="head">Notes in ${message.bname} Board</p>\
 		{{if FireSpark.core.helper.equals(message.admin, 1)}}\
 		<p><a href="#tplbind:cntr=#note-child-container:tpl=tpl-nte-add:arg=bname~${message.bname}&boardid~${message.boardid}" class="navigate" >Add New ...</a></p>\
 		{{/if}}\
@@ -443,7 +516,7 @@ Executive.jquery.template.ProceedingList = $.template('\
 **/
 Executive.jquery.template.ResourceAdd = $.template('\
 	<div id="resource-add-container" class="panel form-panel">\
-		<p class="head">Add Resource in ${stname}</p>\
+		<p class="head">Add Resource in ${stname} Site</p>\
 		<form action="launch.php" method="post" class="navigate" id="_formsubmit:sel._resource-add-container">\
 				<input type="hidden" name="service" value="gridview.resource.add">\
 				<input type="hidden" name="siteid" value="${siteid}">\
@@ -466,7 +539,7 @@ Executive.jquery.template.ResourceAdd = $.template('\
 Executive.jquery.template.ResourceEdit = $.template('\
 	{{if valid}}\
 	<div id="resource-edit-container" class="panel form-panel">\
-		<p class="head">Edit Resource #${message.resource.rsrcid} in ${stname}</p>\
+		<p class="head">Edit Resource #${message.resource.rsrcid}</p>\
 		<form action="launch.php" method="post" class="navigate" id="_formsubmit:sel._resource-edit-container">\
 				<input type="hidden" name="service" value="gridview.resource.edit">\
 				<input type="hidden" name="rsrcid" value="${message.resource.rsrcid}">\
@@ -493,7 +566,7 @@ Executive.jquery.template.ResourceList = $.template('\
 	{{if valid}}\
 	<div id="resource-child-container"></div>\
 	<div id="resource-list-container" class="panel left">\
-		<p class="head">Resources for ${message.stname}</p>\
+		<p class="head">Resources in ${message.stname} Site</p>\
 		{{if FireSpark.core.helper.equals(message.admin, 1)}}\
 		<p><a href="#tplbind:cntr=#resource-child-container:tpl=tpl-rsc-add:arg=stname~${message.stname}&siteid~${message.siteid}" class="navigate" >Add New ...</a></p>\
 		{{/if}}\
@@ -573,6 +646,84 @@ Executive.jquery.template.SelectionStage = $.template('\
 				</p>\
 			</div>\
 		{{/if}}\
+	{{else}}\
+	<p class="error">${msg}</p>\
+	{{/if}}\
+</div>');
+/**
+ *	@template SpaceAdd
+ *
+**/
+Executive.jquery.template.SpaceAdd = $.template('\
+<div id="space-add-container" class="panel form-panel">\
+	<p class="head">Add Space to ${cntrname} Container</p>\
+		<form action="launch.php" method="post" class="navigate" id="_formsubmit:sel._space-add-container">\
+				<input type="hidden" name="service" value="griddata.space.add">\
+				<input type="hidden" name="cntrid" value="${cntrid}">\
+				<label>Name\
+					<input type="text" name="spname" class="required" size="50" />\
+				</label>\
+					<p class="error hidden margin5">Invalid Name</p>\
+				<label>Path\
+					<input type="text" name="sppath" class="required" size="85" />\
+				</label>\
+					<p class="error hidden margin5">Invalid Path</p>\
+					<p class="desc">Must end in / eg. "storage/test/"</p>\
+				<input name="submit" type="submit" value="Submit"  class="margin5"/>\
+				<input name="reset" type="reset" value="Reset"  class="margin5"/>\
+				<div class="status"></div>\
+		</form>\
+	</div>\
+');/**
+ *	@template SpaceEdit
+ *
+**/
+Executive.jquery.template.SpaceEdit = $.template('\
+<div id="space-edit-container" class="panel form-panel">\
+	<p class="head">Edit Space #${message.spaceid}</p>\
+		<form action="launch.php" method="post" class="navigate" id="_formsubmit:sel._space-edit-container">\
+				<input type="hidden" name="service" value="griddata.space.edit">\
+				<input type="hidden" name="spaceid" value="${message.spaceid}">\
+				<label>Name\
+					<input type="text" name="spname" class="required" size="50"  value="${message.spname}"/>\
+				</label>\
+					<p class="error hidden margin5">Invalid Name</p>\
+				<label>Path\
+					<input type="text" name="sppath" class="required" size="85" value="${message.sppath}" />\
+				</label>\
+					<p class="error hidden margin5">Invalid Path</p>\
+					<p class="desc">Must end in / eg. "storage/test/"</p>\
+				<input name="submit" type="submit" value="Submit"  class="margin5"/>\
+				<input name="reset" type="reset" value="Reset"  class="margin5"/>\
+				<div class="status"></div>\
+		</form>\
+	</div>\
+');/**
+ *	@template SpaceList
+ *
+**/
+Executive.jquery.template.SpaceList = $.template('\
+<div id="space-container">\
+	{{if valid}}\
+	<div id="space-child-container"></div>\
+	<div id="space-list-container" class="panel left">\
+		<p class="head">Spaces in ${message.cntrname} Container</p>\
+		{{if FireSpark.core.helper.equals(message.admin, 1)}}\
+		<p><a href="#tplbind:cntr=#space-child-container:tpl=tpl-spc-add:arg=cntrname~${message.cntrname}&cntrid~${message.cntrid}" class="navigate" >Add New ...</a></p>\
+		{{/if}}\
+		{{each message.spaces}}\
+		<div class="panel">\
+			<p class="subhead">${spname}</p>\
+			<p>\
+				<a href="#tplload:cntr=#space-child-container:tpl=tpl-stg-lst:url=launch.php:arg=service~griddata.storage.list&spaceid~${spaceid}&spname~${spname}" class="navigate" >List</a>\
+				<a href="launch.php?request=get&service=griddata.space.archive&spaceid=${spaceid}&asname=${spname}.zip" target="_blank">Archive</a>\
+				{{if FireSpark.core.helper.equals(message.admin, 1)}}\
+				<a href="#tplload:cntr=#space-child-container:tpl=tpl-spc-edt:url=launch.php:arg=service~griddata.space.info&cntrname~${message.cntrname}&spaceid~${spaceid}" class="navigate" >Edit</a>\
+				<a href="#tplload:cntr=#space-child-container:url=launch.php:arg=service~griddata.space.remove&cntrid~${message.cntrid}&spaceid~${spaceid}:cf=true" class="navigate" >Remove</a> (Ensure empty before removing)\
+				{{/if}}\
+			</p>\
+		</div>\
+		{{/each}}\
 	{{else}}\
 	<p class="error">${msg}</p>\
 	{{/if}}\
@@ -690,7 +841,7 @@ Executive.jquery.template.StageList = $.template('\
 **/
 Executive.jquery.template.StorageAdd = $.template('\
 <div id="storage-add-container" class="panel form-panel">\
-	<p class="head">Add ${spname}</p>\
+	<p class="head">Add Storage in ${spname} Space</p>\
 		<form action="launch.php" method="post" class="navigate" enctype="multipart/form-data"  id="_formsubmit:sel._storage-add-container:iframe=true">\
 				<input type="hidden" name="service" value="griddata.storage.add">\
 				<input type="hidden" name="spaceid" value="${spaceid}">\
@@ -711,11 +862,12 @@ Executive.jquery.template.StorageAdd = $.template('\
 **/
 Executive.jquery.template.StorageEdit = $.template('\
 <div id="storage-edit-container" class="panel form-panel">\
-	<p class="head">Edit ${spname}</p>\
+	<p class="head">Edit Storage #${stgid}</p>\
 		<form action="launch.php" method="post" class="navigate" enctype="multipart/form-data"  id="_formsubmit:sel._storage-edit-container:iframe=true">\
 				<input type="hidden" name="service" value="griddata.storage.write">\
 				<input type="hidden" name="filekey" value="storage">\
 				<input type="hidden" name="stgid" value="${stgid}">\
+				<input type="hidden" name="spaceid" value="${spaceid}">\
 				<label>File\
 					<input type="file" name="storage" class="required"/>\
 				</label>\
@@ -734,9 +886,9 @@ Executive.jquery.template.StorageList = $.template('\
 	{{if valid}}\
 	<div id="storage-child-container"></div>\
 	<div id="storage-list-container" class="panel left">\
-		<p class="head">${message.spname}s</p>\
+		<p class="head">Storages in ${message.spname} Space</p>\
 		{{if FireSpark.core.helper.equals(message.admin, 1)}}\
-		<p><a href="#tplbind:cntr=#storage-child-container:tpl=tpl-stg-add:arg=spname~${message.spname}&spaceid~${message.spaceid}&sppath~${message.sppath}" class="navigate" >Add New ...</a></p>\
+		<p><a href="#tplbind:cntr=#storage-child-container:tpl=tpl-stg-add:arg=spname~${message.spname}&spaceid~${message.spaceid}" class="navigate" >Add New ...</a></p>\
 		{{/if}}\
 		{{each message.storages}}\
 		<div class="panel">\
@@ -760,9 +912,10 @@ Executive.jquery.template.StorageList = $.template('\
 **/
 Executive.jquery.template.StudentAdd = $.template('\
 <div id="student-add-container" class="panel form-panel">\
-	<p class="head">Add Student</p>\
+	<p class="head">Add Student in ${btname} Batch</p>\
 		<form action="launch.php" method="post" class="navigate" id="_formsubmit:sel._student-add-container">\
 				<input type="hidden" name="service" value="executive.student.add">\
+				<input type="hidden" name="batchid" value="${batchid}">\
 				<label>Email\
 					<input type="text" name="email" class="required email" />\
 				</label>\
@@ -789,7 +942,7 @@ Executive.jquery.template.StudentAdd = $.template('\
 					</select>\
 				</label>\
 				<label>Year\
-					<input type="text" name="year" class="required"/>\
+					<input type="text" name="year" class="required" value="${btname}"/>\
 				</label>\
 					<p class="error hidden margin5">Invalid Year</p>\
 				<input name="submit" type="submit" value="Submit"  class="margin5"/>\
@@ -798,40 +951,6 @@ Executive.jquery.template.StudentAdd = $.template('\
 		</form>\
 	</div>\
 ');/**
- *	@template StudentBatch
- *
-**/
-Executive.jquery.template.StudentBatch = $.template('\
-<div id="student-container">\
-	{{if valid}}\
-	<div id="grid-panel"></div>\
-	<div id="student-menu-container" class="panel left">\
-			<p class="head">All Students by Enrollment year</p>\
-			{{if FireSpark.core.helper.equals(message.admin, 1)}}\
-				<p><a href="#tplbind:cntr=#student-child-container:tpl=tpl-std-add" class="navigate" >Add New ...</a></p>\
-			{{/if}}\
-			{{each message.batches}}\
-			<span class="bold">${year}</span>\
-			<ul class="horizontal menu">\
-				<li>\
-					<a class="navigate" \
-	href="#tplload:cntr=#grid-panel:tpl=tpl-std-lst:url=launch.php:arg=service~executive.student.list&year~${year}&course~B Tech"\
-					>B Tech</a>\
-				</li>\
-				<li>\
-					<a class="navigate" \
-	href="#tplload:cntr=#grid-panel:tpl=tpl-std-lst:url=launch.php:arg=service~executive.student.list&year~${year}&course~IDD"\
-					>IDD</a>\
-				</li>\
-			</ul>\
-			{{/each}}\
-	</div>\
-	{{else}}\
-	<p class="error">${msg}</p>\
-	{{/if}}\
-</div>');
-
-/**
  *	@template StudentEdit
  *
 **/
@@ -841,9 +960,9 @@ Executive.jquery.template.StudentEdit = $.template('\
 	<div id="student-options-container" class="panel left">\
 		<p class="head">{{if FireSpark.core.helper.equals(message.admin, 1)}}Student #${message.student.stuid}{{else}}Profile{{/if}} Options</p>\
 		<ul class="horizontal menu">\
-			<li><a href="#tplbind:cntr=#file-panel:tpl=tpl-stg-edt:arg=spname~Resume&stgid~${message.student.resume}" class="navigate" >Resume</a>\
+			<li><a href="#tplbind:cntr=#file-panel:tpl=tpl-stg-edt:arg=spname~Resume&stgid~${message.student.resume}&spaceid~${message.btresume}" class="navigate" >Resume</a>\
 			</li>\
-			<li><a href="#tplbind:cntr=#file-panel:tpl=tpl-stg-edt:arg=spname~Photo&stgid~${message.student.photo}" class="navigate" >Photo</a>\
+			<li><a href="#tplbind:cntr=#file-panel:tpl=tpl-stg-edt:arg=spname~Photo&stgid~${message.student.photo}&spaceid~${message.btphoto}" class="navigate" >Photo</a>\
 			</li>\
 			<li><a href="#tplload:cntr=#file-panel:key=template:url=launch.php:arg=service~gridview.content.view&cntid~${message.student.home}" class="navigate" >Home Page</a>\</li>\
 		</ul>\
@@ -890,7 +1009,7 @@ Executive.jquery.template.StudentEdit = $.template('\
 			<label>Course\
 				<select name="course" >\
 					<option value="B Tech" {{if FireSpark.core.helper.equals(message.student.course, "B Tech")}}selected="selected"{{/if}}>B.Tech</option>\
-					<option value="IDD" {{if FireSpark.core.helper.equals(message.student.course, "IDD")}}selected="selected"{{/if}}>M.Tech</option>\
+					<option value="IDD" {{if FireSpark.core.helper.equals(message.student.course, "IDD")}}selected="selected"{{/if}}>IDD</option>\
 				</select>\
 			</label>\
 			<label>Year\
@@ -969,13 +1088,16 @@ Executive.jquery.template.StudentList = $.template('\
 	{{if valid}}\
 	<div id="student-child-container"></div>\
 	<div id="student-list-container" class="panel left">\
-		<p class="head">All ${message.course} Students Enrolled in ${message.year}</p>\
+		<p class="head">All ${message.course} Students in ${message.btname} Batch</p>\
+		{{if FireSpark.core.helper.equals(message.admin, 1)}}\
+			<p><a href="#tplbind:cntr=#student-child-container:tpl=tpl-std-add:arg=batchid~${message.batchid}&btname~${message.btname}" class="navigate" >Add New ...</a></p>\
+		{{/if}}\
 		{{each message.students}}\
 		<div class="panel">\
 		<table class="margin5 full">\
 			<tbody>\
 				<tr>\
-					<td rowspan="5" valign="top"><img src="launch.php?request=get&service=griddata.storage.read&stgid=${photo}" alt="" height="100" ></td>\
+					<td rowspan="5" valign="top"><img src="launch.php?request=get&service=griddata.storage.read&stgid=${photo}&spaceid=${message.btphoto}" alt="" height="100" ></td>\
 					<td class="bold subhead">${$index+1}. ${name}</td>\
 					<td rowspan="5">\
 						<table class="glass-white right round grid">\
@@ -1026,11 +1148,11 @@ Executive.jquery.template.StudentList = $.template('\
 				<tr><td>${rollno}  |  <span class="bold">${cgpa}</span></td></tr>\
 				<tr><td class="italic"><span>Interests :</span> ${interests}</td></tr>\
 				<tr><td>\
-					<a href="launch.php?request=get&service=griddata.storage.read&stgid=${resume}" target="_blank">Resume</a>\
+					<a href="launch.php?request=get&service=griddata.storage.read&stgid=${resume}&spaceid=${message.btresume}" target="_blank">Resume</a>\
 					<a href="#tplload:cntr=#student-child-container:key=template:url=launch.php:arg=service~gridview.content.view&cntid~${home}" class="navigate" >Home Page</a>\
 					{{if FireSpark.core.helper.equals(message.admin, 1)}}\
-					<a href="#tplload:cntr=#student-child-container:tpl=tpl-std-edt:url=launch.php:arg=service~executive.student.info&stuid~${stuid}" class="navigate">Edit</a>\
-					<a href="#tplload:cntr=#student-child-container:url=launch.php:arg=service~executive.student.remove&stuid~${stuid}:cf=true" class="navigate">Remove</a>\
+					<a href="#tplload:cntr=#student-child-container:tpl=tpl-std-edt:url=launch.php:arg=service~executive.student.info&stuid~${stuid}&batchid~${message.batchid}&btname~${message.btname}" class="navigate">Edit</a>\
+					<a href="#tplload:cntr=#student-child-container:url=launch.php:arg=service~executive.student.remove&stuid~${stuid}&batchid~${message.batchid}:cf=true" class="navigate">Remove</a>\
 					{{/if}}\
 				</td></tr>\
 				</tbody>\

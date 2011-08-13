@@ -5,7 +5,7 @@
 Executive.jquery.template.ContentEdit = $.template('\
 	{{if valid}}\
 	<div id="content-edit-container" class="panel form-panel">\
-		<p class="head">Edit Content #${message.content.cntid} in ${message.stname}</p>\
+		<p class="head">Edit Content #${message.content.cntid}</p>\
 		<form action="launch.php" method="post" class="navigate" id="_formsubmit:sel._content-edit-container">\
 				<input type="hidden" name="service" value="gridview.content.{{if FireSpark.core.helper.equals(message.admin, 1)}}edit{{else}}update{{/if}}">\
 				<input type="hidden" name="cntid" value="${message.content.cntid}">\

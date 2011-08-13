@@ -4,9 +4,10 @@
 **/
 Executive.jquery.template.StudentAdd = $.template('\
 <div id="student-add-container" class="panel form-panel">\
-	<p class="head">Add Student</p>\
+	<p class="head">Add Student in ${btname} Batch</p>\
 		<form action="launch.php" method="post" class="navigate" id="_formsubmit:sel._student-add-container">\
 				<input type="hidden" name="service" value="executive.student.add">\
+				<input type="hidden" name="batchid" value="${batchid}">\
 				<label>Email\
 					<input type="text" name="email" class="required email" />\
 				</label>\
@@ -33,7 +34,7 @@ Executive.jquery.template.StudentAdd = $.template('\
 					</select>\
 				</label>\
 				<label>Year\
-					<input type="text" name="year" class="required"/>\
+					<input type="text" name="year" class="required" value="${btname}"/>\
 				</label>\
 					<p class="error hidden margin5">Invalid Year</p>\
 				<input name="submit" type="submit" value="Submit"  class="margin5"/>\

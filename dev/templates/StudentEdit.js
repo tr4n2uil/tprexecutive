@@ -8,9 +8,9 @@ Executive.jquery.template.StudentEdit = $.template('\
 	<div id="student-options-container" class="panel left">\
 		<p class="head">{{if FireSpark.core.helper.equals(message.admin, 1)}}Student #${message.student.stuid}{{else}}Profile{{/if}} Options</p>\
 		<ul class="horizontal menu">\
-			<li><a href="#tplbind:cntr=#file-panel:tpl=tpl-stg-edt:arg=spname~Resume&stgid~${message.student.resume}" class="navigate" >Resume</a>\
+			<li><a href="#tplbind:cntr=#file-panel:tpl=tpl-stg-edt:arg=spname~Resume&stgid~${message.student.resume}&spaceid~${message.btresume}" class="navigate" >Resume</a>\
 			</li>\
-			<li><a href="#tplbind:cntr=#file-panel:tpl=tpl-stg-edt:arg=spname~Photo&stgid~${message.student.photo}" class="navigate" >Photo</a>\
+			<li><a href="#tplbind:cntr=#file-panel:tpl=tpl-stg-edt:arg=spname~Photo&stgid~${message.student.photo}&spaceid~${message.btphoto}" class="navigate" >Photo</a>\
 			</li>\
 			<li><a href="#tplload:cntr=#file-panel:key=template:url=launch.php:arg=service~gridview.content.view&cntid~${message.student.home}" class="navigate" >Home Page</a>\</li>\
 		</ul>\
@@ -57,7 +57,7 @@ Executive.jquery.template.StudentEdit = $.template('\
 			<label>Course\
 				<select name="course" >\
 					<option value="B Tech" {{if FireSpark.core.helper.equals(message.student.course, "B Tech")}}selected="selected"{{/if}}>B.Tech</option>\
-					<option value="IDD" {{if FireSpark.core.helper.equals(message.student.course, "IDD")}}selected="selected"{{/if}}>M.Tech</option>\
+					<option value="IDD" {{if FireSpark.core.helper.equals(message.student.course, "IDD")}}selected="selected"{{/if}}>IDD</option>\
 				</select>\
 			</label>\
 			<label>Year\

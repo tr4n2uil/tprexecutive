@@ -5,7 +5,7 @@
 Executive.jquery.template.ResourceEdit = $.template('\
 	{{if valid}}\
 	<div id="resource-edit-container" class="panel form-panel">\
-		<p class="head">Edit Resource #${message.resource.rsrcid} in ${stname}</p>\
+		<p class="head">Edit Resource #${message.resource.rsrcid}</p>\
 		<form action="launch.php" method="post" class="navigate" id="_formsubmit:sel._resource-edit-container">\
 				<input type="hidden" name="service" value="gridview.resource.edit">\
 				<input type="hidden" name="rsrcid" value="${message.resource.rsrcid}">\

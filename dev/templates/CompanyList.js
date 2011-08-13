@@ -16,7 +16,7 @@ Executive.jquery.template.CompanyList = $.template('\
 		<table class="margin5 full">\
 			<tbody>\
 				<tr>\
-					<td rowspan="4" valign="top"><img src="launch.php?request=get&service=griddata.storage.read&stgid=${photo}" alt="" height="100" ></td>\
+					<td rowspan="4" valign="top"><img src="launch.php?request=get&service=griddata.storage.read&stgid=${photo}&spaceid=0" alt="" height="100" ></td>\
 					<td class="bold subhead">${name}</td>\
 				</tr>\
 				<tr><td><a href="${site}" target="_blank">${site}</a></td></tr>\
@@ -25,7 +25,7 @@ Executive.jquery.template.CompanyList = $.template('\
 				<a href="#tplload:cntr=#company-child-container:tpl=tpl-prc-lst:url=launch.php:arg=service~gridevent.event.list&seriesid~${comid}&srname~${name}" \
 					class="navigate" >Proceedings</a>\
 				{{if FireSpark.core.helper.equals(message.admin, 1)}}\
-				<a href="#tplbind:cntr=#company-child-container:tpl=tpl-stg-edt:arg=spname~Photo&stgid~${photo}" class="navigate" >Photo</a>\
+				<a href="#tplbind:cntr=#company-child-container:tpl=tpl-stg-edt:arg=spname~Photo&stgid~${photo}&spaceid~0" class="navigate" >Photo</a>\
 				<a href="#tplload:cntr=#company-child-container:tpl=tpl-com-edt:url=launch.php:arg=service~executive.company.info&comid~${comid}" class="navigate" >Edit</a>\
 				<a href="#tplload:cntr=#company-child-container:url=launch.php:arg=service~executive.company.remove&comid~${comid}:cf=true" class="navigate" >Remove</a>\
 		{{/if}}\

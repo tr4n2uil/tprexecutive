@@ -32,6 +32,9 @@ class CompanyRemoveWorkflow implements Service {
 		
 		$workflow = array(
 		array(
+			'service' => 'executive.company.info.workflow'
+		),
+		array(
 			'service' => 'sb.reference.remove.workflow',
 			'parent' => 0,
 			'input' => array('id' => 'comid')
@@ -43,6 +46,11 @@ class CompanyRemoveWorkflow implements Service {
 			'relation' => '`companies`',
 			'sqlcnd' => "where `comid`=\${comid}",
 			'errormsg' => 'Invalid Company ID'
+		),
+		array(
+			'service' => 'griddata.storage.remove.workflow',
+			'input' => array('stgid' => 'photo'),
+			'spaceid' => 0
 		));
 		
 		return $kernel->execute($workflow, $memory);

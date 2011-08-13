@@ -5,7 +5,7 @@
 Executive.jquery.template.NoteEdit = $.template('\
 	{{if valid}}\
 	<div id="note-edit-container" class="panel form-panel">\
-		<p class="head">Edit ${bname} #${message.note.noteid}</p>\
+		<p class="head">Edit Note #${message.note.noteid}</p>\
 		<form action="launch.php" method="post" class="navigate" id="_formsubmit:sel._note-edit-container">\
 				<input type="hidden" name="service" value="gridshare.note.edit">\
 				<input type="hidden" name="noteid" value="${message.note.noteid}">\

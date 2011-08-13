@@ -15,6 +15,8 @@ require_once(SBSERVICE);
  *	@param cgpa float CGPA [memory] optional default '0.0'
  *	@param interests string Interests [memory] optional default ''
  *	@param keyid long int Usage Key ID [memory]
+  *	@param batchid long int Batch ID [memory] optional default 0
+ *	@param level integer Web level [memory] optional default 1 (batch admin access allowed)
  *
  *	@return stuid long int Student ID [memory]
  *
@@ -29,7 +31,7 @@ class StudentAddWorkflow implements Service {
 	public function input(){
 		return array(
 			'required' => array('keyid', 'name', 'email', 'password', 'rollno', 'year'),
-			'optional' => array('phone' => '', 'course' => 'B Tech', 'cgpa' => 0.0, 'interests' => '')
+			'optional' => array('batchid' => 0, 'level' => 1, 'phone' => '', 'course' => 'B Tech', 'cgpa' => 0.0, 'interests' => '')
 		);
 	}
 	
@@ -44,10 +46,11 @@ class StudentAddWorkflow implements Service {
 		$workflow = array(
 		array(
 			'service' => 'sb.reference.create.workflow',
-			'input' => array('keyvalue' => 'password'),
-			'parent' => 0,
-			'level' => 1,
+			'input' => array('keyvalue' => 'password', 'parent' => 'batchid'),
 			'output' => array('id' => 'stuid')
+		),
+		array(
+			'service' => 'executive.batch.info.workflow'
 		),
 		array(
 			'service' => 'gridview.content.add.workflow',
@@ -57,21 +60,29 @@ class StudentAddWorkflow implements Service {
 			'cntttype' => 1,
 			'cnttpl' => '<h3>Welcome to ${content.name}\'s Home Page</h3>',
 			'cntdtype' => 1,
-			'cntdata' => '{"name"="'.$memory['name'].'"}',
+			'cntdata' => '{"name":"'.$memory['name'].'"}',
 			'output' => array('cntid' => 'home')
 		),
 		array(
-			'service' => 'griddata.storage.add.workflow',
-			'filepath' => 'storage/resumes/',
-			'filename' => '['.$memory['rollno'].'] '.$memory['name'].'.pdf',
-			'mime' => 'application/pdf',
-			'output' => array('stgid' => 'resume')
+			'service' => 'griddata.space.info.workflow',
+			'input' => array('spaceid' => 'resume')
 		),
 		array(
 			'service' => 'griddata.storage.add.workflow',
-			'filepath' => 'storage/photos/',
+			'filename' => '['.$memory['rollno'].'] '.$memory['name'].'.pdf',
+			'mime' => 'application/pdf',
+			'input' => array('spaceid' => 'resume', 'filepath' => 'sppath'),
+			'output' => array('stgid' => 'resume')
+		),
+		array(
+			'service' => 'griddata.space.info.workflow',
+			'input' => array('spaceid' => 'photo')
+		),
+		array(
+			'service' => 'griddata.storage.add.workflow',
 			'filename' => '['.$memory['rollno'].'] '.$memory['name'].'.png',
 			'mime' => 'image/png',
+			'input' => array('spaceid' => 'photo', 'filepath' => 'sppath'),
 			'output' => array('stgid' => 'photo')
 		),
 		array(
