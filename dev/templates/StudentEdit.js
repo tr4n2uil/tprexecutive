@@ -6,7 +6,7 @@ Executive.jquery.template.StudentEdit = $.template('\
 	{{if valid}}\
 	<div id="file-panel"></div>\
 	<div id="student-options-container" class="panel left">\
-		<p class="head">{{if FireSpark.core.helper.equals(message.admin, 1)}}Student #${message.student.stuid}{{else}}Profile{{/if}} Options</p>\
+		<p class="head">{{if FireSpark.core.helper.equals(message.admin, 1)}}Student #${message.student.stuid}{{else}}Profile{{/if}} Edit Options</p>\
 		<ul class="horizontal menu">\
 			<li><a href="#tplbind:cntr=#file-panel:tpl=tpl-stg-edt:arg=spname~Resume&stgid~${message.student.resume}&spaceid~${message.btresume}" class="navigate" >Resume</a>\
 			</li>\

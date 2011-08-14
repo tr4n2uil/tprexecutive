@@ -6,8 +6,12 @@ require_once(SBSERVICE);
  *	@desc Returns all companies information
  *
  *	@param keyid long int Usage Key ID [memory]
+ *	@param indid long int Industry ID [memory] optional default 0
+ *	@param indname string Industry name [memory] optional default ''
  *
  *	@return companies array Companies information [memory]
+ *	@return indid long int Industry ID [memory]
+ *	@return indname string Industry name [memory]
  *	@return admin integer Is admin [memory]
  *
  *	@author Vibhaj Rajan <vibhaj8@gmail.com>
@@ -20,7 +24,8 @@ class CompanyListWorkflow implements Service {
 	**/
 	public function input(){
 		return array(
-			'required' => array('keyid')
+			'required' => array('keyid'),
+			'optional' => array('indid' => 0, 'indname' => '')
 		);
 	}
 	
@@ -34,16 +39,28 @@ class CompanyListWorkflow implements Service {
 		
 		$workflow = array(
 		array(
+			'service' => 'sb.reference.children.workflow',
+			'input' => array('id' => 'indid')
+		),
+		array(
+			'service' => 'sbcore.data.list.service',
+			'args' => array('children'),
+			'default' => array(-1),
+			'attr' => 'child'
+		),
+		array(
 			'service' => 'sb.relation.select.workflow',
+			'args' => array('list'),
 			'conn' => 'exconn',
 			'relation' => '`companies`',
-			'sqlcnd' => 'order by `name`',
+			'sqlcnd' => "where `comid` in \${list} order by `name`",
+			'escparam' => array('list'),
 			'check' => false,
 			'output' => array('result' => 'companies')
 		),
 		array(
 			'service' => 'sb.reference.authorize.workflow',
-			'id' => 0,
+			'input' => array('id' => 'indid'),
 			'admin' => true,
 			'action' => 'add'
 		));
@@ -55,7 +72,7 @@ class CompanyListWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function output(){
-		return array('companies', 'admin');
+		return array('companies', 'indid', 'indname', 'admin');
 	}
 	
 }

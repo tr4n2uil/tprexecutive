@@ -7,6 +7,7 @@ require_once(SBSERVICE);
  *
  *	@param comid long int Company ID [memory]
  *	@param keyid long int Usage Key ID [memory]
+ *	@param indid long int Industry ID [memory] optional default 0
  *
  *	@author Vibhaj Rajan <vibhaj8@gmail.com>
  *
@@ -18,7 +19,8 @@ class CompanyRemoveWorkflow implements Service {
 	**/
 	public function input(){
 		return array(
-			'required' => array('keyid', 'comid')
+			'required' => array('keyid', 'comid'),
+			'optional' => array('indid' => 0)
 		);
 	}
 	
@@ -36,8 +38,7 @@ class CompanyRemoveWorkflow implements Service {
 		),
 		array(
 			'service' => 'sb.reference.remove.workflow',
-			'parent' => 0,
-			'input' => array('id' => 'comid')
+			'input' => array('id' => 'comid', 'parent' => 'indid')
 		),
 		array(
 			'service' => 'sb.relation.delete.workflow',

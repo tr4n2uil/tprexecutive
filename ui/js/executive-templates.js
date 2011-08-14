@@ -62,7 +62,8 @@ Executive.jquery.template.BatchList = $.template('\
 				{{if FireSpark.core.helper.equals(message.admin, 1)}}\
 				<a href="#tplbind:cntr=#batch-child-container:tpl=tpl-bth-edt:arg=btname~${btname}&deptname~${message.deptname}&batchid~${batchid}" class="navigate" >Edit</a>\
 				<a href="#tplload:cntr=#batch-child-container:url=launch.php:arg=service~executive.batch.remove&deptid~${message.deptid}&batchid~${batchid}:cf=true" class="navigate" >Remove</a>\
-				<a href="launch.php?request=get&service=griddata.space.archive&spaceid=${resume}&asname=${btname}.zip" target="_blank">Resumes</a>\
+				<a href="#tplload:cntr=#batch-child-container:tpl=tpl-spc-lst:url=launch.php:arg=service~griddata.space.list&cntrid~${batchid}&cntrname~${btname}" class="navigate" >Spaces</a>\<a href="#tplload:cntr=#batch-child-container:tpl=tpl-rsc-lst:url=launch.php:arg=service~gridview.resource.list&siteid~${batchid}&stname~${btname}" class="navigate" >Resources</a>\
+				<a href="#tplload:cntr=#batch-child-container:tpl=tpl-cnt-lst:url=launch.php:arg=service~gridview.content.list&siteid~${batchid}&stname~${btname}" class="navigate" >Contents</a>\
 				{{/if}}\
 			</p>\
 		</div>\
@@ -80,6 +81,7 @@ Executive.jquery.template.CompanyAdd = $.template('\
 	<p class="head">Add Company</p>\
 		<form action="launch.php" method="post" class="navigate" id="_formsubmit:sel._company-add-container">\
 				<input type="hidden" name="service" value="executive.company.add">\
+				<input type="hidden" name="indid" value="${indid}">\
 				<label>Email\
 					<input type="text" name="email" class="required email" />\
 				</label>\
@@ -108,8 +110,16 @@ Executive.jquery.template.CompanyAdd = $.template('\
 **/
 Executive.jquery.template.CompanyEdit = $.template('\
 	{{if valid}}\
+	<div id="file-panel"></div>\
+	<div id="company-options-container" class="panel left">\
+		<p class="head">{{if FireSpark.core.helper.equals(message.admin, 1)}}Company #${message.company.comid}{{else}}Profile{{/if}} Edit Options</p>\
+		<ul class="horizontal menu">\
+			<li><a href="#tplbind:cntr=#file-panel:tpl=tpl-stg-edt:arg=spname~Photo&stgid~${message.company.photo}&spaceid~${message.indphoto}" class="navigate" >Photo</a>\
+			</li>\
+		</ul>\
+	</div>\
 	<div id="company-edit-container" class="panel form-panel">\
-	<p class="head">Edit Company #${message.company.comid}</p>\
+	<p class="head">>{{if FireSpark.core.helper.equals(message.admin, 1)}}Edit Company #${message.company.comid}{{else}}Edit Profile{{/if}}</p>\
 		<form action="launch.php" method="post" class="navigate" id="_formsubmit:sel._company-edit-container">\
 				<input type="hidden" name="service" value="executive.company.edit">\
 				<input type="hidden" name="comid" value="${message.company.comid}">\
@@ -145,7 +155,7 @@ Executive.jquery.template.CompanyList = $.template('\
 	<div id="company-list-container" class="panel left">\
 		<p class="head">All Companies</p>\
 		{{if FireSpark.core.helper.equals(message.admin, 1)}}\
-		<p><a href="#tplbind:cntr=#company-child-container:tpl=tpl-com-add" class="navigate" >Add New ...</a></p>\
+		<p><a href="#tplbind:cntr=#company-child-container:tpl=tpl-com-add:arg=indid~${message.indid}&indname~${message.indname}" class="navigate" >Add New ...</a></p>\
 		{{/if}}\
 		{{each message.companies}}\
 		<div class="panel">\
@@ -162,8 +172,8 @@ Executive.jquery.template.CompanyList = $.template('\
 					class="navigate" >Proceedings</a>\
 				{{if FireSpark.core.helper.equals(message.admin, 1)}}\
 				<a href="#tplbind:cntr=#company-child-container:tpl=tpl-stg-edt:arg=spname~Photo&stgid~${photo}&spaceid~0" class="navigate" >Photo</a>\
-				<a href="#tplload:cntr=#company-child-container:tpl=tpl-com-edt:url=launch.php:arg=service~executive.company.info&comid~${comid}" class="navigate" >Edit</a>\
-				<a href="#tplload:cntr=#company-child-container:url=launch.php:arg=service~executive.company.remove&comid~${comid}:cf=true" class="navigate" >Remove</a>\
+				<a href="#tplload:cntr=#company-child-container:tpl=tpl-com-edt:url=launch.php:arg=service~executive.company.info&comid~${comid}&indid~${message.indid}&indname~${message.indname}" class="navigate" >Edit</a>\
+				<a href="#tplload:cntr=#company-child-container:url=launch.php:arg=service~executive.company.remove&comid~${comid}&indid~${message.indid}&indname~${message.indname}:cf=true" class="navigate" >Remove</a>\
 		{{/if}}\
 				</td></tr>\
 				</tbody>\
@@ -738,6 +748,7 @@ Executive.jquery.template.StageAdd = $.template('\
 		<form action="launch.php" method="post" class="navigate" id="_formsubmit:sel._stage-add-container">\
 				<input type="hidden" name="service" value="gridevent.stage.add">\
 				<input type="hidden" name="eventid" value="${procid}">\
+				<input type="hidden" name="level" value="3">\
 				<label>Name\
 					<input type="text" name="name"  class="required" />\
 				</label>\
@@ -896,7 +907,7 @@ Executive.jquery.template.StorageList = $.template('\
 			<p>\
 				<a href="launch.php?request=get&service=griddata.storage.read&stgid=${stgid}" target="_blank">Download</a>\ (${FireSpark.core.helper.readFileSize(size)})\
 				{{if FireSpark.core.helper.equals(message.admin, 1)}}\
-				<a href="#tplbind:cntr=#storage-child-container:tpl=tpl-stg-edt:arg=spname~${message.spname}&stgid~${stgid}" class="navigate" >Edit</a>\
+				<a href="#tplbind:cntr=#storage-child-container:tpl=tpl-stg-edt:arg=spname~${message.spname}&stgid~${stgid}&spaceid~${message.spaceid}" class="navigate" >Edit</a>\
 				<a href="#tplload:cntr=#storage-child-container:url=launch.php:arg=service~griddata.storage.remove&stgid~${stgid}&spaceid~${message.spaceid}:cf=true" class="navigate" >Remove</a>\
 				{{/if}}\
 			</p>\
@@ -958,7 +969,7 @@ Executive.jquery.template.StudentEdit = $.template('\
 	{{if valid}}\
 	<div id="file-panel"></div>\
 	<div id="student-options-container" class="panel left">\
-		<p class="head">{{if FireSpark.core.helper.equals(message.admin, 1)}}Student #${message.student.stuid}{{else}}Profile{{/if}} Options</p>\
+		<p class="head">{{if FireSpark.core.helper.equals(message.admin, 1)}}Student #${message.student.stuid}{{else}}Profile{{/if}} Edit Options</p>\
 		<ul class="horizontal menu">\
 			<li><a href="#tplbind:cntr=#file-panel:tpl=tpl-stg-edt:arg=spname~Resume&stgid~${message.student.resume}&spaceid~${message.btresume}" class="navigate" >Resume</a>\
 			</li>\

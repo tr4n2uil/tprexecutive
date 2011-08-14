@@ -11,6 +11,8 @@ require_once(SBSERVICE);
  *	@param site string Website URL [memory] optional default ''
  *	@param interests string Interests [memory] optional default ''
  *	@param keyid long int Usage Key ID [memory]
+ *	@param indid long int Industry ID [memory] optional default 0
+ *	@param level integer Web level [memory] optional default 1 (industry admin access allowed)
  *
  *	@return comid long int Company ID [memory]
  *
@@ -25,7 +27,7 @@ class CompanyAddWorkflow implements Service {
 	public function input(){
 		return array(
 			'required' => array('keyid', 'name', 'email', 'password'),
-			'optional' => array('site' => '', 'interests' => '')
+			'optional' => array('indid' => 0, 'level' => 1, 'site' => '', 'interests' => '')
 		);
 	}
 	
@@ -40,17 +42,15 @@ class CompanyAddWorkflow implements Service {
 		$workflow = array(
 		array(
 			'service' => 'sb.reference.create.workflow',
-			'input' => array('keyvalue' => 'password'),
-			'parent' => 0,
-			'level' => 1,
-			'authorize' => 'edit:child',
+			'input' => array('keyvalue' => 'password', 'parent' => 'indid'),
+			'authorize' => 'edit:add:remove',
 			'output' => array('id' => 'comid')
 		),
 		array(
 			'service' => 'griddata.storage.add.workflow',
-			'filepath' => 'storage/photos/',
 			'filename' => '['.$memory['email'].'] '.$memory['name'].'.png',
 			'mime' => 'image/png',
+			'spaceid' => 0,
 			'output' => array('stgid' => 'photo')
 		),
 		array(

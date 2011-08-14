@@ -10,7 +10,7 @@ require_once(SBSERVICE);
  *	@param batchid long int Batch ID [memory] optional default 0
  *
  *	@return student array Student information [memory]
- *	@return batchid long int Batch ID [memory] optional default 0
+ *	@return batchid long int Batch ID [memory]
  *	@return home long int Student Home [memory]
  *	@return resume long int Student Resume [memory]
  *	@return photo long int Student Photo [memory]
@@ -69,7 +69,7 @@ class StudentInfoWorkflow implements Service {
 			'service' => 'sb.reference.authorize.workflow',
 			'input' => array('id' => 'batchid'),
 			'admin' => true,
-			'action' => 'child'
+			'action' => 'add'
 		));
 		
 		return $kernel->execute($workflow, $memory);

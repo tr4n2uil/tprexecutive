@@ -20,7 +20,8 @@ Executive.jquery.template.BatchList = $.template('\
 				{{if FireSpark.core.helper.equals(message.admin, 1)}}\
 				<a href="#tplbind:cntr=#batch-child-container:tpl=tpl-bth-edt:arg=btname~${btname}&deptname~${message.deptname}&batchid~${batchid}" class="navigate" >Edit</a>\
 				<a href="#tplload:cntr=#batch-child-container:url=launch.php:arg=service~executive.batch.remove&deptid~${message.deptid}&batchid~${batchid}:cf=true" class="navigate" >Remove</a>\
-				<a href="launch.php?request=get&service=griddata.space.archive&spaceid=${resume}&asname=${btname}.zip" target="_blank">Resumes</a>\
+				<a href="#tplload:cntr=#batch-child-container:tpl=tpl-spc-lst:url=launch.php:arg=service~griddata.space.list&cntrid~${batchid}&cntrname~${btname}" class="navigate" >Spaces</a>\<a href="#tplload:cntr=#batch-child-container:tpl=tpl-rsc-lst:url=launch.php:arg=service~gridview.resource.list&siteid~${batchid}&stname~${btname}" class="navigate" >Resources</a>\
+				<a href="#tplload:cntr=#batch-child-container:tpl=tpl-cnt-lst:url=launch.php:arg=service~gridview.content.list&siteid~${batchid}&stname~${btname}" class="navigate" >Contents</a>\
 				{{/if}}\
 			</p>\
 		</div>\

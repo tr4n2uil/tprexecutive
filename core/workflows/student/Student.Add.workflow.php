@@ -15,7 +15,7 @@ require_once(SBSERVICE);
  *	@param cgpa float CGPA [memory] optional default '0.0'
  *	@param interests string Interests [memory] optional default ''
  *	@param keyid long int Usage Key ID [memory]
-  *	@param batchid long int Batch ID [memory] optional default 0
+ *	@param batchid long int Batch ID [memory] optional default 0
  *	@param level integer Web level [memory] optional default 1 (batch admin access allowed)
  *
  *	@return stuid long int Student ID [memory]
@@ -61,6 +61,8 @@ class StudentAddWorkflow implements Service {
 			'cnttpl' => '<h3>Welcome to ${content.name}\'s Home Page</h3>',
 			'cntdtype' => 1,
 			'cntdata' => '{"name":"'.$memory['name'].'"}',
+			'input' => array('siteid' => 'batchid'),
+			'level' => 2,
 			'output' => array('cntid' => 'home')
 		),
 		array(
@@ -72,6 +74,7 @@ class StudentAddWorkflow implements Service {
 			'filename' => '['.$memory['rollno'].'] '.$memory['name'].'.pdf',
 			'mime' => 'application/pdf',
 			'input' => array('spaceid' => 'resume', 'filepath' => 'sppath'),
+			'level' => 2,
 			'output' => array('stgid' => 'resume')
 		),
 		array(
@@ -83,6 +86,7 @@ class StudentAddWorkflow implements Service {
 			'filename' => '['.$memory['rollno'].'] '.$memory['name'].'.png',
 			'mime' => 'image/png',
 			'input' => array('spaceid' => 'photo', 'filepath' => 'sppath'),
+			'level' => 2,
 			'output' => array('stgid' => 'photo')
 		),
 		array(

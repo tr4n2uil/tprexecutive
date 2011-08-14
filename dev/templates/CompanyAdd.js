@@ -7,6 +7,7 @@ Executive.jquery.template.CompanyAdd = $.template('\
 	<p class="head">Add Company</p>\
 		<form action="launch.php" method="post" class="navigate" id="_formsubmit:sel._company-add-container">\
 				<input type="hidden" name="service" value="executive.company.add">\
+				<input type="hidden" name="indid" value="${indid}">\
 				<label>Email\
 					<input type="text" name="email" class="required email" />\
 				</label>\

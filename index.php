@@ -27,7 +27,45 @@
 						$email = $memory['email'];
 				}
 				if($email){
-					include(EXROOT. 'ui/html/quick-student.html');
+					include(EXROOT. 'ui/html/quick-account.html');
+					
+					$service = array(
+						'service' => 'executive.student.find.workflow'
+					);
+					$memory = $kernel->run($service, $memory);
+					if($memory['valid']) {
+?>
+			<div id="student-quick-panel" class="panel">
+				<p class="headdark"><?php echo $memory['name'] ?></p>
+				<div><img src="launch.php?request=get&service=griddata.storage.read&stgid=<?php echo $memory['photo'] ?>&spaceid=<?php echo $memory['btphoto'] ?>" alt="" height="100" ></div>
+				<ul class="vertical menu">
+					<li><a href="#tplload:cntr=#main-container:tpl=tpl-std-edt:url=launch.php:arg=service~executive.student.info&batchid~<?php echo $memory['batchid'] ?>" class="navigate">Profile</a></li>
+					<li><a href="launch.php?request=get&service=griddata.storage.read&stgid=<?php echo $memory['resume'] ?>&spaceid=<?php echo $memory['btresume'] ?>" target="_blank">Resume</a></li>
+					<li><a href="#tplload:cntr=#main-container:key=template:url=launch.php:arg=service~gridview.content.view&cntid~<?php echo $memory['home'] ?>" class="navigate" >Home Page</a></li>
+					<li><a href="#tplload:cntr=#main-container:tpl=tpl-sel-lst:url=launch.php:arg=service~gridevent.selection.all" 
+						class="navigate" >Selections</a></li>
+				</ul>
+		</div>
+<?php
+					}
+					else { 
+						$service = array(
+							'service' => 'executive.company.find.workflow'
+						);
+						$memory = $kernel->run($service, $memory);
+						if($memory['valid']) {
+?>
+			<div id="company-quick-panel" class="panel">
+				<p class="headdark"><?php echo $memory['name'] ?></p>
+				<img src="launch.php?request=get&service=griddata.storage.read&stgid=<?php echo $memory['photo'] ?>&spaceid=<?php echo $memory['indphoto'] ?>" alt="" height="100" align="center">
+				<ul class="vertical menu">
+					<li><a href="#tplload:cntr=#main-container:tpl=tpl-std-edt:url=launch.php:arg=service~executive.student.info&batchid~<?php echo $memory['indid'] ?>" class="navigate">Profile</a></li>
+				</ul>
+		</div>
+<?php
+						}
+					}
+					
 					if(in_array($email, array('admin@executive.org', 'vibhaj@gmail.com', 'vibhaj8@gmail.com'))){
 						include(EXROOT. 'ui/html/quick-console.html');
 					}

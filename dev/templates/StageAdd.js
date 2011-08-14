@@ -8,6 +8,7 @@ Executive.jquery.template.StageAdd = $.template('\
 		<form action="launch.php" method="post" class="navigate" id="_formsubmit:sel._stage-add-container">\
 				<input type="hidden" name="service" value="gridevent.stage.add">\
 				<input type="hidden" name="eventid" value="${procid}">\
+				<input type="hidden" name="level" value="3">\
 				<label>Name\
 					<input type="text" name="name"  class="required" />\
 				</label>\

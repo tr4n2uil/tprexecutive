@@ -54,8 +54,7 @@ class StudentRemoveWorkflow implements Service {
 		),
 		array(
 			'service' => 'gridview.content.remove.workflow',
-			'input' => array('cntid' => 'home'),
-			'siteid' => 0
+			'input' => array('cntid' => 'home', 'siteid' => 'batchid')
 		),
 		array(
 			'service' => 'griddata.storage.remove.workflow',

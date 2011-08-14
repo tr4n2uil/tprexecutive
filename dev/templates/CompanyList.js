@@ -9,7 +9,7 @@ Executive.jquery.template.CompanyList = $.template('\
 	<div id="company-list-container" class="panel left">\
 		<p class="head">All Companies</p>\
 		{{if FireSpark.core.helper.equals(message.admin, 1)}}\
-		<p><a href="#tplbind:cntr=#company-child-container:tpl=tpl-com-add" class="navigate" >Add New ...</a></p>\
+		<p><a href="#tplbind:cntr=#company-child-container:tpl=tpl-com-add:arg=indid~${message.indid}&indname~${message.indname}" class="navigate" >Add New ...</a></p>\
 		{{/if}}\
 		{{each message.companies}}\
 		<div class="panel">\
@@ -26,8 +26,8 @@ Executive.jquery.template.CompanyList = $.template('\
 					class="navigate" >Proceedings</a>\
 				{{if FireSpark.core.helper.equals(message.admin, 1)}}\
 				<a href="#tplbind:cntr=#company-child-container:tpl=tpl-stg-edt:arg=spname~Photo&stgid~${photo}&spaceid~0" class="navigate" >Photo</a>\
-				<a href="#tplload:cntr=#company-child-container:tpl=tpl-com-edt:url=launch.php:arg=service~executive.company.info&comid~${comid}" class="navigate" >Edit</a>\
-				<a href="#tplload:cntr=#company-child-container:url=launch.php:arg=service~executive.company.remove&comid~${comid}:cf=true" class="navigate" >Remove</a>\
+				<a href="#tplload:cntr=#company-child-container:tpl=tpl-com-edt:url=launch.php:arg=service~executive.company.info&comid~${comid}&indid~${message.indid}&indname~${message.indname}" class="navigate" >Edit</a>\
+				<a href="#tplload:cntr=#company-child-container:url=launch.php:arg=service~executive.company.remove&comid~${comid}&indid~${message.indid}&indname~${message.indname}:cf=true" class="navigate" >Remove</a>\
 		{{/if}}\
 				</td></tr>\
 				</tbody>\
