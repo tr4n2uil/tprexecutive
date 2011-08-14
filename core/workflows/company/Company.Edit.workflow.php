@@ -36,7 +36,7 @@ class CompanyEditWorkflow implements Service {
 		$workflow = array(
 		array(
 			'service' => 'sb.reference.authorize.workflow',
-			'id' => 0,
+			'input' => array('id' => 'comid'),
 			'type' => 'edit'
 		),
 		array(

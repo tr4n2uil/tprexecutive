@@ -8,6 +8,7 @@ require_once(SBSERVICE);
  *	@param email email Student Email [memory]
  *
  *	@return student array Student information [memory]
+ *	@return stuid long int Student ID [memory]
  *	@return name string Student name [memory]
  *	@return batchid long int Batch ID [memory]
  *	@return home long int Student Home [memory]
@@ -73,7 +74,7 @@ class StudentFindWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function output(){
-		return array('student', 'batchid', 'name', 'home', 'resume', 'photo', 'btresume', 'btphoto');
+		return array('student', 'stuid', 'batchid', 'name', 'home', 'resume', 'photo', 'btname', 'btresume', 'btphoto');
 	}
 	
 }

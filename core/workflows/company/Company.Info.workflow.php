@@ -5,7 +5,7 @@ require_once(SBSERVICE);
  *	@class CompanyInfoWorkflow
  *	@desc Returns company information by ID
  *
- *	@param comid long int Company ID [memory]
+ *	@param comid long int Company ID [memory] optional default false
  *	@param keyid long int Usage Key ID [memory]
  *	@param indid long int Industry ID [memory] optional default 0
  *	@param indname string Industry name [memory] optional default ''
@@ -27,8 +27,8 @@ class CompanyInfoWorkflow implements Service {
 	**/
 	public function input(){
 		return array(
-			'required' => array('keyid', 'comid'),
-			'optional' => array('indid' => 0, 'indname' => '')
+			'required' => array('keyid'),
+			'optional' => array('comid' => false, 'indid' => 0, 'indname' => '')
 		);
 	}
 	
@@ -39,6 +39,8 @@ class CompanyInfoWorkflow implements Service {
 		$kernel = new WorkflowKernel();
 	
 		$memory['msg'] = 'Company information given successfully';
+		$attr = $memory['comid'] ? 'comid' : 'owner';
+		$memory['comid'] = $memory['comid'] ? $memory['comid'] : $memory['keyid'];
 		$memory['indphoto'] = 0;
 		
 		$workflow = array(
@@ -47,13 +49,13 @@ class CompanyInfoWorkflow implements Service {
 			'args' => array('comid'),
 			'conn' => 'exconn',
 			'relation' => '`companies`',
-			'sqlcnd' => "where `comid`=\${comid}",
+			'sqlcnd' => "where `$attr`=\${comid}",
 			'errormsg' => 'Invalid Company ID'
 		),
 		array(
 			'service' => 'sbcore.data.select.service',
 			'args' => array('result'),
-			'params' => array('result.0' => 'company', 'result.0.photo' => 'photo')
+			'params' => array('result.0' => 'company', 'result.0.photo' => 'photo',  'result.0.comid' => 'comid')
 		),
 		array(
 			'service' => 'sb.reference.read.workflow',

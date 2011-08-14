@@ -9,7 +9,10 @@ Executive.jquery.template.BatchList = $.template('\
 	<div id="batch-list-container" class="panel left">\
 		<p class="head">Batches in ${message.deptname} Department</p>\
 		{{if FireSpark.core.helper.equals(message.admin, 1)}}\
-		<p><a href="#tplbind:cntr=#batch-child-container:tpl=tpl-bth-add:arg=deptname~${message.deptname}&deptid~${message.deptid}" class="navigate" >Add New ...</a></p>\
+		<p>\
+		<a href="#tplbind:cntr=#batch-child-container:tpl=tpl-bth-add:arg=deptname~${message.deptname}&deptid~${message.deptid}" class="navigate" >Add New ...</a>\
+		<a href="#tplload:cntr=#batch-child-container:tpl=tpl-spc-lst:url=launch.php:arg=service~griddata.space.list&cntrid~${message.deptid}&cntrname~${message.deptname}" class="navigate" >Spaces</a>\
+		</p>\
 		{{/if}}\
 		{{each message.batches}}\
 		<div class="panel">\
@@ -20,7 +23,7 @@ Executive.jquery.template.BatchList = $.template('\
 				{{if FireSpark.core.helper.equals(message.admin, 1)}}\
 				<a href="#tplbind:cntr=#batch-child-container:tpl=tpl-bth-edt:arg=btname~${btname}&deptname~${message.deptname}&batchid~${batchid}" class="navigate" >Edit</a>\
 				<a href="#tplload:cntr=#batch-child-container:url=launch.php:arg=service~executive.batch.remove&deptid~${message.deptid}&batchid~${batchid}:cf=true" class="navigate" >Remove</a>\
-				<a href="#tplload:cntr=#batch-child-container:tpl=tpl-spc-lst:url=launch.php:arg=service~griddata.space.list&cntrid~${batchid}&cntrname~${btname}" class="navigate" >Spaces</a>\<a href="#tplload:cntr=#batch-child-container:tpl=tpl-rsc-lst:url=launch.php:arg=service~gridview.resource.list&siteid~${batchid}&stname~${btname}" class="navigate" >Resources</a>\
+				<a href="#tplload:cntr=#batch-child-container:tpl=tpl-rsc-lst:url=launch.php:arg=service~gridview.resource.list&siteid~${batchid}&stname~${btname}" class="navigate" >Resources</a>\
 				<a href="#tplload:cntr=#batch-child-container:tpl=tpl-cnt-lst:url=launch.php:arg=service~gridview.content.list&siteid~${batchid}&stname~${btname}" class="navigate" >Contents</a>\
 				{{/if}}\
 			</p>\

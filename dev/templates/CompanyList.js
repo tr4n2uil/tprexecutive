@@ -9,14 +9,16 @@ Executive.jquery.template.CompanyList = $.template('\
 	<div id="company-list-container" class="panel left">\
 		<p class="head">All Companies</p>\
 		{{if FireSpark.core.helper.equals(message.admin, 1)}}\
-		<p><a href="#tplbind:cntr=#company-child-container:tpl=tpl-com-add:arg=indid~${message.indid}&indname~${message.indname}" class="navigate" >Add New ...</a></p>\
+		<p>\
+		<a href="#tplbind:cntr=#company-child-container:tpl=tpl-com-add:arg=indid~${message.indid}&indname~${message.indname}" class="navigate" >Add New ...</a>\
+		</p>\
 		{{/if}}\
 		{{each message.companies}}\
 		<div class="panel">\
-		<table class="margin5 full">\
+		<table class="margin5">\
 			<tbody>\
 				<tr>\
-					<td rowspan="4" valign="top"><img src="launch.php?request=get&service=griddata.storage.read&stgid=${photo}&spaceid=0" alt="" height="100" ></td>\
+					<td rowspan="4" valign="top"><img src="launch.php?request=get&service=griddata.storage.read&stgid=${photo}&spaceid=0" alt="" width="250" ></td>\
 					<td class="bold subhead">${name}</td>\
 				</tr>\
 				<tr><td><a href="${site}" target="_blank">${site}</a></td></tr>\
@@ -28,6 +30,8 @@ Executive.jquery.template.CompanyList = $.template('\
 				<a href="#tplbind:cntr=#company-child-container:tpl=tpl-stg-edt:arg=spname~Photo&stgid~${photo}&spaceid~0" class="navigate" >Photo</a>\
 				<a href="#tplload:cntr=#company-child-container:tpl=tpl-com-edt:url=launch.php:arg=service~executive.company.info&comid~${comid}&indid~${message.indid}&indname~${message.indname}" class="navigate" >Edit</a>\
 				<a href="#tplload:cntr=#company-child-container:url=launch.php:arg=service~executive.company.remove&comid~${comid}&indid~${message.indid}&indname~${message.indname}:cf=true" class="navigate" >Remove</a>\
+				<a href="#tplload:cntr=#company-child-container:tpl=tpl-rsc-lst:url=launch.php:arg=service~gridview.resource.list&siteid~${comid}&stname~${name}" class="navigate" >Resources</a>\
+				<a href="#tplload:cntr=#company-child-container:tpl=tpl-cnt-lst:url=launch.php:arg=service~gridview.content.list&siteid~${comid}&stname~${name}" class="navigate" >Contents</a>\
 		{{/if}}\
 				</td></tr>\
 				</tbody>\

@@ -8,6 +8,7 @@ require_once(SBSERVICE);
  *	@param email long int Company Email [memory]
  *
  *	@return company array Company information [memory]
+ *	@return comid long int Company ID [memory]
  *	@return name string Company Name [memory]
  *	@return indid long int Industry ID [memory]
  *	@return photo long int Company Photo [memory]
@@ -68,7 +69,7 @@ class CompanyFindWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function output(){
-		return array('company', 'name', 'photo', 'indid', 'indphoto');
+		return array('company', 'comid', 'name', 'photo', 'indid', 'indphoto');
 	}
 	
 }

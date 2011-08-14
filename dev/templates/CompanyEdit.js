@@ -13,7 +13,7 @@ Executive.jquery.template.CompanyEdit = $.template('\
 		</ul>\
 	</div>\
 	<div id="company-edit-container" class="panel form-panel">\
-	<p class="head">>{{if FireSpark.core.helper.equals(message.admin, 1)}}Edit Company #${message.company.comid}{{else}}Edit Profile{{/if}}</p>\
+	<p class="head">{{if FireSpark.core.helper.equals(message.admin, 1)}}Edit Company #${message.company.comid}{{else}}Edit Profile{{/if}}</p>\
 		<form action="launch.php" method="post" class="navigate" id="_formsubmit:sel._company-edit-container">\
 				<input type="hidden" name="service" value="executive.company.edit">\
 				<input type="hidden" name="comid" value="${message.company.comid}">\

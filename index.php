@@ -46,6 +46,13 @@
 						class="navigate" >Selections</a></li>
 				</ul>
 		</div>
+		<div id="student-quick-panel" class="panel">
+				<p class="headdark">Batch <?php echo $memory['btname'] ?></p>
+				<ul class="vertical menu">
+					<li><a href="#tplload:cntr=#main-container:tpl=tpl-std-lst:url=launch.php:arg=service~executive.student.list&batchid~<?php echo $memory['batchid'] ?>&btname~<?php echo $memory['btname'] ?>&course~B Tech" class="navigate" >B Tech</a></li>
+					<li><a href="#tplload:cntr=#main-container:tpl=tpl-std-lst:url=launch.php:arg=service~executive.student.list&batchid~<?php echo $memory['batchid'] ?>&btname~<?php echo $memory['btname'] ?>&course~IDD" class="navigate" >IDD</a></li>
+				</ul>
+		</div>
 <?php
 					}
 					else { 
@@ -57,9 +64,10 @@
 ?>
 			<div id="company-quick-panel" class="panel">
 				<p class="headdark"><?php echo $memory['name'] ?></p>
-				<img src="launch.php?request=get&service=griddata.storage.read&stgid=<?php echo $memory['photo'] ?>&spaceid=<?php echo $memory['indphoto'] ?>" alt="" height="100" align="center">
+				<img src="launch.php?request=get&service=griddata.storage.read&stgid=<?php echo $memory['photo'] ?>&spaceid=<?php echo $memory['indphoto'] ?>" alt="" width="150" align="center">
 				<ul class="vertical menu">
-					<li><a href="#tplload:cntr=#main-container:tpl=tpl-std-edt:url=launch.php:arg=service~executive.student.info&batchid~<?php echo $memory['indid'] ?>" class="navigate">Profile</a></li>
+					<li><a href="#tplload:cntr=#main-container:tpl=tpl-com-edt:url=launch.php:arg=service~executive.company.info&indid~<?php echo $memory['indid'] ?>" class="navigate">Profile</a></li>
+					<li><a href="#tplload:cntr=#main-container:tpl=tpl-prc-lst:url=launch.php:arg=service~gridevent.event.list&seriesid~<?php echo $memory['comid'] ?>&srname~<?php echo $memory['name'] ?>" class="navigate" >Proceedings</a></li>
 				</ul>
 		</div>
 <?php
