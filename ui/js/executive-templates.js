@@ -315,6 +315,81 @@ Executive.jquery.template.ContentList = $.template('\
 	{{/if}}\
 </div>');
 /**
+ *	@template ListAdd
+ *
+**/
+Executive.jquery.template.ListAdd = $.template('\
+<div id="list-add-container" class="panel form-panel">\
+	<p class="head">Add List in ${ctlgname} Catalogue</p>\
+		<form action="launch.php" method="post" class="navigate" id="_formsubmit:sel._list-add-container">\
+				<input type="hidden" name="service" value="gridcontrol.list.add">\
+				<input type="hidden" name="ctlgid" value="${ctlgid}">\
+				<input type="hidden" name="level" value="${level + 1}">\
+				<input type="hidden" name="addcode" value="${addcode}">\
+				<input type="hidden" name="authorize" value="${authorize}">\
+				<label>Name\
+					<input type="text" name="listname" class="required" size="50" />\
+				</label>\
+					<p class="error hidden margin5">Invalid Name</p>\
+					<label>Code\
+					<select name="code">\
+						{{each FireSpark.core.helper.dataSplit(addcode)}}\
+						<option value="${$value}" >${$value}</option>\
+						{{/each}}\
+					</select>\
+				</label>\
+				<input name="submit" type="submit" value="Submit"  class="margin5"/>\
+				<input name="reset" type="reset" value="Reset"  class="margin5"/>\
+				<div class="status"></div>\
+		</form>\
+	</div>\
+');
+/**
+ *	@template ListInfo
+ *
+**/
+Executive.jquery.template.ListInfo = $.template('\
+	{{if valid}}\
+	<div id="list-info-container" class="panel left">\
+		<p class="head">${message.list.listname}</p>\
+		<p>Last Updated on ${message.list.time}</p>\
+		{{if FireSpark.core.helper.equals(message.admin, 1)}}\
+		<p>\
+		<a href="#tplload:cntr=#list-child-container:tpl=tpl-lst-edt:url=launch.php:arg=service~gridcontrol.list.info&listid~${message.list.listid}&ctlgname~${message.ctlgname}" class="navigate" >Edit</a>\
+		<a href="#tplload:cntr=#list-child-container:url=launch.php:arg=service~gridcontrol.list.remove&listid~${message.list.listid}&ctlgid~${message.ctlgid}:cf=true" class="navigate" >Remove</a>\
+		</p>\
+		{{/if}}\
+	{{else}}\
+	<p class="error">${msg}</p>\
+	{{/if}}\
+');
+/**
+ *	@template ListList
+ *
+**/
+Executive.jquery.template.ListList = $.template('\
+<div id="list-container">\
+	{{if valid}}\
+	<div id="list-child-container" class="editor"></div>\
+	<div id="list-list-container" class="panel left">\
+		<p class="head">Lists in ${message.ctlgname} Catalogue</p>\
+		{{if FireSpark.core.helper.equals(message.admin, 1)}}\
+		<p><a href="#tplbind:cntr=#list-child-container:tpl=tpl-lst-add:arg=ctlgname~${message.ctlgname}&ctlgid~${message.ctlgid}&addcode~${message.addcode}&level~${message.level}&authorize~${message.authorize}" class="navigate" >Add New ...</a></p>\
+		{{/if}}\
+		{{each message.lists}}\
+		<div class="panel">\
+			<p class="subhead">${$index+1}. ${listname}</p>\
+			<p>\
+				<a href="#tplload:cntr=#list-child-container:tpl=${tplcode}:url=launch.php:arg=service~${serviceuri}&${idparam}~${listid}&${nameparam}~${listname}&addcode~${addcode}" class="navigate" >Open</a>\
+				<a href="#tplload:cntr=#list-child-container:tpl=tpl-lst-inf:url=launch.php:arg=service~gridcontrol.list.info&listid~${listid}&ctlgname~${message.ctlgname}&ctlgid~${message.ctlgid}" class="navigate" >Info</a>\
+			</p>\
+		</div>\
+		{{/each}}\
+	{{else}}\
+	<p class="error">${msg}</p>\
+	{{/if}}\
+</div>');
+/**
  *	@template NoteAdd
  *
 **/

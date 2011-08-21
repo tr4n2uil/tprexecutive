@@ -1,13 +1,15 @@
 <?php 
 
 	require_once('init.php');
-	require_once(TSROOT . 'console/sys/lib/Document.class.php');
+	require_once('lib/Document.class.php');
 	
-	Document::header('TPR Executive', array(
-		'default.css', 'jquery.css', 'layout.css'
-	));
+	/*if((substr_count($_SERVER['HTTP_ACCEPT_ENCODING'], 'gzip'))&&(!substr_count($_SERVER['HTTP_ACCEPT_ENCODING'], 'sdch')))
+		$gzip = '.gz';
+	else*/ $gzip = '';
 	
-	include(EXROOT. 'ui/html/main-header.html');
+	Document::header('TPR Executive', array("executive-ui.css$gzip"));
+	
+	include('ui/html/main-header.html');
 	
 ?>
 
@@ -27,7 +29,7 @@
 						$email = $memory['email'];
 				}
 				if($email){
-					include(EXROOT. 'ui/html/quick-account.html');
+					include('ui/html/quick-account.html');
 					
 					$service = array(
 						'service' => 'executive.student.find.workflow'
@@ -75,34 +77,54 @@
 					}
 					
 					if(in_array($email, array('admin@executive.edu', 'vibhaj@gmail.com', 'vibhaj8@gmail.com'))){
-						include(EXROOT. 'ui/html/quick-console.html');
+						include('ui/html/quick-console.html');
 					}
 				}
 				else {
-					include(EXROOT. 'ui/html/quick-login.html');
+					include('ui/html/quick-login.html');
 				}
 			?>
 			<div id="update-panel"></div>
 		</div>
 		<div id="main-container">
-				<?php include(EXROOT. 'ui/html/main-home.html'); ?>
+				<?php include('ui/html/main-home.html'); ?>
 		</div>
 		<div class="clear"></div>
 	</div>
 	<div id="bottom-panel" class="panel">
 <?php
 	
-	Document::footer('<div class="fleft"><div class="panel"><p>Developed by enhanCSE Technologies</p><p>2011 <a href="http://www.github.com/tr4n2uil/tprexecutive" target="_blank">Open Source</a><a href="mailto:enhancse.tech@gmail.com">enhancse.tech@gmail.com</a></p></div></div><div class="fleft panel" style="background:white"><img src="ui/img/officials/opensource.png" alt="opensource_logo"><img src="ui/img/officials/php.png" alt="php_logo"><img src="ui/img/officials/mysql.png" alt="mysql_logo"><img src="ui/img/officials/jquery.png" alt="jquery_logo"></div>', array(
-		'jQuery Core' => 'jquery-1.6.1.min.js',
+	$footer = <<<FOOTER
+		<div class="fleft">
+			<div class="panel">
+				<p>Developed by enhanCSE Technologies</p>
+				<p>2011 <a href="http://www.github.com/tr4n2uil/tprexecutive" target="_blank">Open Source</a><a href="mailto:enhancse.tech@gmail.com">enhancse.tech@gmail.com</a></p>
+			</div>
+		</div>
+		<div class="fleft panel" style="background:white; height: 3em;">
+			<img src="ui/img/officials/opensource.png" alt="opensource_logo">
+			<img src="ui/img/officials/php.png" alt="php_logo">
+			<img src="ui/img/officials/mysql.png" alt="mysql_logo">
+			<img src="ui/img/officials/jquery.png" alt="jquery_logo">
+		</div>
+		<div class="fright panel" style="width: 15%">
+				<p>Executive UI Optimized for Mozilla Firefox 3.6+</p>
+		</div>
+FOOTER;
+
+	Document::footer($footer, array(
+	/*	'jQuery Core' => 'jquery-1.6.1.min.js',
 	//	'jQuery UI' => 'jquery-ui-1.8.13.min.js',
 		'jQuery Templates' => 'jquery.tmpl.min.js',
 		'jQuery Cookie' => 'jquery.cookie.js',
 		'JSON Library' => 'json2.js',
-		'CKEditor' => 'ckeditor/ckeditor.js',
-		'jQuery CKEditor' => 'ckeditor/adapters/jquery.js',
 		'jQuery FireSpark' => 'jquery-firespark.js',
 		'Executive Extensions' => 'executive-jquery.js',
 		'Executive Templates' => 'executive-templates.js'
+		'LAB Library' => "LAB.min.js$gzip",*/
+		'Executive UI' => "executive-ui.js$gzip",
+		'CKEditor' => "ckeditor/ckeditor.js$gzip",
+		'jQuery CKEditor' => "ckeditor/adapters/jquery.js$gzip"
 	));
 	
 ?>
@@ -146,6 +168,11 @@
 			FireSpark.Registry.save('tpl-nte-lst', Executive.jquery.template.NoteList);
 			FireSpark.Registry.save('tpl-nte-inf', Executive.jquery.template.NoteInfo);
 			FireSpark.Registry.save('tpl-nte-edt', Executive.jquery.template.NoteEdit);
+			
+			FireSpark.Registry.save('tpl-lst-add', Executive.jquery.template.ListAdd);
+			FireSpark.Registry.save('tpl-lst-lst', Executive.jquery.template.ListList);
+			FireSpark.Registry.save('tpl-lst-inf', Executive.jquery.template.ListInfo);
+			FireSpark.Registry.save('tpl-lst-edt', Executive.jquery.template.ListEdit);
 			
 			FireSpark.Registry.save('tpl-spc-add', Executive.jquery.template.SpaceAdd);
 			FireSpark.Registry.save('tpl-spc-lst', Executive.jquery.template.SpaceList);

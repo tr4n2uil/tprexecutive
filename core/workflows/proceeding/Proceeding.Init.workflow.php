@@ -78,8 +78,8 @@ class ProceedingInitWorkflow implements Service {
 			'conn' => 'exconn',
 			'relation' => '`students`',
 			'sqlprj' => 'owner',
-			'sqlcnd' => "where (case \${proctype} when 'Internship' then `year`=\${year} when 'Placement' then ((`year`=\${year} and `course`='B Tech') or (`year`=\${year}-1 and `course`='IDD')) else false end) and `cgpa` >= (\${eligibility} - \${margin}) and `owner` not in (\${rejection}) limit \${max}",
-			'escparam' => array('rejection'),
+			'sqlcnd' => "where (case '\${proctype}' when 'Internship' then `year`=\${year} when 'Placement' then ((`year`=\${year} and `course`='B Tech') or (`year`=\${year}-1 and `course`='IDD')) else false end) and `cgpa` >= (\${eligibility} - \${margin}) and `owner` not in (\${rejection}) limit \${max}",
+			'escparam' => array('rejection', 'proctype'),
 			'check' => false,
 			'output' => array('result' => 'eligible')
 		),

@@ -48,7 +48,7 @@ class ProceedingAddWorkflow implements Service {
 			'service' => 'gridevent.event.add.workflow',
 			'input' => array('seriesid' => 'comid'),
 			'authorize' => 'edit:add:remove',
-			'level' => 2,
+			'level' => 3,
 			'output' => array('eventid' => 'procid')
 		),
 		array(

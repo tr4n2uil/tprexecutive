@@ -44,6 +44,7 @@ class CompanyAddWorkflow implements Service {
 			'service' => 'sb.reference.create.workflow',
 			'input' => array('keyvalue' => 'password', 'parent' => 'indid'),
 			'authorize' => 'edit:add:remove',
+			'level' => 2,
 			'output' => array('id' => 'comid')
 		),
 		array(

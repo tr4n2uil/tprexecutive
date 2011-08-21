@@ -39,3 +39,4 @@ Executive.jquery.constant.successimg = '<img src="ui/img/icons/ok.gif">';
 **/
 Executive.jquery.constant.errorimg = '<img src="ui/img/icons/error.gif">';
 
+var CKEDITOR_BASEPATH = 'ui/js/ckeditor/';

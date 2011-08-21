@@ -30,7 +30,7 @@
 		'hash' => 'none',
 		'email' => $email,
 		'access' => array(
-			'root' => array('sbdemo', 'gridid', 'gridview', 'gridevent', 'gridshare', 'griddata', 'executive')
+			'root' => array('sbdemo', 'gridcontrol', 'gridview', 'gridevent', 'gridshare', 'griddata', 'executive')
 		)
 	);
 	
