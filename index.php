@@ -3,9 +3,9 @@
 	require_once('init.php');
 	require_once('lib/Document.class.php');
 	
-	/*if((substr_count($_SERVER['HTTP_ACCEPT_ENCODING'], 'gzip'))&&(!substr_count($_SERVER['HTTP_ACCEPT_ENCODING'], 'sdch')))
+	if((substr_count($_SERVER['HTTP_ACCEPT_ENCODING'], 'gzip'))&&(!substr_count($_SERVER['HTTP_ACCEPT_ENCODING'], 'sdch')))
 		$gzip = '.gz';
-	else*/ $gzip = '';
+	else $gzip = '';
 	
 	Document::header('TPR Executive', array("executive-ui.css$gzip"));
 	

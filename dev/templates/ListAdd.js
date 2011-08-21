@@ -8,9 +8,7 @@ Executive.jquery.template.ListAdd = $.template('\
 		<form action="launch.php" method="post" class="navigate" id="_formsubmit:sel._list-add-container">\
 				<input type="hidden" name="service" value="gridcontrol.list.add">\
 				<input type="hidden" name="ctlgid" value="${ctlgid}">\
-				<input type="hidden" name="level" value="${level + 1}">\
 				<input type="hidden" name="addcode" value="${addcode}">\
-				<input type="hidden" name="authorize" value="${authorize}">\
 				<label>Name\
 					<input type="text" name="listname" class="required" size="50" />\
 				</label>\

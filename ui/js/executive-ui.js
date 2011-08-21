@@ -1766,9 +1766,7 @@ Executive.jquery.template.ListAdd = $.template('\
 		<form action="launch.php" method="post" class="navigate" id="_formsubmit:sel._list-add-container">\
 				<input type="hidden" name="service" value="gridcontrol.list.add">\
 				<input type="hidden" name="ctlgid" value="${ctlgid}">\
-				<input type="hidden" name="level" value="${level + 1}">\
 				<input type="hidden" name="addcode" value="${addcode}">\
-				<input type="hidden" name="authorize" value="${authorize}">\
 				<label>Name\
 					<input type="text" name="listname" class="required" size="50" />\
 				</label>\
@@ -1843,7 +1841,7 @@ Executive.jquery.template.ListList = $.template('\
 	<div id="list-list-container" class="panel left">\
 		<p class="head">Lists in ${message.ctlgname} Catalogue</p>\
 		{{if FireSpark.core.helper.equals(message.admin, 1)}}\
-		<p><a href="#tplbind:cntr=#list-child-container:tpl=tpl-lst-add:arg=ctlgname~${message.ctlgname}&ctlgid~${message.ctlgid}&addcode~${message.addcode}&level~${message.level}&authorize~${message.authorize}" class="navigate" >Add New ...</a></p>\
+		<p><a href="#tplbind:cntr=#list-child-container:tpl=tpl-lst-add:arg=ctlgname~${message.ctlgname}&ctlgid~${message.ctlgid}&addcode~${message.addcode}" class="navigate" >Add New ...</a></p>\
 		{{/if}}\
 		{{each message.lists}}\
 		<div class="panel">\
@@ -1913,16 +1911,17 @@ Executive.jquery.template.NoteInfo = $.template('\
 	{{if valid}}\
 	<div id="note-info-container" class="panel left">\
 		<p class="head">${message.note.title}</p>\
-		<p>${message.note.time}</p>\
+		<div class="panel">\
+			<p>Author : <span class="bold">${message.note.author}</span> (Last Updated on ${message.note.time})\
+			{{if FireSpark.core.helper.equals(message.admin, 1)}}\
+			<a href="#tplload:cntr=#note-child-container:tpl=tpl-nte-edt:url=launch.php:arg=service~gridshare.note.info&noteid~${message.note.noteid}&bname~${message.bname}" class="navigate" >Edit</a>\
+			<a href="#tplload:cntr=#note-child-container:url=launch.php:arg=service~gridshare.note.remove&noteid~${message.note.noteid}&boardid~${message.boardid}:cf=true" class="navigate" >Remove</a>\
+			{{/if}}\
+			</p>\
+		</div>\
 		<div class="panel">\
 			<p>{{html message.note.note}}</p>\
 		</div>\
-		{{if FireSpark.core.helper.equals(message.admin, 1)}}\
-		<p>\
-		<a href="#tplload:cntr=#note-child-container:tpl=tpl-nte-edt:url=launch.php:arg=service~gridshare.note.info&noteid~${message.note.noteid}&bname~${message.bname}" class="navigate" >Edit</a>\
-		<a href="#tplload:cntr=#note-child-container:url=launch.php:arg=service~gridshare.note.remove&noteid~${message.note.noteid}&boardid~${message.boardid}:cf=true" class="navigate" >Remove</a>\
-		</p>\
-		{{/if}}\
 	{{else}}\
 	<p class="error">${msg}</p>\
 	{{/if}}\
@@ -1944,7 +1943,7 @@ Executive.jquery.template.NoteList = $.template('\
 		<div class="panel">\
 			<p class="subhead">${$index+1}. ${title}</p>\
 			<p>\
-				<a href="#tplload:cntr=#note-child-container:tpl=tpl-nte-inf:url=launch.php:arg=service~gridshare.note.info&noteid~${noteid}&bname~${message.bname}&boardid~${message.boardid}" class="navigate" >View</a>\ (Last Updated on ${time})\
+				<a href="#tplload:cntr=#note-child-container:tpl=tpl-nte-inf:url=launch.php:arg=service~gridshare.note.info&noteid~${noteid}&bname~${message.bname}&boardid~${message.boardid}" class="navigate" >View</a>\ (Last Updated on ${time} by ${author})\
 			</p>\
 		</div>\
 		{{/each}}\

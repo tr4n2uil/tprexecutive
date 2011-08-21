@@ -15,7 +15,7 @@ Executive.jquery.template.NoteList = $.template('\
 		<div class="panel">\
 			<p class="subhead">${$index+1}. ${title}</p>\
 			<p>\
-				<a href="#tplload:cntr=#note-child-container:tpl=tpl-nte-inf:url=launch.php:arg=service~gridshare.note.info&noteid~${noteid}&bname~${message.bname}&boardid~${message.boardid}" class="navigate" >View</a>\ (Last Updated on ${time})\
+				<a href="#tplload:cntr=#note-child-container:tpl=tpl-nte-inf:url=launch.php:arg=service~gridshare.note.info&noteid~${noteid}&bname~${message.bname}&boardid~${message.boardid}" class="navigate" >View</a>\ (Last Updated on ${time} by ${author})\
 			</p>\
 		</div>\
 		{{/each}}\

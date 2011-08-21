@@ -9,7 +9,7 @@ Executive.jquery.template.ListList = $.template('\
 	<div id="list-list-container" class="panel left">\
 		<p class="head">Lists in ${message.ctlgname} Catalogue</p>\
 		{{if FireSpark.core.helper.equals(message.admin, 1)}}\
-		<p><a href="#tplbind:cntr=#list-child-container:tpl=tpl-lst-add:arg=ctlgname~${message.ctlgname}&ctlgid~${message.ctlgid}&addcode~${message.addcode}&level~${message.level}&authorize~${message.authorize}" class="navigate" >Add New ...</a></p>\
+		<p><a href="#tplbind:cntr=#list-child-container:tpl=tpl-lst-add:arg=ctlgname~${message.ctlgname}&ctlgid~${message.ctlgid}&addcode~${message.addcode}" class="navigate" >Add New ...</a></p>\
 		{{/if}}\
 		{{each message.lists}}\
 		<div class="panel">\
