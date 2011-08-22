@@ -1402,6 +1402,697 @@ FireSpark.Registry.save('tpl-default', FireSpark.jquery.template.Default);
 /**
  *	@initialization Namespaces
 **/
+ThunderSky = {};
+ThunderSky.jquery = {};
+ThunderSky.jquery.service = {};
+ThunderSky.jquery.workflow = {};
+ThunderSky.jquery.helper = {};
+ThunderSky.jquery.constant = {};
+ThunderSky.jquery.template = {};
+
+/**
+ *	@initialization Session variables
+**/
+ThunderSky.session = {
+	user : false,
+	pass : false
+};
+
+
+/**
+ *	@constant loadmsg
+ *	@desc HTML content to show while loading content (default '<p class="loading">Loading ...</p>')
+ *
+**/
+ThunderSky.jquery.constant.loadmsg = '<p class="loading">Loading ...</p>';
+
+/**
+ *	@constant successmsg
+ *	@desc HTML content to indicate successful execution (default '<img src="ui/img/icons/ok.gif">')
+ *
+**/
+ThunderSky.jquery.constant.successimg = '<img src="ui/img/icons/ok.gif">';
+
+/**
+ *	@constant errormsg
+ *	@desc HTML content to indicate erroneous execution (default '<img src="ui/img/icons/error.gif">')
+ *
+**/
+ThunderSky.jquery.constant.errorimg = '<img src="ui/img/icons/error.gif">';
+
+var CKEDITOR_BASEPATH = 'ui/js/ckeditor/';/**
+ *	@template ContentAdd
+ *
+**/
+ThunderSky.jquery.template.ContentAdd = $.template('\
+	<div id="content-add-container" class="panel form-panel">\
+		<p class="head">Add Content in ${stname} Site</p>\
+		<form action="launch.php" method="post" class="navigate" id="_formsubmit:sel._content-add-container">\
+				<input type="hidden" name="service" value="gridview.content.add">\
+				<input type="hidden" name="siteid" value="${siteid}">\
+				<label>Name\
+					<input type="text" name="cntname" size="50" class="required" />\
+				</label>\
+					<p class="error hidden margin5">Invalid Name</p>\
+				<label>Style Type\
+					<select name="cntstype">\
+						<option value="1">Inline</option>\
+						<option value="2">Resource</option>\
+					</select>\
+				</label>\
+				<label>Style</label>\
+				<textarea name="cntstyle" rows="15"></textarea>\
+				<label>Template Type\
+					<select name="cntttype">\
+						<option value="1" >Inline</option>\
+						<option value="2" >Resource</option>\
+					</select>\
+				</label>\
+				<label>Template</label>\
+				<textarea name="cnttpl" rows="15"></textarea>\
+				<label>Data Type\
+					<select name="cntdtype" >\
+						<option value="1" >Inline</option>\
+						<option value="2" >Resource</option>\
+						<option value="3" >Query</option>\
+					</select>\
+				</label>\
+				<label>Data</label>\
+				<textarea name="cntdata" rows="15"></textarea>\
+				<input name="submit" type="submit" value="Submit"  class="margin5"/>\
+				<input name="reset" type="reset" value="Reset"  class="margin5"/>\
+				<div class="status"></div>\
+		</form>\
+	</div>\
+');
+/**
+ *	@template ContentEdit
+ *
+**/
+ThunderSky.jquery.template.ContentEdit = $.template('\
+	{{if valid}}\
+	<div id="content-edit-container" class="panel form-panel">\
+		<p class="head">Edit Content #${message.content.cntid}</p>\
+		<form action="launch.php" method="post" class="navigate" id="_formsubmit:sel._content-edit-container">\
+				<input type="hidden" name="service" value="gridview.content.{{if FireSpark.core.helper.equals(message.admin, 1)}}edit{{else}}update{{/if}}">\
+				<input type="hidden" name="cntid" value="${message.content.cntid}">\
+				<input type="hidden" name="siteid" value="${message.siteid}">\
+				<label>Name\
+					<input type="text" name="cntname" size="50" disabled="disabled" value="${message.content.cntname}" />\
+				</label>\
+				<label>Style Type\
+					<select name="cntstype" {{if FireSpark.core.helper.equals(message.admin, 1)}} {{else}}disabled="disabled"{{/if}}>\
+						<option value="1" {{if FireSpark.core.helper.equals(message.content.cntstype, 1)}}selected="selected"{{/if}}>Inline</option>\
+						<option value="2" {{if FireSpark.core.helper.equals(message.content.cntstype, 2)}}selected="selected"{{/if}}>Resource</option>\
+					</select>\
+				</label>\
+				<label>Style</label>\
+				<textarea name="cntstyle" rows="15">${message.content.cntstyle}</textarea>\
+				<label>Template Type\
+					<select name="cntttype" {{if FireSpark.core.helper.equals(message.admin, 1)}} {{else}}disabled="disabled"{{/if}}>\
+						<option value="1" {{if FireSpark.core.helper.equals(message.content.cntttype, 1)}}selected="selected"{{/if}}>Inline</option>\
+						<option value="2" {{if FireSpark.core.helper.equals(message.content.cntttype, 2)}}selected="selected"{{/if}}>Resource</option>\
+					</select>\
+				</label>\
+				<label>Template</label>\
+				<textarea name="cnttpl" rows="15">${message.content.cnttpl}</textarea>\
+				<label>Data Type\
+					<select name="cntdtype" {{if FireSpark.core.helper.equals(message.admin, 1)}} {{else}}disabled="disabled"{{/if}}>\
+						<option value="1" {{if FireSpark.core.helper.equals(message.content.cntdtype, 1)}}selected="selected"{{/if}}>Inline</option>\
+						<option value="2" {{if FireSpark.core.helper.equals(message.content.cntdtype, 2)}}selected="selected"{{/if}}>Resource</option>\
+						<option value="3" {{if FireSpark.core.helper.equals(message.content.cntdtype, 3)}}selected="selected"{{/if}}>Query</option>\
+					</select>\
+				</label>\
+				<label>Data</label>\
+				<textarea name="cntdata" rows="15">${message.content.cntdata}</textarea>\
+				<input name="submit" type="submit" value="Submit"  class="margin5"/>\
+				<input name="reset" type="reset" value="Reset"  class="margin5"/>\
+				<div class="status"></div>\
+		</form>\
+	</div>\
+	{{else}}\
+	<p class="error">${msg}</p>\
+	{{/if}}\
+');
+/**
+ *	@template ContentList
+ *
+**/
+ThunderSky.jquery.template.ContentList = $.template('\
+<div id="content-container">\
+	{{if valid}}\
+	<div id="content-child-container"></div>\
+	<div id="content-list-container" class="panel left">\
+		<p class="head">Contents in ${message.stname} Site</p>\
+		{{if FireSpark.core.helper.equals(message.admin, 1)}}\
+		<p><a href="#tplbind:cntr=#content-child-container:tpl=tpl-cnt-add:arg=stname~${message.stname}&siteid~${message.siteid}" class="navigate" >Add New ...</a></p>\
+		{{/if}}\
+		{{each message.contents}}\
+		<div class="panel">\
+			<p class="subhead">${$index+1}. ${cntname}</p>\
+			<p>\
+				<a href="#tplload:cntr=#content-child-container:key=template:url=launch.php:arg=service~gridview.content.view&stname~${message.stname}&cntid~${cntid}" class="navigate" >View</a>\
+				{{if FireSpark.core.helper.equals(message.admin, 1)}}\
+				<a href="#tplload:cntr=#content-child-container:tpl=tpl-cnt-edt:url=launch.php:arg=service~gridview.content.info&stname~${message.stname}&cntid~${cntid}" class="navigate" >Edit</a>\
+				<a href="#tplload:cntr=#content-child-container:url=launch.php:arg=service~gridview.content.remove&cntid~${cntid}&siteid~${message.siteid}:cf=true" class="navigate" >Remove</a>\
+				{{/if}}\
+			</p>\
+		</div>\
+		{{/each}}\
+	{{else}}\
+	<p class="error">${msg}</p>\
+	{{/if}}\
+</div>');
+/**
+ *	@template ListAdd
+ *
+**/
+ThunderSky.jquery.template.ListAdd = $.template('\
+<div id="list-add-container" class="panel form-panel">\
+	<p class="head">Add List in ${ctlgname} Catalogue</p>\
+		<form action="launch.php" method="post" class="navigate" id="_formsubmit:sel._list-add-container">\
+				<input type="hidden" name="service" value="gridcontrol.list.add">\
+				<input type="hidden" name="ctlgid" value="${ctlgid}">\
+				<input type="hidden" name="addcode" value="${addcode}">\
+				<label>Name\
+					<input type="text" name="listname" class="required" size="50" />\
+				</label>\
+					<p class="error hidden margin5">Invalid Name</p>\
+					<label>Code\
+					<select name="code">\
+						{{each FireSpark.core.helper.dataSplit(addcode)}}\
+						<option value="${$value}" >${$value}</option>\
+						{{/each}}\
+					</select>\
+				</label>\
+				<input name="submit" type="submit" value="Submit"  class="margin5"/>\
+				<input name="reset" type="reset" value="Reset"  class="margin5"/>\
+				<div class="status"></div>\
+		</form>\
+	</div>\
+');
+/**
+ *	@template ListEdit
+ *
+**/
+ThunderSky.jquery.template.ListEdit = $.template('\
+<div id="list-edit-container" class="panel form-panel">\
+	<p class="head">Edit List #${message.list.listid}</p>\
+		<form action="launch.php" method="post" class="navigate" id="_formsubmit:sel._list-edit-container">\
+				<input type="hidden" name="service" value="gridcontrol.list.edit">\
+				<input type="hidden" name="listid" value="${message.list.listid}">\
+				<label>Name\
+					<input type="text" name="listname" class="required" size="50" value="${message.list.listname}"/>\
+				</label>\
+					<p class="error hidden margin5">Invalid Name</p>\
+					<label>Code\
+					<select name="code">\
+						{{each FireSpark.core.helper.dataSplit(message.list.addcode)}}\
+						<option value="${$value}" {{if FireSpark.core.helper.equals(message.list.code, $value)}}selected="selected"{{/if}}>${$value}</option>\
+						{{/each}}\
+					</select>\
+				</label>\
+				<input name="submit" type="submit" value="Submit"  class="margin5"/>\
+				<input name="reset" type="reset" value="Reset"  class="margin5"/>\
+				<div class="status"></div>\
+		</form>\
+	</div>\
+');
+/**
+ *	@template ListInfo
+ *
+**/
+ThunderSky.jquery.template.ListInfo = $.template('\
+	{{if valid}}\
+	<div id="list-info-container" class="panel left">\
+		<p class="head">${message.list.listname}</p>\
+		<p>Last Updated on ${message.list.time}</p>\
+		{{if FireSpark.core.helper.equals(message.admin, 1)}}\
+		<p>\
+		<a href="#tplload:cntr=#list-child-container:tpl=tpl-lst-edt:url=launch.php:arg=service~gridcontrol.list.info&listid~${message.list.listid}&ctlgname~${message.ctlgname}" class="navigate" >Edit</a>\
+		<a href="#tplload:cntr=#list-child-container:url=launch.php:arg=service~gridcontrol.list.remove&listid~${message.list.listid}&ctlgid~${message.ctlgid}:cf=true" class="navigate" >Remove</a>\
+		</p>\
+		{{/if}}\
+	{{else}}\
+	<p class="error">${msg}</p>\
+	{{/if}}\
+');
+/**
+ *	@template ListList
+ *
+**/
+ThunderSky.jquery.template.ListList = $.template('\
+<div id="list-container">\
+	{{if valid}}\
+	<div id="list-child-container" class="editor"></div>\
+	<div id="list-list-container" class="panel left">\
+		<p class="head">Lists in ${message.ctlgname} Catalogue</p>\
+		{{if FireSpark.core.helper.equals(message.admin, 1)}}\
+		<p><a href="#tplbind:cntr=#list-child-container:tpl=tpl-lst-add:arg=ctlgname~${message.ctlgname}&ctlgid~${message.ctlgid}&addcode~${message.addcode}" class="navigate" >Add New ...</a></p>\
+		{{/if}}\
+		{{each message.lists}}\
+		<div class="panel">\
+			<p class="subhead">${$index+1}. ${listname}</p>\
+			<p>\
+				<a href="#tplload:cntr=#list-child-container:tpl=${tplcode}:url=launch.php:arg=service~${serviceuri}&${idparam}~${listid}&${nameparam}~${listname}&addcode~${addcode}" class="navigate" >Open</a>\
+				<a href="#tplload:cntr=#list-child-container:tpl=tpl-lst-inf:url=launch.php:arg=service~gridcontrol.list.info&listid~${listid}&ctlgname~${message.ctlgname}&ctlgid~${message.ctlgid}" class="navigate" >Info</a>\
+			</p>\
+		</div>\
+		{{/each}}\
+	{{else}}\
+	<p class="error">${msg}</p>\
+	{{/if}}\
+</div>');
+/**
+ *	@template NoteAdd
+ *
+**/
+ThunderSky.jquery.template.NoteAdd = $.template('\
+<div id="note-add-container" class="panel form-panel">\
+	<p class="head">Add Note in ${bname} Board</p>\
+		<form action="launch.php" method="post" class="navigate" id="_formsubmit:sel._note-add-container">\
+				<input type="hidden" name="service" value="gridshare.note.add">\
+				<input type="hidden" name="boardid" value="${boardid}">\
+				<label>Title\
+					<input type="text" name="title" class="required" size="50" />\
+				</label>\
+					<p class="error hidden margin5">Invalid Title</p>\
+				<label>Message</label>\
+				<textarea name="note" rows="5" cols="80" class="editor"></textarea>\
+				<input name="submit" type="submit" value="Submit"  class="margin5"/>\
+				<input name="reset" type="reset" value="Reset"  class="margin5"/>\
+				<div class="status"></div>\
+		</form>\
+	</div>\
+');/**
+ *	@template NoteEdit
+ *
+**/
+ThunderSky.jquery.template.NoteEdit = $.template('\
+	{{if valid}}\
+	<div id="note-edit-container" class="panel form-panel">\
+		<p class="head">Edit Note #${message.note.noteid}</p>\
+		<form action="launch.php" method="post" class="navigate" id="_formsubmit:sel._note-edit-container">\
+				<input type="hidden" name="service" value="gridshare.note.edit">\
+				<input type="hidden" name="noteid" value="${message.note.noteid}">\
+				<label>Title\
+					<input type="text" name="title" class="required" size="50" value="${message.note.title}" />\
+				</label>\
+					<p class="error hidden margin5">Invalid Title</p>\
+				<label>Message</label>\
+				<textarea name="note" rows="5" cols="80" class="editor">${message.note.note}</textarea>\
+				<input name="submit" type="submit" value="Submit"  class="margin5"/>\
+				<input name="reset" type="reset" value="Reset"  class="margin5"/>\
+				<div class="status"></div>\
+		</form>\
+	</div>\
+	{{else}}\
+	<p class="error">${msg}</p>\
+	{{/if}}\
+');
+/**
+ *	@template NoteInfo
+ *
+**/
+ThunderSky.jquery.template.NoteInfo = $.template('\
+	{{if valid}}\
+	<div id="note-info-container" class="panel left">\
+		<p class="head">${message.note.title}</p>\
+		<div class="panel">\
+			<p>Author : <span class="bold">${message.note.author}</span> (Last Updated on ${message.note.time})\
+			{{if FireSpark.core.helper.equals(message.admin, 1)}}\
+			<a href="#tplload:cntr=#note-child-container:tpl=tpl-nte-edt:url=launch.php:arg=service~gridshare.note.info&noteid~${message.note.noteid}&bname~${message.bname}" class="navigate" >Edit</a>\
+			<a href="#tplload:cntr=#note-child-container:url=launch.php:arg=service~gridshare.note.remove&noteid~${message.note.noteid}&boardid~${message.boardid}:cf=true" class="navigate" >Remove</a>\
+			{{/if}}\
+			</p>\
+		</div>\
+		<div class="panel">\
+			<p>{{html message.note.note}}</p>\
+		</div>\
+	{{else}}\
+	<p class="error">${msg}</p>\
+	{{/if}}\
+');
+/**
+ *	@template NoteList
+ *
+**/
+ThunderSky.jquery.template.NoteList = $.template('\
+<div id="note-container">\
+	{{if valid}}\
+	<div id="note-child-container" class="editor"></div>\
+	<div id="note-list-container" class="panel left">\
+		<p class="head">Notes in ${message.bname} Board</p>\
+		{{if FireSpark.core.helper.equals(message.admin, 1)}}\
+		<p><a href="#tplbind:cntr=#note-child-container:tpl=tpl-nte-add:arg=bname~${message.bname}&boardid~${message.boardid}" class="navigate" >Add New ...</a></p>\
+		{{/if}}\
+		{{each message.notes}}\
+		<div class="panel">\
+			<p class="subhead">${$index+1}. ${title}</p>\
+			<p>\
+				<a href="#tplload:cntr=#note-child-container:tpl=tpl-nte-inf:url=launch.php:arg=service~gridshare.note.info&noteid~${noteid}&bname~${message.bname}&boardid~${message.boardid}" class="navigate" >View</a>\ (Last Updated on ${time} by ${author})\
+			</p>\
+		</div>\
+		{{/each}}\
+	{{else}}\
+	<p class="error">${msg}</p>\
+	{{/if}}\
+</div>');
+/**
+ *	@template ResourceAdd
+ *
+**/
+ThunderSky.jquery.template.ResourceAdd = $.template('\
+	<div id="resource-add-container" class="panel form-panel">\
+		<p class="head">Add Resource in ${stname} Site</p>\
+		<form action="launch.php" method="post" class="navigate" id="_formsubmit:sel._resource-add-container">\
+				<input type="hidden" name="service" value="gridview.resource.add">\
+				<input type="hidden" name="siteid" value="${siteid}">\
+				<label>Name\
+					<input type="text" name="rsrcname" size="50" class="required" />\
+				</label>\
+					<p class="error hidden margin5">Invalid Name</p>\
+				<label>Resource</label>\
+				<textarea name="resource" rows="15" cols="80"></textarea>\
+				<input name="submit" type="submit" value="Submit"  class="margin5"/>\
+				<input name="reset" type="reset" value="Reset"  class="margin5"/>\
+				<div class="status"></div>\
+		</form>\
+	</div>\
+');
+/**
+ *	@template ResourceEdit
+ *
+**/
+ThunderSky.jquery.template.ResourceEdit = $.template('\
+	{{if valid}}\
+	<div id="resource-edit-container" class="panel form-panel">\
+		<p class="head">Edit Resource #${message.resource.rsrcid}</p>\
+		<form action="launch.php" method="post" class="navigate" id="_formsubmit:sel._resource-edit-container">\
+				<input type="hidden" name="service" value="gridview.resource.edit">\
+				<input type="hidden" name="rsrcid" value="${message.resource.rsrcid}">\
+				<label>Name\
+					<input type="text" name="rsrcname" size="50" disabled="disabled" value="${message.resource.rsrcname}" />\
+				</label>\
+				<label>Resource</label>\
+				<textarea name="resource" rows="15" cols="80">${message.resource.resource}</textarea>\
+				<input name="submit" type="submit" value="Submit"  class="margin5"/>\
+				<input name="reset" type="reset" value="Reset"  class="margin5"/>\
+				<div class="status"></div>\
+		</form>\
+	</div>\
+	{{else}}\
+	<p class="error">${msg}</p>\
+	{{/if}}\
+');
+/**
+ *	@template ResourceList
+ *
+**/
+ThunderSky.jquery.template.ResourceList = $.template('\
+<div id="resource-container">\
+	{{if valid}}\
+	<div id="resource-child-container"></div>\
+	<div id="resource-list-container" class="panel left">\
+		<p class="head">Resources in ${message.stname} Site</p>\
+		{{if FireSpark.core.helper.equals(message.admin, 1)}}\
+		<p><a href="#tplbind:cntr=#resource-child-container:tpl=tpl-rsc-add:arg=stname~${message.stname}&siteid~${message.siteid}" class="navigate" >Add New ...</a></p>\
+		{{/if}}\
+		{{each message.resources}}\
+		<div class="panel">\
+			<p class="subhead">${$index+1}. ${rsrcname}</p>\
+			{{if FireSpark.core.helper.equals(message.admin, 1)}}\
+			<p>\
+				<a href="#tplload:cntr=#resource-child-container:tpl=tpl-rsc-edt:url=launch.php:arg=service~gridview.resource.info&stname~${message.stname}&rsrcid~${rsrcid}" class="navigate" >Edit</a>\
+				<a href="#tplload:cntr=#resource-child-container:url=launch.php:arg=service~gridview.resource.remove&rsrcid~${rsrcid}&siteid~${message.siteid}:cf=true" class="navigate" >Remove</a>\
+			</p>\
+			{{/if}}\
+		</div>\
+		{{/each}}\
+	{{else}}\
+	<p class="error">${msg}</p>\
+	{{/if}}\
+</div>');
+/**
+ *	@template SpaceAdd
+ *
+**/
+ThunderSky.jquery.template.SpaceAdd = $.template('\
+<div id="space-add-container" class="panel form-panel">\
+	<p class="head">Add Space to ${cntrname} Container</p>\
+		<form action="launch.php" method="post" class="navigate" id="_formsubmit:sel._space-add-container">\
+				<input type="hidden" name="service" value="griddata.space.add">\
+				<input type="hidden" name="cntrid" value="${cntrid}">\
+				<label>Name\
+					<input type="text" name="spname" class="required" size="50" />\
+				</label>\
+					<p class="error hidden margin5">Invalid Name</p>\
+				<label>Path\
+					<input type="text" name="sppath" class="required" size="85" />\
+				</label>\
+					<p class="error hidden margin5">Invalid Path</p>\
+					<p class="desc">Must end in / eg. "storage/test/"</p>\
+				<input name="submit" type="submit" value="Submit"  class="margin5"/>\
+				<input name="reset" type="reset" value="Reset"  class="margin5"/>\
+				<div class="status"></div>\
+		</form>\
+	</div>\
+');/**
+ *	@template SpaceEdit
+ *
+**/
+ThunderSky.jquery.template.SpaceEdit = $.template('\
+<div id="space-edit-container" class="panel form-panel">\
+	<p class="head">Edit Space #${message.spaceid}</p>\
+		<form action="launch.php" method="post" class="navigate" id="_formsubmit:sel._space-edit-container">\
+				<input type="hidden" name="service" value="griddata.space.edit">\
+				<input type="hidden" name="spaceid" value="${message.spaceid}">\
+				<label>Name\
+					<input type="text" name="spname" class="required" size="50"  value="${message.spname}"/>\
+				</label>\
+					<p class="error hidden margin5">Invalid Name</p>\
+				<label>Path\
+					<input type="text" name="sppath" class="required" size="85" value="${message.sppath}" />\
+				</label>\
+					<p class="error hidden margin5">Invalid Path</p>\
+					<p class="desc">Must end in / eg. "storage/test/"</p>\
+				<input name="submit" type="submit" value="Submit"  class="margin5"/>\
+				<input name="reset" type="reset" value="Reset"  class="margin5"/>\
+				<div class="status"></div>\
+		</form>\
+	</div>\
+');/**
+ *	@template SpaceList
+ *
+**/
+ThunderSky.jquery.template.SpaceList = $.template('\
+<div id="space-container">\
+	{{if valid}}\
+	<div id="space-child-container"></div>\
+	<div id="space-list-container" class="panel left">\
+		<p class="head">Spaces in ${message.cntrname} Container</p>\
+		{{if FireSpark.core.helper.equals(message.admin, 1)}}\
+		<p><a href="#tplbind:cntr=#space-child-container:tpl=tpl-spc-add:arg=cntrname~${message.cntrname}&cntrid~${message.cntrid}" class="navigate" >Add New ...</a></p>\
+		{{/if}}\
+		{{each message.spaces}}\
+		<div class="panel">\
+			<p class="subhead">${spname}</p>\
+			<p>\
+				<a href="#tplload:cntr=#space-child-container:tpl=tpl-stg-lst:url=launch.php:arg=service~griddata.storage.list&spaceid~${spaceid}&spname~${spname}" class="navigate" >List</a>\
+				<a href="launch.php?request=get&service=griddata.space.archive&spaceid=${spaceid}&asname=${spname}.zip" target="_blank">Archive</a>\
+				{{if FireSpark.core.helper.equals(message.admin, 1)}}\
+				<a href="#tplload:cntr=#space-child-container:tpl=tpl-spc-edt:url=launch.php:arg=service~griddata.space.info&cntrname~${message.cntrname}&spaceid~${spaceid}" class="navigate" >Edit</a>\
+				<a href="#tplload:cntr=#space-child-container:url=launch.php:arg=service~griddata.space.remove&cntrid~${message.cntrid}&spaceid~${spaceid}:cf=true" class="navigate" >Remove</a> (Ensure empty before removing)\
+				{{/if}}\
+			</p>\
+		</div>\
+		{{/each}}\
+	{{else}}\
+	<p class="error">${msg}</p>\
+	{{/if}}\
+</div>');
+/**
+ *	@template StageAdd
+ *
+**/
+ThunderSky.jquery.template.StageAdd = $.template('\
+<div id="stage-add-container" class="panel form-panel">\
+	<p class="head">Add Stage in Proceeding for ${procname}</p>\
+		<form action="launch.php" method="post" class="navigate" id="_formsubmit:sel._stage-add-container">\
+				<input type="hidden" name="service" value="gridevent.stage.add">\
+				<input type="hidden" name="eventid" value="${procid}">\
+				<input type="hidden" name="level" value="3">\
+				<label>Name\
+					<input type="text" name="name"  class="required" />\
+				</label>\
+					<p class="error hidden margin5">Invalid Name</p>\
+				<label>Stage\
+					<input type="text" name="stage" class="required"/>\
+				</label>\
+					<p class="error hidden margin5">Invalid Stage</p>\
+				<label>Start Time\
+					<input type="text" name="start" class="required" />\
+				</label>\
+					<p class="error hidden margin5">Invalid Start Time</p>\
+					<p class="desc">Format : YYYY-MM-DD hh:mm:ss</p>\
+				<label>End Time\
+					<input type="text" name="end" class="required" />\
+				</label>\
+					<p class="error hidden margin5">Invalid End Time</p>\
+					<p class="desc">Format : YYYY-MM-DD hh:mm:ss</p>\
+				<label>Open\
+					<input type="text" name="open" class="required" value="0"/>\
+				</label>\
+					<p class="error hidden margin5">Invalid Open value</p>\
+				<input name="submit" type="submit" value="Submit"  class="margin5"/>\
+				<input name="reset" type="reset" value="Reset"  class="margin5"/>\
+				<div class="status"></div>\
+		</form>\
+	</div>\
+');/**
+ *	@template StageEdit
+ *
+**/
+ThunderSky.jquery.template.StageEdit = $.template('\
+<div id="stage-edit-container" class="panel form-panel">\
+	<p class="head">Edit Stage #${message.stage.stageid}</p>\
+		<form action="launch.php" method="post" class="navigate" id="_formsubmit:sel._stage-edit-container">\
+				<input type="hidden" name="service" value="gridevent.stage.edit">\
+				<input type="hidden" name="stageid" value="${message.stage.stageid}">\
+				<label>Name\
+					<input type="text" name="name"  class="required" value="${message.stage.name}"/>\
+				</label>\
+					<p class="error hidden margin5">Invalid Name</p>\
+				<label>Stage\
+					<input type="text" name="stage" class="required" value="${message.stage.stage}"/>\
+				</label>\
+					<p class="error hidden margin5">Invalid Stage</p>\
+				<label>Start Time\
+					<input type="text" name="start" class="required" value="${message.stage.start}"/>\
+				</label>\
+					<p class="error hidden margin5">Invalid Start Time</p>\
+					<p class="desc">Format : YYYY-MM-DD hh:mm:ss</p>\
+				<label>End Time\
+					<input type="text" name="end" class="required" value="${message.stage.end}"/>\
+				</label>\
+					<p class="error hidden margin5">Invalid End Time</p>\
+					<p class="desc">Format : YYYY-MM-DD hh:mm:ss</p>\
+				<label>Open\
+					<input type="text" name="open" class="required" value="${message.stage.open}"/>\
+				</label>\
+				<label>Status\
+					<input type="text" name="status" class="required" value="${message.stage.status}"/>\
+				</label>\
+					<p class="error hidden margin5">Invalid Status value</p>\
+				<input name="submit" type="submit" value="Submit"  class="margin5"/>\
+				<input name="reset" type="reset" value="Reset"  class="margin5"/>\
+				<div class="status"></div>\
+		</form>\
+	</div>\
+');/**
+ *	@template StageList
+ *
+**/
+ThunderSky.jquery.template.StageList = $.template('\
+<div id="stage-container">\
+	{{if valid}}\
+	<div id="stage-child-container"></div>\
+	<div id="stage-list-container" class="panel left">\
+		<p class="head">All Stages in Proceeding for ${message.ename}</p>\
+		{{if FireSpark.core.helper.equals(message.admin, 1)}}\
+		<p><a href="#tplbind:cntr=#stage-child-container:tpl=tpl-sta-add:arg=procname~${message.ename}&procid~${message.eventid}" class="navigate" >Add New ...</a></p>\
+		{{/if}}\
+		{{each message.stages}}\
+		<div class="panel">\
+			<p class="subhead">${name} (Stage ${stage})</p>\
+			<p>\
+				<a href="#tplload:cntr=#stage-child-container:tpl=tpl-sel-sta:url=launch.php:arg=service~executive.student.stage&stageid~${stageid}&eventid~${message.eventid}&ename~${message.ename}&stname~${name}" \
+					class="navigate" >Selections</a>\
+				{{if FireSpark.core.helper.equals(message.admin, 1)}}\
+				<a href="#tplload:cntr=#stage-child-container:tpl=tpl-sta-edt:url=launch.php:arg=service~gridevent.stage.info&stageid~${stageid}" class="navigate" >Edit</a>\
+				<a href="#tplload:cntr=#stage-child-container:url=launch.php:arg=service~gridevent.stage.remove&stageid~${stageid}&eventid~${message.eventid}:cf=true" class="navigate" >Remove</a>\
+				{{/if}}\
+			</p>\
+		</div>\
+		{{/each}}\
+	{{else}}\
+	<p class="error">${msg}</p>\
+	{{/if}}\
+</div>');
+/**
+ *	@template StorageAdd
+ *
+**/
+ThunderSky.jquery.template.StorageAdd = $.template('\
+<div id="storage-add-container" class="panel form-panel">\
+	<p class="head">Add Storage in ${spname} Space</p>\
+		<form action="launch.php" method="post" class="navigate" enctype="multipart/form-data"  id="_formsubmit:sel._storage-add-container:iframe=true">\
+				<input type="hidden" name="service" value="griddata.storage.add">\
+				<input type="hidden" name="spaceid" value="${spaceid}">\
+				<input type="hidden" name="filekey" value="storage">\
+				<input type="hidden" name="filepath" value="${sppath}">\
+				<label>File\
+					<input type="file" name="storage" class="required"/>\
+				</label>\
+					<p class="error hidden margin5">Invalid File</p>\
+				<input name="submit" type="submit" value="Submit"  class="margin5"/>\
+				<input name="reset" type="reset" value="Reset"  class="margin5"/>\
+				<div class="status"></div>\
+		</form>\
+	</div>\
+');/**
+ *	@template StorageEdit
+ *
+**/
+ThunderSky.jquery.template.StorageEdit = $.template('\
+<div id="storage-edit-container" class="panel form-panel">\
+	<p class="head">Edit Storage #${stgid}</p>\
+		<form action="launch.php" method="post" class="navigate" enctype="multipart/form-data"  id="_formsubmit:sel._storage-edit-container:iframe=true">\
+				<input type="hidden" name="service" value="griddata.storage.write">\
+				<input type="hidden" name="filekey" value="storage">\
+				<input type="hidden" name="stgid" value="${stgid}">\
+				<input type="hidden" name="spaceid" value="${spaceid}">\
+				<label>File\
+					<input type="file" name="storage" class="required"/>\
+				</label>\
+					<p class="error hidden margin5">Invalid File</p>\
+				<input name="submit" type="submit" value="Submit"  class="margin5"/>\
+				<input name="reset" type="reset" value="Reset"  class="margin5"/>\
+				<div class="status"></div>\
+		</form>\
+	</div>\
+');/**
+ *	@template StorageList
+ *
+**/
+ThunderSky.jquery.template.StorageList = $.template('\
+<div id="storage-container">\
+	{{if valid}}\
+	<div id="storage-child-container"></div>\
+	<div id="storage-list-container" class="panel left">\
+		<p class="head">Storages in ${message.spname} Space</p>\
+		{{if FireSpark.core.helper.equals(message.admin, 1)}}\
+		<p><a href="#tplbind:cntr=#storage-child-container:tpl=tpl-stg-add:arg=spname~${message.spname}&spaceid~${message.spaceid}" class="navigate" >Add New ...</a></p>\
+		{{/if}}\
+		{{each message.storages}}\
+		<div class="panel">\
+			<p class="subhead">${$index+1}. ${stgname}</p>\
+			<p>\
+				<a href="launch.php?request=get&service=griddata.storage.read&stgid=${stgid}&spaceid=${message.spaceid}" target="_blank">Download</a>\ (${FireSpark.core.helper.readFileSize(size)})\
+				{{if FireSpark.core.helper.equals(message.admin, 1)}}\
+				<a href="#tplbind:cntr=#storage-child-container:tpl=tpl-stg-edt:arg=spname~${message.spname}&stgid~${stgid}&spaceid~${message.spaceid}" class="navigate" >Edit</a>\
+				<a href="#tplload:cntr=#storage-child-container:url=launch.php:arg=service~griddata.storage.remove&stgid~${stgid}&spaceid~${message.spaceid}:cf=true" class="navigate" >Remove</a>\
+				{{/if}}\
+			</p>\
+		</div>\
+		{{/each}}\
+	{{else}}\
+	<p class="error">${msg}</p>\
+	{{/if}}\
+</div>');
+/**
+ *	@initialization Namespaces
+**/
 Executive = {};
 Executive.jquery = {};
 Executive.jquery.service = {};
@@ -1634,324 +2325,6 @@ Executive.jquery.template.CompanyList = $.template('\
 	{{/if}}\
 </div>');
 /**
- *	@template ContentAdd
- *
-**/
-Executive.jquery.template.ContentAdd = $.template('\
-	<div id="content-add-container" class="panel form-panel">\
-		<p class="head">Add Content in ${stname} Site</p>\
-		<form action="launch.php" method="post" class="navigate" id="_formsubmit:sel._content-add-container">\
-				<input type="hidden" name="service" value="gridview.content.add">\
-				<input type="hidden" name="siteid" value="${siteid}">\
-				<label>Name\
-					<input type="text" name="cntname" size="50" class="required" />\
-				</label>\
-					<p class="error hidden margin5">Invalid Name</p>\
-				<label>Style Type\
-					<select name="cntstype">\
-						<option value="1">Inline</option>\
-						<option value="2">Resource</option>\
-					</select>\
-				</label>\
-				<label>Style</label>\
-				<textarea name="cntstyle" rows="15"></textarea>\
-				<label>Template Type\
-					<select name="cntttype">\
-						<option value="1" >Inline</option>\
-						<option value="2" >Resource</option>\
-					</select>\
-				</label>\
-				<label>Template</label>\
-				<textarea name="cnttpl" rows="15"></textarea>\
-				<label>Data Type\
-					<select name="cntdtype" >\
-						<option value="1" >Inline</option>\
-						<option value="2" >Resource</option>\
-						<option value="3" >Query</option>\
-					</select>\
-				</label>\
-				<label>Data</label>\
-				<textarea name="cntdata" rows="15"></textarea>\
-				<input name="submit" type="submit" value="Submit"  class="margin5"/>\
-				<input name="reset" type="reset" value="Reset"  class="margin5"/>\
-				<div class="status"></div>\
-		</form>\
-	</div>\
-');
-/**
- *	@template ContentEdit
- *
-**/
-Executive.jquery.template.ContentEdit = $.template('\
-	{{if valid}}\
-	<div id="content-edit-container" class="panel form-panel">\
-		<p class="head">Edit Content #${message.content.cntid}</p>\
-		<form action="launch.php" method="post" class="navigate" id="_formsubmit:sel._content-edit-container">\
-				<input type="hidden" name="service" value="gridview.content.{{if FireSpark.core.helper.equals(message.admin, 1)}}edit{{else}}update{{/if}}">\
-				<input type="hidden" name="cntid" value="${message.content.cntid}">\
-				<input type="hidden" name="siteid" value="${message.siteid}">\
-				<label>Name\
-					<input type="text" name="cntname" size="50" disabled="disabled" value="${message.content.cntname}" />\
-				</label>\
-				<label>Style Type\
-					<select name="cntstype" {{if FireSpark.core.helper.equals(message.admin, 1)}} {{else}}disabled="disabled"{{/if}}>\
-						<option value="1" {{if FireSpark.core.helper.equals(message.content.cntstype, 1)}}selected="selected"{{/if}}>Inline</option>\
-						<option value="2" {{if FireSpark.core.helper.equals(message.content.cntstype, 2)}}selected="selected"{{/if}}>Resource</option>\
-					</select>\
-				</label>\
-				<label>Style</label>\
-				<textarea name="cntstyle" rows="15">${message.content.cntstyle}</textarea>\
-				<label>Template Type\
-					<select name="cntttype" {{if FireSpark.core.helper.equals(message.admin, 1)}} {{else}}disabled="disabled"{{/if}}>\
-						<option value="1" {{if FireSpark.core.helper.equals(message.content.cntttype, 1)}}selected="selected"{{/if}}>Inline</option>\
-						<option value="2" {{if FireSpark.core.helper.equals(message.content.cntttype, 2)}}selected="selected"{{/if}}>Resource</option>\
-					</select>\
-				</label>\
-				<label>Template</label>\
-				<textarea name="cnttpl" rows="15">${message.content.cnttpl}</textarea>\
-				<label>Data Type\
-					<select name="cntdtype" {{if FireSpark.core.helper.equals(message.admin, 1)}} {{else}}disabled="disabled"{{/if}}>\
-						<option value="1" {{if FireSpark.core.helper.equals(message.content.cntdtype, 1)}}selected="selected"{{/if}}>Inline</option>\
-						<option value="2" {{if FireSpark.core.helper.equals(message.content.cntdtype, 2)}}selected="selected"{{/if}}>Resource</option>\
-						<option value="3" {{if FireSpark.core.helper.equals(message.content.cntdtype, 3)}}selected="selected"{{/if}}>Query</option>\
-					</select>\
-				</label>\
-				<label>Data</label>\
-				<textarea name="cntdata" rows="15">${message.content.cntdata}</textarea>\
-				<input name="submit" type="submit" value="Submit"  class="margin5"/>\
-				<input name="reset" type="reset" value="Reset"  class="margin5"/>\
-				<div class="status"></div>\
-		</form>\
-	</div>\
-	{{else}}\
-	<p class="error">${msg}</p>\
-	{{/if}}\
-');
-/**
- *	@template ContentList
- *
-**/
-Executive.jquery.template.ContentList = $.template('\
-<div id="content-container">\
-	{{if valid}}\
-	<div id="content-child-container"></div>\
-	<div id="content-list-container" class="panel left">\
-		<p class="head">Contents in ${message.stname} Site</p>\
-		{{if FireSpark.core.helper.equals(message.admin, 1)}}\
-		<p><a href="#tplbind:cntr=#content-child-container:tpl=tpl-cnt-add:arg=stname~${message.stname}&siteid~${message.siteid}" class="navigate" >Add New ...</a></p>\
-		{{/if}}\
-		{{each message.contents}}\
-		<div class="panel">\
-			<p class="subhead">${$index+1}. ${cntname}</p>\
-			<p>\
-				<a href="#tplload:cntr=#content-child-container:key=template:url=launch.php:arg=service~gridview.content.view&stname~${message.stname}&cntid~${cntid}" class="navigate" >View</a>\
-				{{if FireSpark.core.helper.equals(message.admin, 1)}}\
-				<a href="#tplload:cntr=#content-child-container:tpl=tpl-cnt-edt:url=launch.php:arg=service~gridview.content.info&stname~${message.stname}&cntid~${cntid}" class="navigate" >Edit</a>\
-				<a href="#tplload:cntr=#content-child-container:url=launch.php:arg=service~gridview.content.remove&cntid~${cntid}&siteid~${message.siteid}:cf=true" class="navigate" >Remove</a>\
-				{{/if}}\
-			</p>\
-		</div>\
-		{{/each}}\
-	{{else}}\
-	<p class="error">${msg}</p>\
-	{{/if}}\
-</div>');
-/**
- *	@template ListAdd
- *
-**/
-Executive.jquery.template.ListAdd = $.template('\
-<div id="list-add-container" class="panel form-panel">\
-	<p class="head">Add List in ${ctlgname} Catalogue</p>\
-		<form action="launch.php" method="post" class="navigate" id="_formsubmit:sel._list-add-container">\
-				<input type="hidden" name="service" value="gridcontrol.list.add">\
-				<input type="hidden" name="ctlgid" value="${ctlgid}">\
-				<input type="hidden" name="addcode" value="${addcode}">\
-				<label>Name\
-					<input type="text" name="listname" class="required" size="50" />\
-				</label>\
-					<p class="error hidden margin5">Invalid Name</p>\
-					<label>Code\
-					<select name="code">\
-						{{each FireSpark.core.helper.dataSplit(addcode)}}\
-						<option value="${$value}" >${$value}</option>\
-						{{/each}}\
-					</select>\
-				</label>\
-				<input name="submit" type="submit" value="Submit"  class="margin5"/>\
-				<input name="reset" type="reset" value="Reset"  class="margin5"/>\
-				<div class="status"></div>\
-		</form>\
-	</div>\
-');
-/**
- *	@template ListEdit
- *
-**/
-Executive.jquery.template.ListEdit = $.template('\
-<div id="list-edit-container" class="panel form-panel">\
-	<p class="head">Edit List #${message.list.listid}</p>\
-		<form action="launch.php" method="post" class="navigate" id="_formsubmit:sel._list-edit-container">\
-				<input type="hidden" name="service" value="gridcontrol.list.edit">\
-				<input type="hidden" name="listid" value="${message.list.listid}">\
-				<label>Name\
-					<input type="text" name="listname" class="required" size="50" value="${message.list.listname}"/>\
-				</label>\
-					<p class="error hidden margin5">Invalid Name</p>\
-					<label>Code\
-					<select name="code">\
-						{{each FireSpark.core.helper.dataSplit(message.list.addcode)}}\
-						<option value="${$value}" {{if FireSpark.core.helper.equals(message.list.code, $value)}}selected="selected"{{/if}}>${$value}</option>\
-						{{/each}}\
-					</select>\
-				</label>\
-				<input name="submit" type="submit" value="Submit"  class="margin5"/>\
-				<input name="reset" type="reset" value="Reset"  class="margin5"/>\
-				<div class="status"></div>\
-		</form>\
-	</div>\
-');
-/**
- *	@template ListInfo
- *
-**/
-Executive.jquery.template.ListInfo = $.template('\
-	{{if valid}}\
-	<div id="list-info-container" class="panel left">\
-		<p class="head">${message.list.listname}</p>\
-		<p>Last Updated on ${message.list.time}</p>\
-		{{if FireSpark.core.helper.equals(message.admin, 1)}}\
-		<p>\
-		<a href="#tplload:cntr=#list-child-container:tpl=tpl-lst-edt:url=launch.php:arg=service~gridcontrol.list.info&listid~${message.list.listid}&ctlgname~${message.ctlgname}" class="navigate" >Edit</a>\
-		<a href="#tplload:cntr=#list-child-container:url=launch.php:arg=service~gridcontrol.list.remove&listid~${message.list.listid}&ctlgid~${message.ctlgid}:cf=true" class="navigate" >Remove</a>\
-		</p>\
-		{{/if}}\
-	{{else}}\
-	<p class="error">${msg}</p>\
-	{{/if}}\
-');
-/**
- *	@template ListList
- *
-**/
-Executive.jquery.template.ListList = $.template('\
-<div id="list-container">\
-	{{if valid}}\
-	<div id="list-child-container" class="editor"></div>\
-	<div id="list-list-container" class="panel left">\
-		<p class="head">Lists in ${message.ctlgname} Catalogue</p>\
-		{{if FireSpark.core.helper.equals(message.admin, 1)}}\
-		<p><a href="#tplbind:cntr=#list-child-container:tpl=tpl-lst-add:arg=ctlgname~${message.ctlgname}&ctlgid~${message.ctlgid}&addcode~${message.addcode}" class="navigate" >Add New ...</a></p>\
-		{{/if}}\
-		{{each message.lists}}\
-		<div class="panel">\
-			<p class="subhead">${$index+1}. ${listname}</p>\
-			<p>\
-				<a href="#tplload:cntr=#list-child-container:tpl=${tplcode}:url=launch.php:arg=service~${serviceuri}&${idparam}~${listid}&${nameparam}~${listname}&addcode~${addcode}" class="navigate" >Open</a>\
-				<a href="#tplload:cntr=#list-child-container:tpl=tpl-lst-inf:url=launch.php:arg=service~gridcontrol.list.info&listid~${listid}&ctlgname~${message.ctlgname}&ctlgid~${message.ctlgid}" class="navigate" >Info</a>\
-			</p>\
-		</div>\
-		{{/each}}\
-	{{else}}\
-	<p class="error">${msg}</p>\
-	{{/if}}\
-</div>');
-/**
- *	@template NoteAdd
- *
-**/
-Executive.jquery.template.NoteAdd = $.template('\
-<div id="note-add-container" class="panel form-panel">\
-	<p class="head">Add Note in ${bname} Board</p>\
-		<form action="launch.php" method="post" class="navigate" id="_formsubmit:sel._note-add-container">\
-				<input type="hidden" name="service" value="gridshare.note.add">\
-				<input type="hidden" name="boardid" value="${boardid}">\
-				<label>Title\
-					<input type="text" name="title" class="required" size="50" />\
-				</label>\
-					<p class="error hidden margin5">Invalid Title</p>\
-				<label>Message</label>\
-				<textarea name="note" rows="5" cols="80" class="editor"></textarea>\
-				<input name="submit" type="submit" value="Submit"  class="margin5"/>\
-				<input name="reset" type="reset" value="Reset"  class="margin5"/>\
-				<div class="status"></div>\
-		</form>\
-	</div>\
-');/**
- *	@template NoteEdit
- *
-**/
-Executive.jquery.template.NoteEdit = $.template('\
-	{{if valid}}\
-	<div id="note-edit-container" class="panel form-panel">\
-		<p class="head">Edit Note #${message.note.noteid}</p>\
-		<form action="launch.php" method="post" class="navigate" id="_formsubmit:sel._note-edit-container">\
-				<input type="hidden" name="service" value="gridshare.note.edit">\
-				<input type="hidden" name="noteid" value="${message.note.noteid}">\
-				<label>Title\
-					<input type="text" name="title" class="required" size="50" value="${message.note.title}" />\
-				</label>\
-					<p class="error hidden margin5">Invalid Title</p>\
-				<label>Message</label>\
-				<textarea name="note" rows="5" cols="80" class="editor">${message.note.note}</textarea>\
-				<input name="submit" type="submit" value="Submit"  class="margin5"/>\
-				<input name="reset" type="reset" value="Reset"  class="margin5"/>\
-				<div class="status"></div>\
-		</form>\
-	</div>\
-	{{else}}\
-	<p class="error">${msg}</p>\
-	{{/if}}\
-');
-/**
- *	@template NoteInfo
- *
-**/
-Executive.jquery.template.NoteInfo = $.template('\
-	{{if valid}}\
-	<div id="note-info-container" class="panel left">\
-		<p class="head">${message.note.title}</p>\
-		<div class="panel">\
-			<p>Author : <span class="bold">${message.note.author}</span> (Last Updated on ${message.note.time})\
-			{{if FireSpark.core.helper.equals(message.admin, 1)}}\
-			<a href="#tplload:cntr=#note-child-container:tpl=tpl-nte-edt:url=launch.php:arg=service~gridshare.note.info&noteid~${message.note.noteid}&bname~${message.bname}" class="navigate" >Edit</a>\
-			<a href="#tplload:cntr=#note-child-container:url=launch.php:arg=service~gridshare.note.remove&noteid~${message.note.noteid}&boardid~${message.boardid}:cf=true" class="navigate" >Remove</a>\
-			{{/if}}\
-			</p>\
-		</div>\
-		<div class="panel">\
-			<p>{{html message.note.note}}</p>\
-		</div>\
-	{{else}}\
-	<p class="error">${msg}</p>\
-	{{/if}}\
-');
-/**
- *	@template NoteList
- *
-**/
-Executive.jquery.template.NoteList = $.template('\
-<div id="note-container">\
-	{{if valid}}\
-	<div id="note-child-container" class="editor"></div>\
-	<div id="note-list-container" class="panel left">\
-		<p class="head">Notes in ${message.bname} Board</p>\
-		{{if FireSpark.core.helper.equals(message.admin, 1)}}\
-		<p><a href="#tplbind:cntr=#note-child-container:tpl=tpl-nte-add:arg=bname~${message.bname}&boardid~${message.boardid}" class="navigate" >Add New ...</a></p>\
-		{{/if}}\
-		{{each message.notes}}\
-		<div class="panel">\
-			<p class="subhead">${$index+1}. ${title}</p>\
-			<p>\
-				<a href="#tplload:cntr=#note-child-container:tpl=tpl-nte-inf:url=launch.php:arg=service~gridshare.note.info&noteid~${noteid}&bname~${message.bname}&boardid~${message.boardid}" class="navigate" >View</a>\ (Last Updated on ${time} by ${author})\
-			</p>\
-		</div>\
-		{{/each}}\
-	{{else}}\
-	<p class="error">${msg}</p>\
-	{{/if}}\
-</div>');
-/**
  *	@template ProceedingAdd
  *
 **/
@@ -2071,81 +2444,6 @@ Executive.jquery.template.ProceedingList = $.template('\
 	{{/if}}\
 </div>');
 /**
- *	@template ResourceAdd
- *
-**/
-Executive.jquery.template.ResourceAdd = $.template('\
-	<div id="resource-add-container" class="panel form-panel">\
-		<p class="head">Add Resource in ${stname} Site</p>\
-		<form action="launch.php" method="post" class="navigate" id="_formsubmit:sel._resource-add-container">\
-				<input type="hidden" name="service" value="gridview.resource.add">\
-				<input type="hidden" name="siteid" value="${siteid}">\
-				<label>Name\
-					<input type="text" name="rsrcname" size="50" class="required" />\
-				</label>\
-					<p class="error hidden margin5">Invalid Name</p>\
-				<label>Resource</label>\
-				<textarea name="resource" rows="15" cols="80"></textarea>\
-				<input name="submit" type="submit" value="Submit"  class="margin5"/>\
-				<input name="reset" type="reset" value="Reset"  class="margin5"/>\
-				<div class="status"></div>\
-		</form>\
-	</div>\
-');
-/**
- *	@template ResourceEdit
- *
-**/
-Executive.jquery.template.ResourceEdit = $.template('\
-	{{if valid}}\
-	<div id="resource-edit-container" class="panel form-panel">\
-		<p class="head">Edit Resource #${message.resource.rsrcid}</p>\
-		<form action="launch.php" method="post" class="navigate" id="_formsubmit:sel._resource-edit-container">\
-				<input type="hidden" name="service" value="gridview.resource.edit">\
-				<input type="hidden" name="rsrcid" value="${message.resource.rsrcid}">\
-				<label>Name\
-					<input type="text" name="rsrcname" size="50" disabled="disabled" value="${message.resource.rsrcname}" />\
-				</label>\
-				<label>Resource</label>\
-				<textarea name="resource" rows="15" cols="80">${message.resource.resource}</textarea>\
-				<input name="submit" type="submit" value="Submit"  class="margin5"/>\
-				<input name="reset" type="reset" value="Reset"  class="margin5"/>\
-				<div class="status"></div>\
-		</form>\
-	</div>\
-	{{else}}\
-	<p class="error">${msg}</p>\
-	{{/if}}\
-');
-/**
- *	@template ResourceList
- *
-**/
-Executive.jquery.template.ResourceList = $.template('\
-<div id="resource-container">\
-	{{if valid}}\
-	<div id="resource-child-container"></div>\
-	<div id="resource-list-container" class="panel left">\
-		<p class="head">Resources in ${message.stname} Site</p>\
-		{{if FireSpark.core.helper.equals(message.admin, 1)}}\
-		<p><a href="#tplbind:cntr=#resource-child-container:tpl=tpl-rsc-add:arg=stname~${message.stname}&siteid~${message.siteid}" class="navigate" >Add New ...</a></p>\
-		{{/if}}\
-		{{each message.resources}}\
-		<div class="panel">\
-			<p class="subhead">${$index+1}. ${rsrcname}</p>\
-			{{if FireSpark.core.helper.equals(message.admin, 1)}}\
-			<p>\
-				<a href="#tplload:cntr=#resource-child-container:tpl=tpl-rsc-edt:url=launch.php:arg=service~gridview.resource.info&stname~${message.stname}&rsrcid~${rsrcid}" class="navigate" >Edit</a>\
-				<a href="#tplload:cntr=#resource-child-container:url=launch.php:arg=service~gridview.resource.remove&rsrcid~${rsrcid}&siteid~${message.siteid}:cf=true" class="navigate" >Remove</a>\
-			</p>\
-			{{/if}}\
-		</div>\
-		{{/each}}\
-	{{else}}\
-	<p class="error">${msg}</p>\
-	{{/if}}\
-</div>');
-/**
  *	@template SelectionList
  *
 **/
@@ -2206,263 +2504,6 @@ Executive.jquery.template.SelectionStage = $.template('\
 				</p>\
 			</div>\
 		{{/if}}\
-	{{else}}\
-	<p class="error">${msg}</p>\
-	{{/if}}\
-</div>');
-/**
- *	@template SpaceAdd
- *
-**/
-Executive.jquery.template.SpaceAdd = $.template('\
-<div id="space-add-container" class="panel form-panel">\
-	<p class="head">Add Space to ${cntrname} Container</p>\
-		<form action="launch.php" method="post" class="navigate" id="_formsubmit:sel._space-add-container">\
-				<input type="hidden" name="service" value="griddata.space.add">\
-				<input type="hidden" name="cntrid" value="${cntrid}">\
-				<label>Name\
-					<input type="text" name="spname" class="required" size="50" />\
-				</label>\
-					<p class="error hidden margin5">Invalid Name</p>\
-				<label>Path\
-					<input type="text" name="sppath" class="required" size="85" />\
-				</label>\
-					<p class="error hidden margin5">Invalid Path</p>\
-					<p class="desc">Must end in / eg. "storage/test/"</p>\
-				<input name="submit" type="submit" value="Submit"  class="margin5"/>\
-				<input name="reset" type="reset" value="Reset"  class="margin5"/>\
-				<div class="status"></div>\
-		</form>\
-	</div>\
-');/**
- *	@template SpaceEdit
- *
-**/
-Executive.jquery.template.SpaceEdit = $.template('\
-<div id="space-edit-container" class="panel form-panel">\
-	<p class="head">Edit Space #${message.spaceid}</p>\
-		<form action="launch.php" method="post" class="navigate" id="_formsubmit:sel._space-edit-container">\
-				<input type="hidden" name="service" value="griddata.space.edit">\
-				<input type="hidden" name="spaceid" value="${message.spaceid}">\
-				<label>Name\
-					<input type="text" name="spname" class="required" size="50"  value="${message.spname}"/>\
-				</label>\
-					<p class="error hidden margin5">Invalid Name</p>\
-				<label>Path\
-					<input type="text" name="sppath" class="required" size="85" value="${message.sppath}" />\
-				</label>\
-					<p class="error hidden margin5">Invalid Path</p>\
-					<p class="desc">Must end in / eg. "storage/test/"</p>\
-				<input name="submit" type="submit" value="Submit"  class="margin5"/>\
-				<input name="reset" type="reset" value="Reset"  class="margin5"/>\
-				<div class="status"></div>\
-		</form>\
-	</div>\
-');/**
- *	@template SpaceList
- *
-**/
-Executive.jquery.template.SpaceList = $.template('\
-<div id="space-container">\
-	{{if valid}}\
-	<div id="space-child-container"></div>\
-	<div id="space-list-container" class="panel left">\
-		<p class="head">Spaces in ${message.cntrname} Container</p>\
-		{{if FireSpark.core.helper.equals(message.admin, 1)}}\
-		<p><a href="#tplbind:cntr=#space-child-container:tpl=tpl-spc-add:arg=cntrname~${message.cntrname}&cntrid~${message.cntrid}" class="navigate" >Add New ...</a></p>\
-		{{/if}}\
-		{{each message.spaces}}\
-		<div class="panel">\
-			<p class="subhead">${spname}</p>\
-			<p>\
-				<a href="#tplload:cntr=#space-child-container:tpl=tpl-stg-lst:url=launch.php:arg=service~griddata.storage.list&spaceid~${spaceid}&spname~${spname}" class="navigate" >List</a>\
-				<a href="launch.php?request=get&service=griddata.space.archive&spaceid=${spaceid}&asname=${spname}.zip" target="_blank">Archive</a>\
-				{{if FireSpark.core.helper.equals(message.admin, 1)}}\
-				<a href="#tplload:cntr=#space-child-container:tpl=tpl-spc-edt:url=launch.php:arg=service~griddata.space.info&cntrname~${message.cntrname}&spaceid~${spaceid}" class="navigate" >Edit</a>\
-				<a href="#tplload:cntr=#space-child-container:url=launch.php:arg=service~griddata.space.remove&cntrid~${message.cntrid}&spaceid~${spaceid}:cf=true" class="navigate" >Remove</a> (Ensure empty before removing)\
-				{{/if}}\
-			</p>\
-		</div>\
-		{{/each}}\
-	{{else}}\
-	<p class="error">${msg}</p>\
-	{{/if}}\
-</div>');
-/**
- *	@template StageAdd
- *
-**/
-Executive.jquery.template.StageAdd = $.template('\
-<div id="stage-add-container" class="panel form-panel">\
-	<p class="head">Add Stage in Proceeding for ${procname}</p>\
-		<form action="launch.php" method="post" class="navigate" id="_formsubmit:sel._stage-add-container">\
-				<input type="hidden" name="service" value="gridevent.stage.add">\
-				<input type="hidden" name="eventid" value="${procid}">\
-				<input type="hidden" name="level" value="3">\
-				<label>Name\
-					<input type="text" name="name"  class="required" />\
-				</label>\
-					<p class="error hidden margin5">Invalid Name</p>\
-				<label>Stage\
-					<input type="text" name="stage" class="required"/>\
-				</label>\
-					<p class="error hidden margin5">Invalid Stage</p>\
-				<label>Start Time\
-					<input type="text" name="start" class="required" />\
-				</label>\
-					<p class="error hidden margin5">Invalid Start Time</p>\
-					<p class="desc">Format : YYYY-MM-DD hh:mm:ss</p>\
-				<label>End Time\
-					<input type="text" name="end" class="required" />\
-				</label>\
-					<p class="error hidden margin5">Invalid End Time</p>\
-					<p class="desc">Format : YYYY-MM-DD hh:mm:ss</p>\
-				<label>Open\
-					<input type="text" name="open" class="required" value="0"/>\
-				</label>\
-					<p class="error hidden margin5">Invalid Open value</p>\
-				<input name="submit" type="submit" value="Submit"  class="margin5"/>\
-				<input name="reset" type="reset" value="Reset"  class="margin5"/>\
-				<div class="status"></div>\
-		</form>\
-	</div>\
-');/**
- *	@template StageEdit
- *
-**/
-Executive.jquery.template.StageEdit = $.template('\
-<div id="stage-edit-container" class="panel form-panel">\
-	<p class="head">Edit Stage #${message.stage.stageid}</p>\
-		<form action="launch.php" method="post" class="navigate" id="_formsubmit:sel._stage-edit-container">\
-				<input type="hidden" name="service" value="gridevent.stage.edit">\
-				<input type="hidden" name="stageid" value="${message.stage.stageid}">\
-				<label>Name\
-					<input type="text" name="name"  class="required" value="${message.stage.name}"/>\
-				</label>\
-					<p class="error hidden margin5">Invalid Name</p>\
-				<label>Stage\
-					<input type="text" name="stage" class="required" value="${message.stage.stage}"/>\
-				</label>\
-					<p class="error hidden margin5">Invalid Stage</p>\
-				<label>Start Time\
-					<input type="text" name="start" class="required" value="${message.stage.start}"/>\
-				</label>\
-					<p class="error hidden margin5">Invalid Start Time</p>\
-					<p class="desc">Format : YYYY-MM-DD hh:mm:ss</p>\
-				<label>End Time\
-					<input type="text" name="end" class="required" value="${message.stage.end}"/>\
-				</label>\
-					<p class="error hidden margin5">Invalid End Time</p>\
-					<p class="desc">Format : YYYY-MM-DD hh:mm:ss</p>\
-				<label>Open\
-					<input type="text" name="open" class="required" value="${message.stage.open}"/>\
-				</label>\
-				<label>Status\
-					<input type="text" name="status" class="required" value="${message.stage.status}"/>\
-				</label>\
-					<p class="error hidden margin5">Invalid Status value</p>\
-				<input name="submit" type="submit" value="Submit"  class="margin5"/>\
-				<input name="reset" type="reset" value="Reset"  class="margin5"/>\
-				<div class="status"></div>\
-		</form>\
-	</div>\
-');/**
- *	@template StageList
- *
-**/
-Executive.jquery.template.StageList = $.template('\
-<div id="stage-container">\
-	{{if valid}}\
-	<div id="stage-child-container"></div>\
-	<div id="stage-list-container" class="panel left">\
-		<p class="head">All Stages in Proceeding for ${message.ename}</p>\
-		{{if FireSpark.core.helper.equals(message.admin, 1)}}\
-		<p><a href="#tplbind:cntr=#stage-child-container:tpl=tpl-sta-add:arg=procname~${message.ename}&procid~${message.eventid}" class="navigate" >Add New ...</a></p>\
-		{{/if}}\
-		{{each message.stages}}\
-		<div class="panel">\
-			<p class="subhead">${name} (Stage ${stage})</p>\
-			<p>\
-				<a href="#tplload:cntr=#stage-child-container:tpl=tpl-sel-sta:url=launch.php:arg=service~executive.student.stage&stageid~${stageid}&eventid~${message.eventid}&ename~${message.ename}&stname~${name}" \
-					class="navigate" >Selections</a>\
-				{{if FireSpark.core.helper.equals(message.admin, 1)}}\
-				<a href="#tplload:cntr=#stage-child-container:tpl=tpl-sta-edt:url=launch.php:arg=service~gridevent.stage.info&stageid~${stageid}" class="navigate" >Edit</a>\
-				<a href="#tplload:cntr=#stage-child-container:url=launch.php:arg=service~gridevent.stage.remove&stageid~${stageid}&eventid~${message.eventid}:cf=true" class="navigate" >Remove</a>\
-				{{/if}}\
-			</p>\
-		</div>\
-		{{/each}}\
-	{{else}}\
-	<p class="error">${msg}</p>\
-	{{/if}}\
-</div>');
-/**
- *	@template StorageAdd
- *
-**/
-Executive.jquery.template.StorageAdd = $.template('\
-<div id="storage-add-container" class="panel form-panel">\
-	<p class="head">Add Storage in ${spname} Space</p>\
-		<form action="launch.php" method="post" class="navigate" enctype="multipart/form-data"  id="_formsubmit:sel._storage-add-container:iframe=true">\
-				<input type="hidden" name="service" value="griddata.storage.add">\
-				<input type="hidden" name="spaceid" value="${spaceid}">\
-				<input type="hidden" name="filekey" value="storage">\
-				<input type="hidden" name="filepath" value="${sppath}">\
-				<label>File\
-					<input type="file" name="storage" class="required"/>\
-				</label>\
-					<p class="error hidden margin5">Invalid File</p>\
-				<input name="submit" type="submit" value="Submit"  class="margin5"/>\
-				<input name="reset" type="reset" value="Reset"  class="margin5"/>\
-				<div class="status"></div>\
-		</form>\
-	</div>\
-');/**
- *	@template StorageEdit
- *
-**/
-Executive.jquery.template.StorageEdit = $.template('\
-<div id="storage-edit-container" class="panel form-panel">\
-	<p class="head">Edit Storage #${stgid}</p>\
-		<form action="launch.php" method="post" class="navigate" enctype="multipart/form-data"  id="_formsubmit:sel._storage-edit-container:iframe=true">\
-				<input type="hidden" name="service" value="griddata.storage.write">\
-				<input type="hidden" name="filekey" value="storage">\
-				<input type="hidden" name="stgid" value="${stgid}">\
-				<input type="hidden" name="spaceid" value="${spaceid}">\
-				<label>File\
-					<input type="file" name="storage" class="required"/>\
-				</label>\
-					<p class="error hidden margin5">Invalid File</p>\
-				<input name="submit" type="submit" value="Submit"  class="margin5"/>\
-				<input name="reset" type="reset" value="Reset"  class="margin5"/>\
-				<div class="status"></div>\
-		</form>\
-	</div>\
-');/**
- *	@template StorageList
- *
-**/
-Executive.jquery.template.StorageList = $.template('\
-<div id="storage-container">\
-	{{if valid}}\
-	<div id="storage-child-container"></div>\
-	<div id="storage-list-container" class="panel left">\
-		<p class="head">Storages in ${message.spname} Space</p>\
-		{{if FireSpark.core.helper.equals(message.admin, 1)}}\
-		<p><a href="#tplbind:cntr=#storage-child-container:tpl=tpl-stg-add:arg=spname~${message.spname}&spaceid~${message.spaceid}" class="navigate" >Add New ...</a></p>\
-		{{/if}}\
-		{{each message.storages}}\
-		<div class="panel">\
-			<p class="subhead">${$index+1}. ${stgname}</p>\
-			<p>\
-				<a href="launch.php?request=get&service=griddata.storage.read&stgid=${stgid}&spaceid=${message.spaceid}" target="_blank">Download</a>\ (${FireSpark.core.helper.readFileSize(size)})\
-				{{if FireSpark.core.helper.equals(message.admin, 1)}}\
-				<a href="#tplbind:cntr=#storage-child-container:tpl=tpl-stg-edt:arg=spname~${message.spname}&stgid~${stgid}&spaceid~${message.spaceid}" class="navigate" >Edit</a>\
-				<a href="#tplload:cntr=#storage-child-container:url=launch.php:arg=service~griddata.storage.remove&stgid~${stgid}&spaceid~${message.spaceid}:cf=true" class="navigate" >Remove</a>\
-				{{/if}}\
-			</p>\
-		</div>\
-		{{/each}}\
 	{{else}}\
 	<p class="error">${msg}</p>\
 	{{/if}}\
