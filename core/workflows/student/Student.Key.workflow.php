@@ -34,9 +34,7 @@ class StudentKeyWorkflow implements Service {
 	
 		$memory['msg'] = 'Student Key changed successfully';
 		$attr = $memory['stuid'] ? 'stuid' : 'owner';
-		$memory['id'] = 0;
-		$id = $memory['stuid'] ? 'id' : 'stuid';
-		$action = $memory['stuid'] ? 'edit' : 'child';
+		$init = $memory['stuid'] ? false : true;
 		$memory['stuid'] = $memory['stuid'] ? $memory['stuid'] : $memory['keyid'];
 		
 		$workflow = array(
@@ -55,8 +53,9 @@ class StudentKeyWorkflow implements Service {
 		),
 		array(
 			'service' => 'sb.reference.authorize.workflow',
-			'input' => array('id' => $id),
-			'action' => $action
+			'input' => array('id' => 'stuid'),
+			'action' => 'edit',
+			'init' => $init
 		),
 		array(
 			'service' => 'sb.key.authenticate.workflow',

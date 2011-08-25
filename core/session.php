@@ -49,7 +49,7 @@
 		$memory = $kernel->run($service);
 		
 		if($memory['valid']) {
-			header('Location: '. EXECUTIVEPATH);
+			header('Location: '. ROOTPATH);
 		}
 		else {
 			echo '<h1>Invalid Session</h1>';

@@ -28,7 +28,7 @@
 	**/
 	define('COOKIENAME', 'executive-session');
 	define('COOKIEEXPIRY', 5);
-	define('EXECUTIVEPATH', '/tprexecutive');
+	define('ROOTPATH', '/tprexecutive');
 	
 	/**
 	 *	@config Dataservices

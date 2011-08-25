@@ -192,10 +192,6 @@
 
 					FireSpark.Kernel.execute([{
 						service : FireSpark.jquery.service.NavigatorInit,
-						selector : 'a.navigate',
-						attribute : 'href'
-					},{
-						service : FireSpark.jquery.service.NavigatorInit,
 						selector : 'form.navigate',
 						event : 'submit',
 						attribute : 'id',
@@ -213,6 +209,15 @@
 					
 					$('div#firespark_console').fadeIn(1500);
 					$('p#load-status').html('Loading CKEditor ...').show();
+				
+					var $current_hash = '';
+					window.setInterval(function(){
+						if($current_hash != window.location.hash){
+							$current_hash = window.location.hash
+							FireSpark.Kernel.launch($current_hash);
+						}
+					}, 500);
+					
 				})
 				.script('ui/js/ckeditor/ckeditor.js<?php echo $gzip; ?>').wait(function(){
 					$('p#load-status').html('Loading jQuery CKEditor ...');
