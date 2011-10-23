@@ -27,8 +27,6 @@ class ProceedingRemoveWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function run($memory){
-		$kernel = new WorkflowKernel();
-	
 		$memory['msg'] = 'Proceeding removed successfully';
 		
 		$workflow = array(
@@ -37,7 +35,7 @@ class ProceedingRemoveWorkflow implements Service {
 			'input' => array('seriesid' => 'comid', 'eventid' => 'procid')
 		),
 		array(
-			'service' => 'sb.relation.delete.workflow',
+			'service' => 'ad.relation.delete.workflow',
 			'args' => array('procid'),
 			'conn' => 'exconn',
 			'relation' => '`proceedings`',
@@ -45,7 +43,7 @@ class ProceedingRemoveWorkflow implements Service {
 			'errormsg' => 'Invalid Proceeding ID'
 		));
 		
-		return $kernel->execute($workflow, $memory);
+		return Snowblozm::execute($workflow, $memory);
 	}
 	
 	/**

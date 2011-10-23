@@ -35,13 +35,11 @@ class CompanyAddWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function run($memory){
-		$kernel = new WorkflowKernel();
-		
 		$memory['msg'] = 'Company added successfully';
 		
 		$workflow = array(
 		array(
-			'service' => 'sb.reference.create.workflow',
+			'service' => 'ad.reference.create.workflow',
 			'input' => array('keyvalue' => 'password', 'parent' => 'indid'),
 			'authorize' => 'edit:add:remove',
 			'level' => 2,
@@ -55,7 +53,7 @@ class CompanyAddWorkflow implements Service {
 			'output' => array('stgid' => 'photo')
 		),
 		array(
-			'service' => 'sb.relation.insert.workflow',
+			'service' => 'ad.relation.insert.workflow',
 			'args' => array('comid', 'name', 'owner', 'email', 'site', 'interests', 'photo'),
 			'conn' => 'exconn',
 			'relation' => '`companies`',
@@ -63,7 +61,7 @@ class CompanyAddWorkflow implements Service {
 			'escparam' => array('name', 'email', 'site', 'interests')
 		));
 		
-		return $kernel->execute($workflow, $memory);
+		return Snowblozm::execute($workflow, $memory);
 	}
 	
 	/**

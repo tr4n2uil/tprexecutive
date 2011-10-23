@@ -32,14 +32,12 @@ class BatchAddWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function run($memory){
-		$kernel = new WorkflowKernel();
-		
 		$memory['owner'] = $memory['owner'] ? $memory['owner'] : $memory['keyid'];
 		$memory['msg'] = 'Batch added successfully';
 		
 		$workflow = array(
 		array(
-			'service' => 'sb.reference.add.workflow',
+			'service' => 'ad.reference.add.workflow',
 			'input' => array('parent' => 'deptid'),
 			'authorize' => 'edit:add:remove',
 			'output' => array('id' => 'batchid')
@@ -59,7 +57,7 @@ class BatchAddWorkflow implements Service {
 			'output' => array('spaceid' => 'photo')
 		),
 		array(
-			'service' => 'sb.relation.insert.workflow',
+			'service' => 'ad.relation.insert.workflow',
 			'args' => array('batchid', 'owner', 'btname', 'resume', 'photo'),
 			'conn' => 'exconn',
 			'relation' => '`batches`',
@@ -67,7 +65,7 @@ class BatchAddWorkflow implements Service {
 			'escparam' => array('btname')
 		));
 		
-		return $kernel->execute($workflow, $memory);
+		return Snowblozm::execute($workflow, $memory);
 	}
 	
 	/**

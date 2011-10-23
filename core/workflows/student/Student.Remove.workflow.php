@@ -28,8 +28,6 @@ class StudentRemoveWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function run($memory){
-		$kernel = new WorkflowKernel();
-	
 		$memory['msg'] = 'Student removed successfully';
 		
 		$workflow = array(
@@ -41,11 +39,11 @@ class StudentRemoveWorkflow implements Service {
 			'service' => 'executive.student.info.workflow'
 		),
 		array(
-			'service' => 'sb.reference.delete.workflow',
+			'service' => 'ad.reference.delete.workflow',
 			'input' => array('id' => 'stuid', 'parent' => 'batchid')
 		),
 		array(
-			'service' => 'sb.relation.delete.workflow',
+			'service' => 'ad.relation.delete.workflow',
 			'args' => array('stuid'),
 			'conn' => 'exconn',
 			'relation' => '`students`',
@@ -65,7 +63,7 @@ class StudentRemoveWorkflow implements Service {
 			'input' => array('stgid' => 'photo', 'spaceid' => 'btphoto')
 		));
 		
-		return $kernel->execute($workflow, $memory);
+		return Snowblozm::execute($workflow, $memory);
 	}
 	
 	/**

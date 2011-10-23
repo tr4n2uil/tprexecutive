@@ -37,8 +37,6 @@ class StudentInfoWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function run($memory){
-		$kernel = new WorkflowKernel();
-	
 		$memory['msg'] = 'Student information given successfully';
 		$attr = $memory['stuid'] ? 'stuid' : 'owner';
 		$memory['stuid'] = $memory['stuid'] ? $memory['stuid'] : $memory['keyid'];
@@ -49,7 +47,7 @@ class StudentInfoWorkflow implements Service {
 			'output' => array('resume' => 'btresume', 'photo' => 'btphoto')
 		),
 		array(
-			'service' => 'sb.relation.unique.workflow',
+			'service' => 'ad.relation.unique.workflow',
 			'args' => array('stuid'),
 			'conn' => 'exconn',
 			'relation' => '`students`',
@@ -57,22 +55,22 @@ class StudentInfoWorkflow implements Service {
 			'errormsg' => 'Invalid Student ID'
 		),
 		array(
-			'service' => 'sbcore.data.select.service',
+			'service' => 'adcore.data.select.service',
 			'args' => array('result'),
 			'params' => array('result.0' => 'student', 'result.0.stuid' => 'stuid', 'result.0.home' => 'home', 'result.0.resume' => 'resume', 'result.0.photo' => 'photo')
 		),
 		array(
-			'service' => 'sb.reference.read.workflow',
+			'service' => 'ad.reference.read.workflow',
 			'input' => array('id' => 'stuid')
 		),
 		array(
-			'service' => 'sb.reference.authorize.workflow',
+			'service' => 'ad.reference.authorize.workflow',
 			'input' => array('id' => 'batchid'),
 			'admin' => true,
 			'action' => 'add'
 		));
 		
-		return $kernel->execute($workflow, $memory);
+		return Snowblozm::execute($workflow, $memory);
 	}
 	
 	/**

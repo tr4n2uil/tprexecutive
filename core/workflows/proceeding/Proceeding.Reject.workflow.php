@@ -26,8 +26,6 @@ class ProceedingRejectWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function run($memory){
-		$kernel = new WorkflowKernel();
-		
 		$workflow = array(
 		array(
 			'service' => 'gridevent.event.reject.workflow',
@@ -37,7 +35,7 @@ class ProceedingRejectWorkflow implements Service {
 			'service' => 'executive.proceeding.init.workflow'
 		));
 		
-		return $kernel->execute($workflow, $memory);
+		return Snowblozm::execute($workflow, $memory);
 	}
 	
 	/**

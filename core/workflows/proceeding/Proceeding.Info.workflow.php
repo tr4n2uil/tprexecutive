@@ -28,13 +28,11 @@ class ProceedingInfoWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function run($memory){
-		$kernel = new WorkflowKernel();
-	
 		$memory['msg'] = 'Proceeding information given successfully';
 		
 		$workflow = array(
 		array(
-			'service' => 'sb.relation.unique.workflow',
+			'service' => 'ad.relation.unique.workflow',
 			'args' => array('procid'),
 			'conn' => 'exconn',
 			'relation' => '`proceedings`',
@@ -42,16 +40,16 @@ class ProceedingInfoWorkflow implements Service {
 			'errormsg' => 'Invalid Proceeding ID'
 		),
 		array(
-			'service' => 'sbcore.data.select.service',
+			'service' => 'adcore.data.select.service',
 			'args' => array('result'),
 			'params' => array('result.0' => 'proceeding')
 		),
 		array(
-			'service' => 'sb.reference.read.workflow',
+			'service' => 'ad.reference.read.workflow',
 			'input' => array('id' => 'procid')
 		));
 		
-		return $kernel->execute($workflow, $memory);
+		return Snowblozm::execute($workflow, $memory);
 	}
 	
 	/**

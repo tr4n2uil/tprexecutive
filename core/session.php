@@ -2,15 +2,14 @@
 
 	require_once('../init.php');
 	
-	$kernel = new WorkflowKernel();
-	
 	if(isset($_POST['email']) && isset($_POST['password'])){
 		
 		$workflow = array(
 		array(
-			'service' => 'sb.key.authenticate.workflow',
+			'service' => 'ad.key.authenticate.workflow',
 			'email' => $_POST['email'],
-			'key' => $_POST['password']
+			'key' => $_POST['password'],
+			'context' => CONTEXT
 		),
 		array(
 			'service' => 'gridutil.session.add.workflow',
@@ -18,7 +17,7 @@
 			'expiry' => COOKIEEXPIRY
 		));
 		
-		$memory = $kernel->execute($workflow);
+		$memory = Snowblozm::execute($workflow);
 		$result = array();
 		
 		if($memory['valid']) {
@@ -46,7 +45,7 @@
 			'sessionid' => $_COOKIE[COOKIENAME]
 		);
 		
-		$memory = $kernel->run($service);
+		$memory = Snowblozm::run($service);
 		
 		if($memory['valid']) {
 			header('Location: '. ROOTPATH);

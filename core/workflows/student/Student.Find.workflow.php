@@ -33,13 +33,11 @@ class StudentFindWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function run($memory){
-		$kernel = new WorkflowKernel();
-	
 		$memory['msg'] = 'Student information given successfully';
 		
 		$workflow = array(
 		array(
-			'service' => 'sb.relation.unique.workflow',
+			'service' => 'ad.relation.unique.workflow',
 			'args' => array('email'),
 			'conn' => 'exconn',
 			'relation' => '`students`',
@@ -48,16 +46,16 @@ class StudentFindWorkflow implements Service {
 			'errormsg' => 'Invalid Student Email'
 		),
 		array(
-			'service' => 'sbcore.data.select.service',
+			'service' => 'adcore.data.select.service',
 			'args' => array('result'),
 			'params' => array('result.0' => 'student', 'result.0.stuid' => 'stuid', 'result.0.owner' => 'owner', 'result.0.name' => 'name', 'result.0.home' => 'home', 'result.0.resume' => 'resume', 'result.0.photo' => 'photo')
 		),
 		array(
-			'service' => 'sb.reference.read.workflow',
+			'service' => 'ad.reference.read.workflow',
 			'input' => array('id' => 'stuid')
 		),
 		array(
-			'service' => 'sb.reference.parent.workflow',
+			'service' => 'ad.reference.parent.workflow',
 			'input' => array('id' => 'stuid', 'keyid' => 'owner'),
 			'output' => array('parent' => 'batchid')
 		),
@@ -67,7 +65,7 @@ class StudentFindWorkflow implements Service {
 			'output' => array('resume' => 'btresume', 'photo' => 'btphoto')
 		));
 		
-		return $kernel->execute($workflow, $memory);
+		return Snowblozm::execute($workflow, $memory);
 	}
 	
 	/**

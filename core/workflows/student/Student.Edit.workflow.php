@@ -48,18 +48,16 @@ class StudentEditWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function run($memory){
-		$kernel = new WorkflowKernel();
-	
 		$memory['msg'] = 'Student edited successfully';
 		
 		$workflow = array(
 		array(
-			'service' => 'sb.reference.authorize.workflow',
+			'service' => 'ad.reference.authorize.workflow',
 			'id' => 0,
 			'type' => 'edit'
 		),
 		array(
-			'service' => 'sb.relation.update.workflow',
+			'service' => 'ad.relation.update.workflow',
 			'args' => array('stuid', 'name', 'phone', 'rollno', 'course', 'year', 'cgpa', 'interests', 'sgpa1', 'sgpa2', 'sgpa3', 'sgpa4', 'sgpa5', 'sgpa6', 'sgpa7', 'sgpa8', 'sgpa9', 'sgpa10', 'ygpa1', 'ygpa2', 'ygpa3', 'ygpa4', 'ygpa5'),
 			'conn' => 'exconn',
 			'relation' => '`students`',
@@ -67,11 +65,11 @@ class StudentEditWorkflow implements Service {
 			'escparam' => array('name', 'phone', 'rollno', 'course', 'interests')
 		),
 		array(
-			'service' => 'sb.reference.write.workflow',
+			'service' => 'ad.reference.write.workflow',
 			'input' => array('id' => 'stuid')
 		));
 		
-		return $kernel->execute($workflow, $memory);
+		return Snowblozm::execute($workflow, $memory);
 	}
 	
 	/**

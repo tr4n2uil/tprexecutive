@@ -26,6 +26,7 @@
 	/**
 	 *	@constants System
 	**/
+	define('CONTEXT', 'EX');
 	define('COOKIENAME', 'executive-session');
 	define('COOKIEEXPIRY', 5);
 	define('ROOTPATH', '/tprexecutive');
@@ -34,7 +35,7 @@
 	 *	@config Dataservices
 	**/
 	
-	Snowblozm::init('sbconn', array(
+	Snowblozm::init('adconn', array(
 		'type' => 'mysql',
 		'host' => 'localhost',
 		'user' => 'root',

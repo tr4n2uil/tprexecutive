@@ -36,8 +36,6 @@ class CompanyInfoWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function run($memory){
-		$kernel = new WorkflowKernel();
-	
 		$memory['msg'] = 'Company information given successfully';
 		$attr = $memory['comid'] ? 'comid' : 'owner';
 		$memory['comid'] = $memory['comid'] ? $memory['comid'] : $memory['keyid'];
@@ -45,7 +43,7 @@ class CompanyInfoWorkflow implements Service {
 		
 		$workflow = array(
 		array(
-			'service' => 'sb.relation.unique.workflow',
+			'service' => 'ad.relation.unique.workflow',
 			'args' => array('comid'),
 			'conn' => 'exconn',
 			'relation' => '`companies`',
@@ -53,22 +51,22 @@ class CompanyInfoWorkflow implements Service {
 			'errormsg' => 'Invalid Company ID'
 		),
 		array(
-			'service' => 'sbcore.data.select.service',
+			'service' => 'adcore.data.select.service',
 			'args' => array('result'),
 			'params' => array('result.0' => 'company', 'result.0.photo' => 'photo',  'result.0.comid' => 'comid')
 		),
 		array(
-			'service' => 'sb.reference.read.workflow',
+			'service' => 'ad.reference.read.workflow',
 			'input' => array('id' => 'comid')
 		),
 		array(
-			'service' => 'sb.reference.authorize.workflow',
+			'service' => 'ad.reference.authorize.workflow',
 			'input' => array('id' => 'comid'),
 			'admin' => true,
 			'action' => 'edit'
 		));
 		
-		return $kernel->execute($workflow, $memory);
+		return Snowblozm::execute($workflow, $memory);
 	}
 	
 	/**

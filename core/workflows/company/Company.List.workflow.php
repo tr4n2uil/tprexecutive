@@ -33,23 +33,21 @@ class CompanyListWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function run($memory){
-		$kernel = new WorkflowKernel();
-	
 		$memory['msg'] = 'Companies information given successfully';
 		
 		$workflow = array(
 		array(
-			'service' => 'sb.reference.children.workflow',
+			'service' => 'ad.reference.children.workflow',
 			'input' => array('id' => 'indid')
 		),
 		array(
-			'service' => 'sbcore.data.list.service',
+			'service' => 'adcore.data.list.service',
 			'args' => array('children'),
 			'default' => array(-1),
 			'attr' => 'child'
 		),
 		array(
-			'service' => 'sb.relation.select.workflow',
+			'service' => 'ad.relation.select.workflow',
 			'args' => array('list'),
 			'conn' => 'exconn',
 			'relation' => '`companies`',
@@ -59,13 +57,13 @@ class CompanyListWorkflow implements Service {
 			'output' => array('result' => 'companies')
 		),
 		array(
-			'service' => 'sb.reference.authorize.workflow',
+			'service' => 'ad.reference.authorize.workflow',
 			'input' => array('id' => 'indid'),
 			'admin' => true,
 			'action' => 'add'
 		));
 		
-		return $kernel->execute($workflow, $memory);
+		return Snowblozm::execute($workflow, $memory);
 	}
 	
 	/**

@@ -39,13 +39,11 @@ class StudentAddWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function run($memory){
-		$kernel = new WorkflowKernel();
-	
 		$memory['msg'] = 'Student added successfully';
 		
 		$workflow = array(
 		array(
-			'service' => 'sb.reference.create.workflow',
+			'service' => 'ad.reference.create.workflow',
 			'input' => array('keyvalue' => 'password', 'parent' => 'batchid'),
 			'output' => array('id' => 'stuid')
 		),
@@ -90,7 +88,7 @@ class StudentAddWorkflow implements Service {
 			'output' => array('stgid' => 'photo')
 		),
 		array(
-			'service' => 'sb.relation.insert.workflow',
+			'service' => 'ad.relation.insert.workflow',
 			'args' => array('stuid', 'name', 'owner', 'email', 'phone', 'rollno', 'course', 'year', 'cgpa', 'interests', 'resume', 'photo', 'home'),
 			'conn' => 'exconn',
 			'relation' => '`students`',
@@ -98,7 +96,7 @@ class StudentAddWorkflow implements Service {
 			'escparam' => array('name', 'email', 'phone', 'rollno', 'course', 'interests')
 		));
 		
-		return $kernel->execute($workflow, $memory);
+		return Snowblozm::execute($workflow, $memory);
 	}
 	
 	/**

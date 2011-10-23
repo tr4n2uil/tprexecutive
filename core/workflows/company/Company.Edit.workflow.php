@@ -29,18 +29,16 @@ class CompanyEditWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function run($memory){
-		$kernel = new WorkflowKernel();
-	
 		$memory['msg'] = 'Company edited successfully';
 		
 		$workflow = array(
 		array(
-			'service' => 'sb.reference.authorize.workflow',
+			'service' => 'ad.reference.authorize.workflow',
 			'input' => array('id' => 'comid'),
 			'type' => 'edit'
 		),
 		array(
-			'service' => 'sb.relation.update.workflow',
+			'service' => 'ad.relation.update.workflow',
 			'args' => array('comid', 'name', 'site', 'interests'),
 			'conn' => 'exconn',
 			'relation' => '`companies`',
@@ -48,11 +46,11 @@ class CompanyEditWorkflow implements Service {
 			'escparam' => array('name', 'site', 'interests')
 		),
 		array(
-			'service' => 'sb.reference.write.workflow',
+			'service' => 'ad.reference.write.workflow',
 			'input' => array('id' => 'comid')
 		));
 		
-		return $kernel->execute($workflow, $memory);
+		return Snowblozm::execute($workflow, $memory);
 	}
 	
 	/**

@@ -28,22 +28,20 @@ class ProceedingListWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function run($memory){
-		$kernel = new WorkflowKernel();
-	
 		$memory['msg'] = 'Proceedings information given successfully';
 		
 		$workflow = array(
 		array(
-			'service' => 'sb.reference.children.workflow',
+			'service' => 'ad.reference.children.workflow',
 			'input' => array('id' => 'comid')
 		),
 		array(
-			'service' => 'sbcore.data.list.service',
+			'service' => 'adcore.data.list.service',
 			'args' => array('children'),
 			'attr' => 'child'
 		),
 		array(
-			'service' => 'sb.relation.select.workflow',
+			'service' => 'ad.relation.select.workflow',
 			'args' => array('list'),
 			'conn' => 'exconn',
 			'relation' => '`proceedings`',
@@ -53,7 +51,7 @@ class ProceedingListWorkflow implements Service {
 			'output' => array('result' => 'proceedings')
 		));
 		
-		return $kernel->execute($workflow, $memory);
+		return Snowblozm::execute($workflow, $memory);
 	}
 	
 	/**

@@ -37,8 +37,6 @@ class StudentStageWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function run($memory){
-		$kernel = new WorkflowKernel();
-		
 		$memory['msg'] = 'Student stage information given successfully';
 		
 		$workflow = array(
@@ -46,13 +44,13 @@ class StudentStageWorkflow implements Service {
 			'service' => 'gridevent.selection.stage.workflow'
 		),
 		array(
-			'service' => 'sbcore.data.list.service',
+			'service' => 'adcore.data.list.service',
 			'args' => array('selections'),
 			'attr' => 'owner',
 			'default' => array(0)
 		),
 		array(
-			'service' => 'sb.relation.select.workflow',
+			'service' => 'ad.relation.select.workflow',
 			'args' => array('list'),
 			'conn' => 'exconn',
 			'relation' => '`students`',
@@ -62,14 +60,14 @@ class StudentStageWorkflow implements Service {
 			'output' => array('result' => 'students')
 		),
 		array(
-			'service' => 'sbcore.data.export.service',
+			'service' => 'adcore.data.export.service',
 			'input' => array('data' => 'students'),
 			'type' => 'csv',
 			'default' => "Student ID,Owner,Name,Email,Phone,Roll No,Course,Year,CGPA,Interests,Resume,Photo,Home,SGPA I,SGPA II,SGPA III,SGPA IV,SGPA V,SGPA VI,SGPA VII,SGPA VIII,SGPA IX,SGPA X,YGPA I,YGPA II,YGPA III,YGPA IV,YGPA V\r\n",
 			'output' => array('result' => 'csv')
 		));
 		
-		return $kernel->execute($workflow, $memory);
+		return Snowblozm::execute($workflow, $memory);
 	}
 	
 	/**

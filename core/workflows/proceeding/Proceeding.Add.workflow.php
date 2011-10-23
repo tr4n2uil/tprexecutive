@@ -38,8 +38,6 @@ class ProceedingAddWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function run($memory){
-		$kernel = new WorkflowKernel();
-		
 		$memory['msg'] = 'Proceeding added successfully';
 		$memory['owner'] = $memory['owner'] ? $memory['owner'] : $memory['keyid'];
 		
@@ -52,7 +50,7 @@ class ProceedingAddWorkflow implements Service {
 			'output' => array('eventid' => 'procid')
 		),
 		array(
-			'service' => 'sb.relation.insert.workflow',
+			'service' => 'ad.relation.insert.workflow',
 			'args' => array('procid', 'name', 'owner', 'year', 'type', 'eligibility', 'margin', 'max', 'deadline'),
 			'conn' => 'exconn',
 			'relation' => '`proceedings`',
@@ -60,7 +58,7 @@ class ProceedingAddWorkflow implements Service {
 			'escparam' => array('name', 'year', 'deadline', 'type')
 		));
 		
-		return $kernel->execute($workflow, $memory);
+		return Snowblozm::execute($workflow, $memory);
 	}
 	
 	/**

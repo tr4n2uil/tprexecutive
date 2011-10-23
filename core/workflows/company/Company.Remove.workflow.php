@@ -28,8 +28,6 @@ class CompanyRemoveWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function run($memory){
-		$kernel = new WorkflowKernel();
-	
 		$memory['msg'] = 'Company removed successfully';
 		
 		$workflow = array(
@@ -37,11 +35,11 @@ class CompanyRemoveWorkflow implements Service {
 			'service' => 'executive.company.info.workflow'
 		),
 		array(
-			'service' => 'sb.reference.remove.workflow',
+			'service' => 'ad.reference.remove.workflow',
 			'input' => array('id' => 'comid', 'parent' => 'indid')
 		),
 		array(
-			'service' => 'sb.relation.delete.workflow',
+			'service' => 'ad.relation.delete.workflow',
 			'args' => array('comid'),
 			'conn' => 'exconn',
 			'relation' => '`companies`',
@@ -54,7 +52,7 @@ class CompanyRemoveWorkflow implements Service {
 			'spaceid' => 0
 		));
 		
-		return $kernel->execute($workflow, $memory);
+		return Snowblozm::execute($workflow, $memory);
 	}
 	
 	/**

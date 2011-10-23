@@ -30,8 +30,6 @@ class StudentKeyWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function run($memory){
-		$kernel = new WorkflowKernel();
-	
 		$memory['msg'] = 'Student Key changed successfully';
 		$attr = $memory['stuid'] ? 'stuid' : 'owner';
 		$init = $memory['stuid'] ? false : true;
@@ -39,7 +37,7 @@ class StudentKeyWorkflow implements Service {
 		
 		$workflow = array(
 		array(
-			'service' => 'sb.relation.unique.workflow',
+			'service' => 'ad.relation.unique.workflow',
 			'args' => array('stuid'),
 			'conn' => 'exconn',
 			'relation' => '`students`',
@@ -47,26 +45,26 @@ class StudentKeyWorkflow implements Service {
 			'errormsg' => 'Invalid Student ID'
 		),
 		array(
-			'service' => 'sbcore.data.select.service',
+			'service' => 'adcore.data.select.service',
 			'args' => array('result'),
 			'params' => array('result.0.owner' => 'owner', 'result.0.stuid' => 'stuid')
 		),
 		array(
-			'service' => 'sb.reference.authorize.workflow',
+			'service' => 'ad.reference.authorize.workflow',
 			'input' => array('id' => 'stuid'),
 			'action' => 'edit',
 			'init' => $init
 		),
 		array(
-			'service' => 'sb.key.authenticate.workflow',
+			'service' => 'ad.key.authenticate.workflow',
 			'input' => array('email' => 'currentemail', 'key' => 'currentkey')
 		),
 		array(
-			'service' => 'sb.reference.master.workflow',
+			'service' => 'ad.reference.master.workflow',
 			'input' => array('id' => 'stuid')
 		));
 		
-		return $kernel->execute($workflow, $memory);
+		return Snowblozm::execute($workflow, $memory);
 	}
 	
 	/**

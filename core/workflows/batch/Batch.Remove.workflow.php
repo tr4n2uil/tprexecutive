@@ -28,8 +28,6 @@ class BatchRemoveWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function run($memory){
-		$kernel = new WorkflowKernel();
-	
 		$memory['msg'] = 'Batch removed successfully';
 		
 		$workflow = array(
@@ -37,11 +35,11 @@ class BatchRemoveWorkflow implements Service {
 			'service' => 'executive.batch.info.workflow'
 		),
 		array(
-			'service' => 'sb.reference.remove.workflow',
+			'service' => 'ad.reference.remove.workflow',
 			'input' => array('parent' => 'deptid', 'id' => 'batchid')
 		),
 		array(
-			'service' => 'sb.relation.delete.workflow',
+			'service' => 'ad.relation.delete.workflow',
 			'args' => array('batchid'),
 			'conn' => 'exconn',
 			'relation' => '`batches`',
@@ -57,7 +55,7 @@ class BatchRemoveWorkflow implements Service {
 			'input' => array('spaceid' => 'photo', 'cntrid' => 'deptid')
 		));
 		
-		return $kernel->execute($workflow, $memory);
+		return Snowblozm::execute($workflow, $memory);
 	}
 	
 	/**

@@ -30,13 +30,11 @@ class BatchInfoWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function run($memory){
-		$kernel = new WorkflowKernel();
-	
 		$memory['msg'] = 'Batch information given successfully';
 		
 		$workflow = array(
 		array(
-			'service' => 'sb.relation.unique.workflow',
+			'service' => 'ad.relation.unique.workflow',
 			'args' => array('batchid'),
 			'conn' => 'exconn',
 			'relation' => '`batches`',
@@ -44,16 +42,16 @@ class BatchInfoWorkflow implements Service {
 			'errormsg' => 'Invalid Batch ID'
 		),
 		array(
-			'service' => 'sbcore.data.select.service',
+			'service' => 'adcore.data.select.service',
 			'args' => array('result'),
 			'params' => array('result.0.btname' => 'btname', 'result.0.resume' => 'resume', 'result.0.photo' => 'photo')
 		),
 		array(
-			'service' => 'sb.reference.read.workflow',
+			'service' => 'ad.reference.read.workflow',
 			'input' => array('id' => 'batchid')
 		));
 		
-		return $kernel->execute($workflow, $memory);
+		return Snowblozm::execute($workflow, $memory);
 	}
 	
 	/**

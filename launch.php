@@ -5,9 +5,8 @@
 	Snowblozm::$setmime = 'html';
 	
 	/**
-	 *	WorkflowKernel instance and initialization
+	 *	Initialization
 	**/
-	$kernel = new WorkflowKernel();
 	$email = false;
 	
 	if(isset($_COOKIE[COOKIENAME])){
@@ -17,7 +16,7 @@
 			'sessionid' => $_COOKIE[COOKIENAME]
 		);
 		
-		$memory = $kernel->run($service);
+		$memory = Snowblozm::run($service);
 		
 		if($memory['valid']) 
 			$email = $memory['email'];
@@ -29,15 +28,16 @@
 		'crypt' => 'none',
 		'hash' => 'none',
 		'email' => $email,
+		'context' => CONTEXT,
 		'access' => array(
-			'root' => array('sbdemo', 'gridcontrol', 'gridview', 'gridevent', 'gridshare', 'griddata', 'executive')
+			'root' => array('addemo', 'gridcontrol', 'gridview', 'gridevent', 'gridshare', 'griddata', 'executive')
 		)
 	);
 	
 	$service = array(
-		'service' => 'sb.launch.message.workflow'
+		'service' => 'ad.launch.message.workflow'
 	);
 	
-	$kernel->run($service, $memory);
+	Snowblozm::run($service, $memory);
 	
 ?>

@@ -31,17 +31,15 @@ class ProceedingEditWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function run($memory){
-		$kernel = new WorkflowKernel();
-	
 		$memory['msg'] = 'Proceeding edited successfully';
 		
 		$workflow = array(
 		array(
-			'service' => 'sb.reference.authorize.workflow',
+			'service' => 'ad.reference.authorize.workflow',
 			'input' => array('id' => 'procid')
 		),
 		array(
-			'service' => 'sb.relation.update.workflow',
+			'service' => 'ad.relation.update.workflow',
 			'args' => array('procid', 'year', 'type', 'eligibility', 'margin', 'deadline', 'max'),
 			'conn' => 'exconn',
 			'relation' => '`proceedings`',
@@ -49,11 +47,11 @@ class ProceedingEditWorkflow implements Service {
 			'escparam' => array('year', 'deadline', 'type')
 		),
 		array(
-			'service' => 'sb.reference.write.workflow',
+			'service' => 'ad.reference.write.workflow',
 			'input' => array('id' => 'procid')
 		));
 		
-		return $kernel->execute($workflow, $memory);
+		return Snowblozm::execute($workflow, $memory);
 	}
 	
 	/**

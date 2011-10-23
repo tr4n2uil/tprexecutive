@@ -26,14 +26,13 @@
 		<div id="quick-panel">
 			
 <?php 
-				$kernel = new WorkflowKernel();
 				$email = false;
 				if(isset($_COOKIE[COOKIENAME])){
 					$service = array(
 						'service' => 'gridutil.session.info.workflow',
 						'sessionid' => $_COOKIE[COOKIENAME]
 					);
-					$memory = $kernel->run($service);
+					$memory = Snowblozm::run($service);
 					if($memory['valid']) 
 						$email = $memory['email'];
 				}
@@ -43,7 +42,7 @@
 					$service = array(
 						'service' => 'executive.student.find.workflow'
 					);
-					$memory = $kernel->run($service, $memory);
+					$memory = Snowblozm::run($service, $memory);
 					if($memory['valid']) {
 ?>
 
@@ -72,7 +71,7 @@
 						$service = array(
 							'service' => 'executive.company.find.workflow'
 						);
-						$memory = $kernel->run($service, $memory);
+						$memory = Snowblozm::run($service, $memory);
 						if($memory['valid']) {
 ?>
 
@@ -110,7 +109,7 @@
 			<div class="fleft">
 				<div class="panel">
 					<p>Developed by enhanCSE Technologies</p>
-					<p>2011 <a href="http://www.github.com/tr4n2uil/tprexecutive" target="_blank">Open Source</a><a href="mailto:enhancse.tech@gmail.com">enhancse.tech@gmail.com</a></p>
+					<p>2011 <!--<a href="http://www.github.com/tr4n2uil/tprexecutive" target="_blank">Open Source</a>--><a href="mailto:enhancse.tech@gmail.com">enhancse.tech@gmail.com</a></p>
 				</div>
 			</div>
 			<div class="fleft panel" style="background:white; height: 3em;">

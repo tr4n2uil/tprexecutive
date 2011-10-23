@@ -26,11 +26,9 @@ class ProceedingInitWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function run($memory){
-		$kernel = new WorkflowKernel();
-		
 		$workflow = array(
 		array(
-			'service' => 'sb.relation.unique.workflow',
+			'service' => 'ad.relation.unique.workflow',
 			'args' => array('procid'),
 			'conn' => 'exconn',
 			'relation' => '`proceedings`',
@@ -38,7 +36,7 @@ class ProceedingInitWorkflow implements Service {
 			'errormsg' => 'Beyond Proceeding Deadline',
 		),
 		array(
-			'service' => 'sbcore.data.select.service',
+			'service' => 'adcore.data.select.service',
 			'args' => array('result'),
 			'params' => array('result.0.eligibility' => 'eligibility', 'result.0.margin' => 'margin', 'result.0.max' => 'max', 'result.0.owner' => 'superuser', 'result.0.year' => 'year', 'result.0.type' => 'proctype')
 		),
@@ -47,7 +45,7 @@ class ProceedingInitWorkflow implements Service {
 			'input' => array('eventid' => 'procid')
 		),
 		array(
-			'service' => 'sbcore.data.select.service',
+			'service' => 'adcore.data.select.service',
 			'args' => array('event'),
 			'params' => array('event.rejection' => 'rejection')
 		),
@@ -57,7 +55,7 @@ class ProceedingInitWorkflow implements Service {
 			'asc' => true
 		),
 		array(
-			'service' => 'sbcore.data.select.service',
+			'service' => 'adcore.data.select.service',
 			'args' => array('stages'),
 			'params' => array('stages.0.stageid' => 'stageid')
 		),
@@ -67,13 +65,13 @@ class ProceedingInitWorkflow implements Service {
 			'input' => array('eventid' => 'procid')
 		),
 		array(
-			'service' => 'sbcore.data.list.service',
+			'service' => 'adcore.data.list.service',
 			'args' => array('selections'),
 			'attr' => 'owner',
 			'output' => array('result' => 'selected')
 		),
 		array(
-			'service' => 'sb.relation.select.workflow',
+			'service' => 'ad.relation.select.workflow',
 			'args' => array('eligibility', 'margin', 'max', 'rejection', 'proctype', 'year'),
 			'conn' => 'exconn',
 			'relation' => '`students`',
@@ -84,13 +82,13 @@ class ProceedingInitWorkflow implements Service {
 			'output' => array('result' => 'eligible')
 		),
 		array(
-			'service' => 'sbcore.data.list.service',
+			'service' => 'adcore.data.list.service',
 			'args' => array('eligible'),
 			'attr' => 'owner',
 			'output' => array('result' => 'eligible')
 		));
 		
-		$memory = $kernel->execute($workflow, $memory);
+		$memory = Snowblozm::execute($workflow, $memory);
 		
 		if(!$memory['valid'])
 			return $memory;
@@ -109,7 +107,7 @@ class ProceedingInitWorkflow implements Service {
 					'stageid' => $stageid,
 					'eventid' => $eventid
 				);
-				$memory = $kernel->run($service);
+				$memory = Snowblozm::run($service);
 				if(!$memory['valid'])
 					return $memory;
 			}
