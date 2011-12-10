@@ -1,63 +1,44 @@
-<?php 
+<?php
 
 	/**
 	 * 	@root TPR Executive
 	**/
 	define('EXROOT', dirname(__FILE__).'/' );
-
-	/**
-	 * 	@initialize ThunderSky
-	**/
-	require_once(EXROOT. '../services/thundersky/init.php');
-
-	/**
-	 * 	@initialize Service roots
-	**/
-	Snowblozm::add('excore', array(
-		'root' => EXROOT.'core/services/',
-		'location' => 'local'
-	));
-	
-	Snowblozm::add('executive', array(
-		'root' => EXROOT.'core/workflows/',
-		'location' => 'local'
-	));
 	
 	/**
 	 *	@constants System
 	**/
-	define('CONTEXT', 'EX');
+	
 	define('COOKIENAME', 'executive-session');
-	define('COOKIEEXPIRY', 5);
+	define('COOKIEEXPIRY', 1);
 	define('ROOTPATH', '/tprexecutive');
+	define('FEEDBACKMAILS', 'tpo@itbhu.ac.in,vibhaj.rajan.cse08@itbhu.ac.in');
+	define('PHPMAILER', EXROOT.'dev/libraries/phpmailer/PHPMailer.class.php');
 	
 	/**
-	 *	@config Dataservices
+	 *	@constants MySQL Local:Vibhaj
+	**/
+	define('MYSQL_HOST', 'localhost');
+	define('MYSQL_USER', 'root');
+	define('MYSQL_PASS', 'krishna');
+	define('MYSQL_DB', 'tprexecutive');
+	
+	/**
+	 *	@constants MySQL Production
+	**
+	define('MYSQL_HOST', 'localhost');
+	define('MYSQL_USER', 'ictsanto_db');
+	define('MYSQL_PASS', 'santoshkumar#');
+	define('MYSQL_DB', 'ictsanto_ict');
 	**/
 	
-	Snowblozm::init('adconn', array(
-		'type' => 'mysql',
-		'host' => 'localhost',
-		'user' => 'root',
-		'pass' => 'krishna',
-		'database' => 'snowblozm'
-	));
+	/**
+	 *	@constants Mail
+	**/
+	define('MAIL_HOST', 'mail.itbhu.ac.in');
+	define('MAIL_PORT', 465);
+	define('MAIL_USER', 'TPR Executive Admin');
+	define('MAIL_EMAIL', 'admin.tpo@itbhu.ac.in');
+	define('MAIL_PASS', 'executive');
 	
-	Snowblozm::init('tsconn', array(
-		'type' => 'mysql',
-		'host' => 'localhost',
-		'user' => 'root',
-		'pass' => 'krishna',
-		'database' => 'thundersky'
-	));
-	
-	Snowblozm::init('exconn', array(
-		'type' => 'mysql',
-		'host' => 'localhost',
-		'user' => 'root',
-		'pass' => 'krishna',
-		'database' => 'tprexecutive'
-	));
-	
-
 ?>
