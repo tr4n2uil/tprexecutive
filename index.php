@@ -27,14 +27,12 @@
 				$tiles .= <<<ERRORTILE
 				<p class="head2">Error</p>
 				<hr class="hgt1 skyblue" />
-				<p><a href="#showtile:cntr=#error:tile=#invalid" class="navigate tile" style="background: url('ui/img/executive/error.png') no-repeat center bottom; background-size: 50px 50px;">Invalid Content</a><p/>
+				<p><a href="#showtile:tile=#invalid" class="navigate tile" style="background: url('ui/img/executive/error.png') no-repeat center bottom; background-size: 50px 50px;">Invalid Content</a><p/>
 ERRORTILE;
 				$content = <<<ERROR
-				<div id="error">
 					<div id="invalid" class="tile-content" style="display:block">
 						<h1>Invalid Content</h1>
 					</div>
-				</div>
 ERROR;
 			}
 			break;
