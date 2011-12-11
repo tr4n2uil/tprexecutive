@@ -5,7 +5,7 @@
 		
 		$service = array(
 			'service' => 'store.storage.read.workflow',
-			
+			''
 		);
 	
 		Snowblozm::run($service, $memory);

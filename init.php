@@ -9,6 +9,8 @@
 	 * 	@initialize ThunderSky
 	**/
 	require_once(EXROOT. '../services/thundersky/php/init.php');
+	Snowblozm::$setmime = 'html';
+	//Snowblozm::$debug = true;
 
 	/**
 	 * 	@initialize Service roots
