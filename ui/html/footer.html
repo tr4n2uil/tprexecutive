@@ -1,9 +1,45 @@
 		<div class="footer align-center">
 			<hr class="hgt1 skyblue" />
-			<p>&copy; 2011 TPC, IT BHU</p>
+			<p>&copy; 2011 T&amp;P Cell, IT BHU</p>
 		</div>
 
 		<script type="text/javascript"> 
+			$(document).ready(function(){
+				Snowblozm.Registry.add('#tabtpl', FireSpark.jquery.workflow.TabTemplate);
+				Snowblozm.Registry.add('#htmlload', FireSpark.jquery.workflow.ElementHtml);
+				Snowblozm.Registry.add('#tplload', FireSpark.jquery.workflow.ElementTemplate);
+				Snowblozm.Registry.add('#formsubmit', FireSpark.jquery.workflow.FormSubmit);
+				Snowblozm.Registry.add('#tplbind', FireSpark.jquery.workflow.BindTemplate);
+				Snowblozm.Registry.add('#showtile', FireSpark.jquery.workflow.ShowTile);
+				
+				Snowblozm.Registry.save('login', FireSpark.jquery.workflow.CookieLogin);
+				
+				Snowblozm.Kernel.execute([{
+					service : FireSpark.jquery.service.NavigatorInit,
+					selector : 'form.navigate',
+					event : 'submit',
+					attribute : 'id',
+					escaped : true
+				}]);
+				
+				$('#main-container div').live('load' , function(){
+					if($(this).hasClass('editor')){
+						Snowblozm.Kernel.run({
+							service : FireSpark.jquery.service.ElementEditor,
+							selector : 'textarea.editor'
+						}, {});
+					}
+				});
+				
+				var $current_hash = '';
+				window.setInterval(function(){
+					if($current_hash != window.location.hash){
+						$current_hash = window.location.hash
+						Snowblozm.Kernel.launch($current_hash);
+					}
+				}, 500);
+			});
+			
 			/*
 			var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
 			document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));

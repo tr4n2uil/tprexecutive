@@ -6,9 +6,27 @@
 	define('EXROOT', dirname(__FILE__).'/' );
 	
 	/**
+	 * 	@initialize ThunderSky
+	**/
+	require_once(EXROOT. '../services/thundersky/php/init.php');
+
+	/**
+	 * 	@initialize Service roots
+	**/
+	Snowblozm::add('excore', array(
+		'root' => EXROOT.'core/services/',
+		'location' => 'local'
+	));
+	
+	Snowblozm::add('executive', array(
+		'root' => EXROOT.'core/workflows/',
+		'location' => 'local'
+	));
+	
+	/**
 	 *	@constants System
 	**/
-	
+	define('CONTEXT', 'EX');
 	define('COOKIENAME', 'executive-session');
 	define('COOKIEEXPIRY', 1);
 	define('ROOTPATH', '/tprexecutive');
@@ -16,21 +34,32 @@
 	define('PHPMAILER', EXROOT.'dev/libraries/phpmailer/PHPMailer.class.php');
 	
 	/**
-	 *	@constants MySQL Local:Vibhaj
+	 *	@config Dataservices
 	**/
-	define('MYSQL_HOST', 'localhost');
-	define('MYSQL_USER', 'root');
-	define('MYSQL_PASS', 'krishna');
-	define('MYSQL_DB', 'tprexecutive');
 	
-	/**
-	 *	@constants MySQL Production
-	**
-	define('MYSQL_HOST', 'localhost');
-	define('MYSQL_USER', 'ictsanto_db');
-	define('MYSQL_PASS', 'santoshkumar#');
-	define('MYSQL_DB', 'ictsanto_ict');
-	**/
+	Snowblozm::init('adconn', array(
+		'type' => 'mysql',
+		'host' => 'localhost',
+		'user' => 'root',
+		'pass' => 'krishna',
+		'database' => 'snowblozm'
+	));
+	
+	Snowblozm::init('tsconn', array(
+		'type' => 'mysql',
+		'host' => 'localhost',
+		'user' => 'root',
+		'pass' => 'krishna',
+		'database' => 'thundersky'
+	));
+	
+	Snowblozm::init('exconn', array(
+		'type' => 'mysql',
+		'host' => 'localhost',
+		'user' => 'root',
+		'pass' => 'krishna',
+		'database' => 'tprexecutive'
+	));
 	
 	/**
 	 *	@constants Mail

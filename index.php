@@ -4,7 +4,7 @@
 	$content = isset($_GET['content']) ? $_GET['content'] : 'home';
 	if($content == 'download') $flag = false;
 	
-	if(in_array($content, array('cnt-office', 'cnt-varanasi', 'com-procedure', 'acd-overview', 'acd-disciplines', 'acd-beyond', 'adv-itbhu', 'adv-alumni', 'adv-facilities', 'hom-msgtpo', 'hom-msgdct', 'home'))){
+	if(in_array($content, array('cnt-office', 'cnt-varanasi', 'com-procedure', 'acd-overview', 'acd-disciplines', 'acd-beyond', 'adv-itbhu', 'adv-alumni', 'adv-facilities', 'why-at-itbhu', 'hom-msgtpo', 'hom-msgdct', 'home'))){
 		$content = 'ui/html/'.$content.'.html';
 	}
 	elseif(in_array($content, array('course-list', 'course', 'test', 'lecture', 'download', 'feedback', 'tutorial'))){
@@ -22,12 +22,7 @@
 
 ?>
 	<div id="container">
-		<div id="quick-container">
-			Krishnakripa
-		</div>
-		<div id="main-container">
-			<?php include_once($content); ?>
-		</div>
+		<?php include_once($content); ?>
 		<div class="clearfloat"></div>
 	</div>
 <?php 
