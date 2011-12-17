@@ -1,16 +1,31 @@
-	<div id="login" class="tile-content">
+<div id="login" class="tile-content">
+	<h1>Login to T&amp;P Portal</h1>
+	<div id="login-panel" class="panel">
 		<form action="core/session.php" method="post" class="navigate" id="_formsubmit:sel._login-panel:ln.true">
-				<p class="headdark">Login</p>
-				<label>Email
-					<input type="text" name="email" class="full required email"/>
-				</label>
-				<p class="error hidden margin5">Invalid Email</p>
-				<label>Password
-				<input type="password" name="password" class="full required" />
-				</label>
-				<p class="error hidden margin5">Invalid password</p>
-				<input name="submit" type="submit" value="Login" class="margin5"/>
-				<div class="status"></div>
-				<a href="#htmlload:cntr=#main-container:url=ui/html/main-reset.html" class="navigate">Forgot Password</a>
+			<label class="field">
+				<span class="pleft">Email</span>
+				<span class="pright">
+					<input type="text" name="email" class="required email"/>
+					<span class="error hidden">Invalid Email</span>
+				</span>
+			</label>
+			<div class="clearfloat"></div>
+			<label class="field">
+				<span class="pleft">Password</span>
+				<span class="pright">
+					<input type="password" name="password" class="required" />
+					<span class="error hidden">Invalid password</span>
+				</span>
+			</label>
+			<div class="clearfloat"></div>
+			<p class="field">
+				<span class="pleft">
+					<input name="submit" type="submit" value="Login" class="button"/>
+				</span>
+			</p>
+			<div class="status pright"></div>
+			<div class="clearfloat"></div>
+			<p><a href="#htmlload:cntr=#main-container:url=ui/html/main-reset.html" class="navigate">Forgot Password</a></p>
 		</form>
+	</div>
 </div>

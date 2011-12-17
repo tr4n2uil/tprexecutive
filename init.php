@@ -71,5 +71,6 @@
 	define('MAIL_USER', 'TPR Executive Admin');
 	define('MAIL_EMAIL', 'admin.tpo@itbhu.ac.in');
 	define('MAIL_PASS', 'executive');
+
 	
 ?>
