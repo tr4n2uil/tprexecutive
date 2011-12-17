@@ -34,7 +34,7 @@ class BatchInfoWorkflow implements Service {
 		
 		$workflow = array(
 		array(
-			'service' => 'ad.relation.unique.workflow',
+			'service' => 'transpera.relation.unique.workflow',
 			'args' => array('batchid'),
 			'conn' => 'exconn',
 			'relation' => '`batches`',
@@ -42,12 +42,12 @@ class BatchInfoWorkflow implements Service {
 			'errormsg' => 'Invalid Batch ID'
 		),
 		array(
-			'service' => 'adcore.data.select.service',
+			'service' => 'cbcore.data.select.service',
 			'args' => array('result'),
 			'params' => array('result.0.btname' => 'btname', 'result.0.resume' => 'resume', 'result.0.photo' => 'photo')
 		),
 		array(
-			'service' => 'ad.reference.read.workflow',
+			'service' => 'gauge.track.read.workflow',
 			'input' => array('id' => 'batchid')
 		));
 		

@@ -43,7 +43,7 @@ class StudentAddWorkflow implements Service {
 		
 		$workflow = array(
 		array(
-			'service' => 'ad.reference.create.workflow',
+			'service' => 'transpera.reference.create.workflow',
 			'input' => array('keyvalue' => 'password', 'parent' => 'batchid'),
 			'output' => array('id' => 'stuid')
 		),
@@ -51,7 +51,7 @@ class StudentAddWorkflow implements Service {
 			'service' => 'executive.batch.info.workflow'
 		),
 		array(
-			'service' => 'gridview.content.add.workflow',
+			'service' => 'display.content.add.workflow',
 			'cntname' => 'home-'.$memory['name'],
 			'cntstype' => 1,
 			'cntstyle' => '',
@@ -59,16 +59,16 @@ class StudentAddWorkflow implements Service {
 			'cnttpl' => '<h3>Welcome to ${content.name}\'s Home Page</h3>',
 			'cntdtype' => 1,
 			'cntdata' => '{"name":"'.$memory['name'].'"}',
-			'input' => array('siteid' => 'batchid'),
+			'input' => array('boardid' => 'batchid'),
 			'level' => 2,
 			'output' => array('cntid' => 'home')
 		),
 		array(
-			'service' => 'griddata.space.info.workflow',
+			'service' => 'store.space.info.workflow',
 			'input' => array('spaceid' => 'resume')
 		),
 		array(
-			'service' => 'griddata.storage.add.workflow',
+			'service' => 'store.storage.add.workflow',
 			'filename' => '['.$memory['rollno'].'] '.$memory['name'].'.pdf',
 			'mime' => 'application/pdf',
 			'input' => array('spaceid' => 'resume', 'filepath' => 'sppath'),
@@ -76,11 +76,11 @@ class StudentAddWorkflow implements Service {
 			'output' => array('stgid' => 'resume')
 		),
 		array(
-			'service' => 'griddata.space.info.workflow',
+			'service' => 'store.space.info.workflow',
 			'input' => array('spaceid' => 'photo')
 		),
 		array(
-			'service' => 'griddata.storage.add.workflow',
+			'service' => 'store.storage.add.workflow',
 			'filename' => '['.$memory['rollno'].'] '.$memory['name'].'.png',
 			'mime' => 'image/png',
 			'input' => array('spaceid' => 'photo', 'filepath' => 'sppath'),
@@ -88,7 +88,7 @@ class StudentAddWorkflow implements Service {
 			'output' => array('stgid' => 'photo')
 		),
 		array(
-			'service' => 'ad.relation.insert.workflow',
+			'service' => 'transpera.relation.insert.workflow',
 			'args' => array('stuid', 'name', 'owner', 'email', 'phone', 'rollno', 'course', 'year', 'cgpa', 'interests', 'resume', 'photo', 'home'),
 			'conn' => 'exconn',
 			'relation' => '`students`',

@@ -33,12 +33,12 @@ class CompanyEditWorkflow implements Service {
 		
 		$workflow = array(
 		array(
-			'service' => 'ad.reference.authorize.workflow',
+			'service' => 'transpera.reference.authorize.workflow',
 			'input' => array('id' => 'comid'),
 			'type' => 'edit'
 		),
 		array(
-			'service' => 'ad.relation.update.workflow',
+			'service' => 'transpera.relation.update.workflow',
 			'args' => array('comid', 'name', 'site', 'interests'),
 			'conn' => 'exconn',
 			'relation' => '`companies`',
@@ -46,7 +46,7 @@ class CompanyEditWorkflow implements Service {
 			'escparam' => array('name', 'site', 'interests')
 		),
 		array(
-			'service' => 'ad.reference.write.workflow',
+			'service' => 'gauge.track.write.workflow',
 			'input' => array('id' => 'comid')
 		));
 		

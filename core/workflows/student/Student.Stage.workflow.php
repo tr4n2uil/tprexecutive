@@ -41,16 +41,16 @@ class StudentStageWorkflow implements Service {
 		
 		$workflow = array(
 		array(
-			'service' => 'gridevent.selection.stage.workflow'
+			'service' => 'score.selection.stage.workflow'
 		),
 		array(
-			'service' => 'adcore.data.list.service',
+			'service' => 'cbcore.data.list.service',
 			'args' => array('selections'),
 			'attr' => 'owner',
 			'default' => array(0)
 		),
 		array(
-			'service' => 'ad.relation.select.workflow',
+			'service' => 'transpera.relation.select.workflow',
 			'args' => array('list'),
 			'conn' => 'exconn',
 			'relation' => '`students`',
@@ -60,7 +60,7 @@ class StudentStageWorkflow implements Service {
 			'output' => array('result' => 'students')
 		),
 		array(
-			'service' => 'adcore.data.export.service',
+			'service' => 'cbcore.data.export.service',
 			'input' => array('data' => 'students'),
 			'type' => 'csv',
 			'default' => "Student ID,Owner,Name,Email,Phone,Roll No,Course,Year,CGPA,Interests,Resume,Photo,Home,SGPA I,SGPA II,SGPA III,SGPA IV,SGPA V,SGPA VI,SGPA VII,SGPA VIII,SGPA IX,SGPA X,YGPA I,YGPA II,YGPA III,YGPA IV,YGPA V\r\n",

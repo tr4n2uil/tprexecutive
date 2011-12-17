@@ -52,12 +52,12 @@ class StudentEditWorkflow implements Service {
 		
 		$workflow = array(
 		array(
-			'service' => 'ad.reference.authorize.workflow',
+			'service' => 'transpera.reference.authorize.workflow',
 			'id' => 0,
 			'type' => 'edit'
 		),
 		array(
-			'service' => 'ad.relation.update.workflow',
+			'service' => 'transpera.relation.update.workflow',
 			'args' => array('stuid', 'name', 'phone', 'rollno', 'course', 'year', 'cgpa', 'interests', 'sgpa1', 'sgpa2', 'sgpa3', 'sgpa4', 'sgpa5', 'sgpa6', 'sgpa7', 'sgpa8', 'sgpa9', 'sgpa10', 'ygpa1', 'ygpa2', 'ygpa3', 'ygpa4', 'ygpa5'),
 			'conn' => 'exconn',
 			'relation' => '`students`',
@@ -65,7 +65,7 @@ class StudentEditWorkflow implements Service {
 			'escparam' => array('name', 'phone', 'rollno', 'course', 'interests')
 		),
 		array(
-			'service' => 'ad.reference.write.workflow',
+			'service' => 'gauge.track.write.workflow',
 			'input' => array('id' => 'stuid')
 		));
 		

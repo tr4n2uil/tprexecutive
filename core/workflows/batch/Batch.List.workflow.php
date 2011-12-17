@@ -37,17 +37,17 @@ class BatchListWorkflow implements Service {
 		
 		$workflow = array(
 		array(
-			'service' => 'ad.reference.children.workflow',
+			'service' => 'transpera.reference.children.workflow',
 			'input' => array('id' => 'deptid')
 		),
 		array(
-			'service' => 'adcore.data.list.service',
+			'service' => 'cbcore.data.list.service',
 			'args' => array('children'),
 			'default' => array(-1),
 			'attr' => 'child'
 		),
 		array(
-			'service' => 'ad.relation.select.workflow',
+			'service' => 'transpera.relation.select.workflow',
 			'args' => array('list'),
 			'conn' => 'exconn',
 			'relation' => '`batches`',
@@ -57,7 +57,7 @@ class BatchListWorkflow implements Service {
 			'output' => array('result' => 'batches')
 		),
 		array(
-			'service' => 'ad.reference.authorize.workflow',
+			'service' => 'transpera.reference.authorize.workflow',
 			'input' => array('id' => 'deptid'),
 			'admin' => true,
 			'action' => 'add'

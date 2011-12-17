@@ -37,7 +37,7 @@ class StudentKeyWorkflow implements Service {
 		
 		$workflow = array(
 		array(
-			'service' => 'ad.relation.unique.workflow',
+			'service' => 'transpera.relation.unique.workflow',
 			'args' => array('stuid'),
 			'conn' => 'exconn',
 			'relation' => '`students`',
@@ -45,22 +45,22 @@ class StudentKeyWorkflow implements Service {
 			'errormsg' => 'Invalid Student ID'
 		),
 		array(
-			'service' => 'adcore.data.select.service',
+			'service' => 'cbcore.data.select.service',
 			'args' => array('result'),
 			'params' => array('result.0.owner' => 'owner', 'result.0.stuid' => 'stuid')
 		),
 		array(
-			'service' => 'ad.reference.authorize.workflow',
+			'service' => 'transpera.reference.authorize.workflow',
 			'input' => array('id' => 'stuid'),
 			'action' => 'edit',
 			'init' => $init
 		),
 		array(
-			'service' => 'ad.key.authenticate.workflow',
+			'service' => 'gaurd.key.authenticate.workflow',
 			'input' => array('email' => 'currentemail', 'key' => 'currentkey')
 		),
 		array(
-			'service' => 'ad.reference.master.workflow',
+			'service' => 'transpera.reference.master.workflow',
 			'input' => array('id' => 'stuid')
 		));
 		

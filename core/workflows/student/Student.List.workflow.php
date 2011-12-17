@@ -44,17 +44,17 @@ class StudentListWorkflow implements Service {
 			'output' => array('resume' => 'btresume', 'photo' => 'btphoto')
 		),
 		array(
-			'service' => 'ad.reference.children.workflow',
+			'service' => 'transpera.reference.children.workflow',
 			'input' => array('id' => 'batchid')
 		),
 		array(
-			'service' => 'adcore.data.list.service',
+			'service' => 'cbcore.data.list.service',
 			'args' => array('children'),
 			'default' => array(-1),
 			'attr' => 'child'
 		),
 		array(
-			'service' => 'ad.relation.select.workflow',
+			'service' => 'transpera.relation.select.workflow',
 			'args' => array('list', 'course'),
 			'conn' => 'exconn',
 			'relation' => '`students`',
@@ -64,7 +64,7 @@ class StudentListWorkflow implements Service {
 			'output' => array('result' => 'students')
 		),
 		array(
-			'service' => 'ad.reference.authorize.workflow',
+			'service' => 'transpera.reference.authorize.workflow',
 			'input' => array('id' => 'batchid'),
 			'admin' => true,
 			'action' => 'add'

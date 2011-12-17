@@ -39,12 +39,12 @@
 	 *	@config Dataservices
 	**/
 	
-	Snowblozm::init('adconn', array(
+	Snowblozm::init('cbconn', array(
 		'type' => 'mysql',
 		'host' => 'localhost',
 		'user' => 'root',
 		'pass' => 'krishna',
-		'database' => 'snowblozm'
+		'database' => 'cirrusbolt'
 	));
 	
 	Snowblozm::init('tsconn', array(

@@ -39,11 +39,11 @@ class StudentRemoveWorkflow implements Service {
 			'service' => 'executive.student.info.workflow'
 		),
 		array(
-			'service' => 'ad.reference.delete.workflow',
+			'service' => 'transpera.reference.delete.workflow',
 			'input' => array('id' => 'stuid', 'parent' => 'batchid')
 		),
 		array(
-			'service' => 'ad.relation.delete.workflow',
+			'service' => 'transpera.relation.delete.workflow',
 			'args' => array('stuid'),
 			'conn' => 'exconn',
 			'relation' => '`students`',
@@ -51,15 +51,15 @@ class StudentRemoveWorkflow implements Service {
 			'errormsg' => 'Invalid Student ID'
 		),
 		array(
-			'service' => 'gridview.content.remove.workflow',
+			'service' => 'display.content.remove.workflow',
 			'input' => array('cntid' => 'home', 'siteid' => 'batchid')
 		),
 		array(
-			'service' => 'griddata.storage.remove.workflow',
+			'service' => 'store.storage.remove.workflow',
 			'input' => array('stgid' => 'resume', 'spaceid' => 'btresume')
 		),
 		array(
-			'service' => 'griddata.storage.remove.workflow',
+			'service' => 'store.storage.remove.workflow',
 			'input' => array('stgid' => 'photo', 'spaceid' => 'btphoto')
 		));
 		

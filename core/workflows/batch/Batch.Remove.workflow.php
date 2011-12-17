@@ -35,11 +35,11 @@ class BatchRemoveWorkflow implements Service {
 			'service' => 'executive.batch.info.workflow'
 		),
 		array(
-			'service' => 'ad.reference.remove.workflow',
+			'service' => 'transpera.reference.remove.workflow',
 			'input' => array('parent' => 'deptid', 'id' => 'batchid')
 		),
 		array(
-			'service' => 'ad.relation.delete.workflow',
+			'service' => 'transpera.relation.delete.workflow',
 			'args' => array('batchid'),
 			'conn' => 'exconn',
 			'relation' => '`batches`',
@@ -47,11 +47,11 @@ class BatchRemoveWorkflow implements Service {
 			'errormsg' => 'Invalid Batch ID'
 		),
 		array(
-			'service' => 'griddata.space.remove.workflow',
+			'service' => 'store.space.remove.workflow',
 			'input' => array('spaceid' => 'resume', 'cntrid' => 'deptid')
 		),
 		array(
-			'service' => 'griddata.space.remove.workflow',
+			'service' => 'store.space.remove.workflow',
 			'input' => array('spaceid' => 'photo', 'cntrid' => 'deptid')
 		));
 		

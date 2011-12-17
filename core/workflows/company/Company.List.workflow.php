@@ -37,17 +37,17 @@ class CompanyListWorkflow implements Service {
 		
 		$workflow = array(
 		array(
-			'service' => 'ad.reference.children.workflow',
+			'service' => 'transpera.reference.children.workflow',
 			'input' => array('id' => 'indid')
 		),
 		array(
-			'service' => 'adcore.data.list.service',
+			'service' => 'cbcore.data.list.service',
 			'args' => array('children'),
 			'default' => array(-1),
 			'attr' => 'child'
 		),
 		array(
-			'service' => 'ad.relation.select.workflow',
+			'service' => 'transpera.relation.select.workflow',
 			'args' => array('list'),
 			'conn' => 'exconn',
 			'relation' => '`companies`',
@@ -57,7 +57,7 @@ class CompanyListWorkflow implements Service {
 			'output' => array('result' => 'companies')
 		),
 		array(
-			'service' => 'ad.reference.authorize.workflow',
+			'service' => 'transpera.reference.authorize.workflow',
 			'input' => array('id' => 'indid'),
 			'admin' => true,
 			'action' => 'add'

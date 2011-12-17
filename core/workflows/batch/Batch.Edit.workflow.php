@@ -31,12 +31,12 @@ class BatchEditWorkflow implements Service {
 		
 		$workflow = array(
 		array(
-			'service' => 'ad.reference.authorize.workflow',
+			'service' => 'transpera.reference.authorize.workflow',
 			'input' => array('id' => 'batchid'),
 			'action' => 'edit'
 		),
 		array(
-			'service' => 'ad.relation.update.workflow',
+			'service' => 'transpera.relation.update.workflow',
 			'args' => array('batchid', 'btname'),
 			'conn' => 'exconn',
 			'relation' => '`batches`',

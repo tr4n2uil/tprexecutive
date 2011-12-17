@@ -35,11 +35,11 @@ class CompanyRemoveWorkflow implements Service {
 			'service' => 'executive.company.info.workflow'
 		),
 		array(
-			'service' => 'ad.reference.remove.workflow',
+			'service' => 'transpera.reference.remove.workflow',
 			'input' => array('id' => 'comid', 'parent' => 'indid')
 		),
 		array(
-			'service' => 'ad.relation.delete.workflow',
+			'service' => 'transpera.relation.delete.workflow',
 			'args' => array('comid'),
 			'conn' => 'exconn',
 			'relation' => '`companies`',
@@ -47,7 +47,7 @@ class CompanyRemoveWorkflow implements Service {
 			'errormsg' => 'Invalid Company ID'
 		),
 		array(
-			'service' => 'griddata.storage.remove.workflow',
+			'service' => 'store.storage.remove.workflow',
 			'input' => array('stgid' => 'photo'),
 			'spaceid' => 0
 		));

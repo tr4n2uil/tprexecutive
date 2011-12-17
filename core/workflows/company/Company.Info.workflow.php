@@ -43,7 +43,7 @@ class CompanyInfoWorkflow implements Service {
 		
 		$workflow = array(
 		array(
-			'service' => 'ad.relation.unique.workflow',
+			'service' => 'transpera.relation.unique.workflow',
 			'args' => array('comid'),
 			'conn' => 'exconn',
 			'relation' => '`companies`',
@@ -51,16 +51,16 @@ class CompanyInfoWorkflow implements Service {
 			'errormsg' => 'Invalid Company ID'
 		),
 		array(
-			'service' => 'adcore.data.select.service',
+			'service' => 'cbcore.data.select.service',
 			'args' => array('result'),
 			'params' => array('result.0' => 'company', 'result.0.photo' => 'photo',  'result.0.comid' => 'comid')
 		),
 		array(
-			'service' => 'ad.reference.read.workflow',
+			'service' => 'gauge.track.read.workflow',
 			'input' => array('id' => 'comid')
 		),
 		array(
-			'service' => 'ad.reference.authorize.workflow',
+			'service' => 'transpera.reference.authorize.workflow',
 			'input' => array('id' => 'comid'),
 			'admin' => true,
 			'action' => 'edit'

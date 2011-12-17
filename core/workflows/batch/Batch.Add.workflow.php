@@ -37,27 +37,27 @@ class BatchAddWorkflow implements Service {
 		
 		$workflow = array(
 		array(
-			'service' => 'ad.reference.add.workflow',
+			'service' => 'transpera.reference.add.workflow',
 			'input' => array('parent' => 'deptid'),
 			'authorize' => 'edit:add:remove',
 			'output' => array('id' => 'batchid')
 		),
 		array(
-			'service' => 'griddata.space.add.workflow',
+			'service' => 'store.space.add.workflow',
 			'spname' => 'storage/Batch_'.$memory['btname'].'_Resumes',
 			'sppath' => 'storage/batch_'.$memory['btname'].'_resumes/',
 			'input' => array('cntrid' => 'deptid'),
 			'output' => array('spaceid' => 'resume')
 		),
 		array(
-			'service' => 'griddata.space.add.workflow',
+			'service' => 'store.space.add.workflow',
 			'spname' => 'storage/Batch_'.$memory['btname'].'_Photos',
 			'sppath' => 'storage/batch_'.$memory['btname'].'_photos/',
 			'input' => array('cntrid' => 'deptid'),
 			'output' => array('spaceid' => 'photo')
 		),
 		array(
-			'service' => 'ad.relation.insert.workflow',
+			'service' => 'transpera.relation.insert.workflow',
 			'args' => array('batchid', 'owner', 'btname', 'resume', 'photo'),
 			'conn' => 'exconn',
 			'relation' => '`batches`',

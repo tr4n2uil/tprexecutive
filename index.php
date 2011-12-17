@@ -12,6 +12,8 @@
 		'action' => isset($_GET['action']) ? $_GET['action'] : 'content',
 		'content' => isset($_GET['content']) ? $_GET['content'] : 'home',
 		'cookiename' => COOKIENAME,
+		'cookieexpiry' => COOKIEEXPIRY,
+		'rootpath' => ROOTPATH,
 		'static_pages' => array(
 			'contact-us', 
 			'companies', 
@@ -39,6 +41,7 @@
 		'error_page' => 'error'
 	);
 	
+	
 	/**
 	 *	@invoke Console Tile UI 
 	**/
@@ -50,7 +53,38 @@
 	 *	@invoke Get role based user content
 	**/
 	if($memory['email']){
+		/**
+		 *	@role Administrator
+		**/
+		if(in_array($memory['email'], array(
+			'admin@executive.edu', 
+			'tpo@itbhu.ac.in', 
+			'vibhaj8@gmail.com'
+		))){
+			$memory['tiles'] .= file_get_contents('ui/html/admin.tile.html');
+		}
 		
+		/**
+		 *	@role Student
+		**/
+		$memory = Snowblozm::run(array(
+			'service' => 'executive.student.find.workflow'
+		), $memory);
+		if($memory['valid']) {
+		
+		}
+		
+		/**
+		 *	@role Company
+		**/
+		$memory = Snowblozm::run(array(
+			'service' => 'executive.company.find.workflow'
+		), $memory);
+		if($memory['valid']) {
+		
+		}
+		
+		$memory['tiles'] .= file_get_contents('ui/html/logout.tile.html');
 	}
 	else {
 		$memory['tiles'] .= file_get_contents('ui/html/login.tile.html');

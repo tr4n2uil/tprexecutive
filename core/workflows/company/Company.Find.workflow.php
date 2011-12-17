@@ -37,7 +37,7 @@ class CompanyFindWorkflow implements Service {
 		
 		$workflow = array(
 		array(
-			'service' => 'ad.relation.unique.workflow',
+			'service' => 'transpera.relation.unique.workflow',
 			'args' => array('email'),
 			'conn' => 'exconn',
 			'relation' => '`companies`',
@@ -46,16 +46,16 @@ class CompanyFindWorkflow implements Service {
 			'errormsg' => 'Invalid Company Email'
 		),
 		array(
-			'service' => 'adcore.data.select.service',
+			'service' => 'cbcore.data.select.service',
 			'args' => array('result'),
 			'params' => array('result.0' => 'company', 'result.0.comid' => 'comid', 'result.0.owner' => 'owner', 'result.0.name' => 'name', 'result.0.photo' => 'photo')
 		),
 		array(
-			'service' => 'ad.reference.read.workflow',
+			'service' => 'gauge.track.read.workflow',
 			'input' => array('id' => 'comid')
 		),
 		array(
-			'service' => 'ad.reference.parent.workflow',
+			'service' => 'transpera.reference.parent.workflow',
 			'input' => array('id' => 'comid', 'keyid' => 'owner'),
 			'output' => array('parent' => 'indid')
 		));

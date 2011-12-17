@@ -47,7 +47,7 @@ class StudentInfoWorkflow implements Service {
 			'output' => array('resume' => 'btresume', 'photo' => 'btphoto')
 		),
 		array(
-			'service' => 'ad.relation.unique.workflow',
+			'service' => 'transpera.relation.unique.workflow',
 			'args' => array('stuid'),
 			'conn' => 'exconn',
 			'relation' => '`students`',
@@ -55,16 +55,16 @@ class StudentInfoWorkflow implements Service {
 			'errormsg' => 'Invalid Student ID'
 		),
 		array(
-			'service' => 'adcore.data.select.service',
+			'service' => 'cbcore.data.select.service',
 			'args' => array('result'),
 			'params' => array('result.0' => 'student', 'result.0.stuid' => 'stuid', 'result.0.home' => 'home', 'result.0.resume' => 'resume', 'result.0.photo' => 'photo')
 		),
 		array(
-			'service' => 'ad.reference.read.workflow',
+			'service' => 'gauge.track.read.workflow',
 			'input' => array('id' => 'stuid')
 		),
 		array(
-			'service' => 'ad.reference.authorize.workflow',
+			'service' => 'transpera.reference.authorize.workflow',
 			'input' => array('id' => 'batchid'),
 			'admin' => true,
 			'action' => 'add'

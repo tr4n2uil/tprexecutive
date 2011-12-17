@@ -39,21 +39,21 @@ class CompanyAddWorkflow implements Service {
 		
 		$workflow = array(
 		array(
-			'service' => 'ad.reference.create.workflow',
+			'service' => 'transpera.reference.create.workflow',
 			'input' => array('keyvalue' => 'password', 'parent' => 'indid'),
 			'authorize' => 'edit:add:remove',
 			'level' => 2,
 			'output' => array('id' => 'comid')
 		),
 		array(
-			'service' => 'griddata.storage.add.workflow',
+			'service' => 'store.storage.add.workflow',
 			'filename' => '['.$memory['email'].'] '.$memory['name'].'.png',
 			'mime' => 'image/png',
 			'spaceid' => 0,
 			'output' => array('stgid' => 'photo')
 		),
 		array(
-			'service' => 'ad.relation.insert.workflow',
+			'service' => 'transpera.relation.insert.workflow',
 			'args' => array('comid', 'name', 'owner', 'email', 'site', 'interests', 'photo'),
 			'conn' => 'exconn',
 			'relation' => '`companies`',
