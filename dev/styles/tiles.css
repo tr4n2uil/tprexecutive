@@ -1,0 +1,24 @@
+.tilehead {
+	font-size: large;
+	border-bottom: 1px solid #C5DBEC;
+}
+
+.successmsg.tile {
+	background: url('../img/executive/success.png') no-repeat center bottom; background-size: 50px 50px;
+}
+
+.errormsg.tile {
+	background: url('../img/executive/error.png') no-repeat center bottom; background-size: 50px 50px;
+}
+
+.itbhu.tile {
+	background: url('../img/executive/itbhu.png') no-repeat center bottom; background-size: 50px 50px;
+}
+
+.ittpo.tile {
+	background: url('../img/executive/ittpo.png') no-repeat center bottom; background-size: 50px 50px;
+}
+
+.director.tile {
+	background: url('../img/executive/director.png') no-repeat center bottom; background-size: 50px 50px;
+}
