@@ -10,8 +10,53 @@
 				Snowblozm.Registry.add('#tplload', FireSpark.jquery.workflow.ElementTemplate);
 				Snowblozm.Registry.add('#formsubmit', FireSpark.jquery.workflow.FormSubmit);
 				Snowblozm.Registry.add('#tplbind', FireSpark.jquery.workflow.BindTemplate);
-				Snowblozm.Registry.add('#showtile', FireSpark.jquery.workflow.ShowTile);
+				Snowblozm.Registry.add('#inittile', FireSpark.jquery.workflow.TileInitialize);
+				Snowblozm.Registry.add('#showtile', FireSpark.jquery.workflow.TileShow);
 				Snowblozm.Registry.add('#login', FireSpark.jquery.workflow.CookieLogin);
+				
+				Snowblozm.Registry.save('ui-global', {
+					data : 'none',
+					inline : false,
+					tilehead : 'T&P Updates',
+					tiles : [{
+						tiletpl : '#tpl-nte-lst',
+						tile : '#note-list',
+						style : 'list',
+						name : 'List',
+						privileged : false,
+						tpl : false
+					},{
+						tiletpl : '#tpl-nte-add',
+						tile : '#note-add',
+						style : 'add',
+						name : 'Add',
+						privileged : true,
+						tpl : false
+					}],
+					close : false
+				});
+				
+				Snowblozm.Registry.save('ui-updates', {
+					data : 'global',
+					inline : false,
+					tilehead : 'T&P Updates',
+					tiles : [{
+						tiletpl : '#tpl-nte-lst',
+						tile : '#note-list',
+						style : 'list',
+						name : 'List',
+						privileged : false,
+						tpl : false
+					},{
+						tiletpl : '#tpl-nte-add',
+						tile : '#note-add',
+						style : 'add',
+						name : 'Add',
+						privileged : true,
+						tpl : false
+					}],
+					close : false
+				});
 				
 				Snowblozm.Kernel.execute([{
 					service : FireSpark.jquery.service.NavigatorInit,

@@ -65,12 +65,12 @@
 	if($memory['ui']){
 		include_once('ui/html/header.html'); 
 ?>
-	<div id="container">
-		<div class="tile-container">
+	<div id="ui-global-0">
+		<div class="tiles tile-container">
 			<?php echo $memory['tiles']; ?>
 		</div>
 
-		<div id="main-container" class="container">
+		<div id="main-container" class="bands container">
 			<?php echo $memory['html']; ?>
 		</div>
 		
