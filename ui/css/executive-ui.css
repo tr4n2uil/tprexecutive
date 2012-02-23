@@ -1,30 +1,0 @@
-/* default font settings */html {	font-family: "Tahoma", Helvetica, Arial, sans-serif;	font-size: 12px;}/* default margin padding and border */html, body, p, div {	margin : 0;	padding : 0;}html, body, img {	border : none;}/* default anchor style */a {	cursor: pointer;	text-decoration: none;	color: darkblue;}a:hover {	color: darkred;}/* default hr style */hr {	}/* Status message style */.success {	padding: 0.5em;	border: solid 1px ;	font-weight: bold;	color: white;	margin: 5px;	background: url("../img/glass/green.png");	-moz-border-radius: 5px;	-webkit-border-radius: 5px;}.error {	padding: 0.5em;	border: solid 1px darkred;	font-weight: bold;	color: darkred;	/*margin: 5px;	/*background: url("../img/glass/red.png");*/	-moz-border-radius: 5px;	-webkit-border-radius: 5px;}.loading {	background: url("../img/icons/loading.gif") left center no-repeat;	text-align: left;	font-size: small;	padding-left: 1.5em;	margin: 0.5em;}/* Panel Styles */div.panel {	margin: 0.5em;	border: solid 1px #C5DBEC;	padding: 0.5em;	/*background: url("../img/glass/white.png");*/	-moz-border-radius: 5px;	-webkit-border-radius: 5px;}div.panel .head {	padding: 5px;	font-size: large;	font-weight: bold;	color: blue;	text-align: left;}div.panel .subhead {	padding: 5px;	font-size: medium;	font-weight: bold;	color: darkblue;	text-align: left;}div.panel .headdark {	padding: 5px;	font-size: x-large;	margin: 0.8em 0;	font-weight: bold;	color: darkblue;	text-align: left;}div.panel p.desc {	padding: 5px;	color: gray;	font-size: small;	font-style: italic;}div.panel .field {	display: block;	margin: 5px auto;	padding-right: 1em;}div.panel .pleft {	float: left;	width: 12%;	text-align: right;	padding: 5px;}div.panel .pright {	float: right;	width: 85%;	padding: 5px;}/* reusable classes */.hidden {	display: none;}.border {	border: 1px solid #C5DBEC;	-moz-border-radius: 5px 5px 5px 5px;	-webkit-border-radius: 5px;}.fleft {	float: left;}.fright {	float: right;}.clearfloat {	clear: both;}.align-center {	text-align : center;}.thumb100 {	padding-left: 115px;}.thumb80 {	padding-left: 90px;}.thumb50 {	padding-left: 55px;}.head1 {	font-size: xx-large;}.head2 {	font-size: large;}.full {	width: 100%;}.three {	width: 75%;}.hgt1 {	height: 1px;}.hgt5 {	height: 5px;}.skyblue {	color: #C5DBEC} .bg-skyblue {	background-color: #C5DBEC;}.darkred {	color: darkred;} /* default hover menu style */ul.hover-menu {	margin: 0;	padding: 0;	list-style: none;}ul.hover-menu>li {	position: relative;}ul.hover-menu.vertical>li {	display: inline;}ul.hover-menu.horizontal>li {	display: block;}ul.hover-menu>li>ul.menu-list {	display: none;	list-style: none;	margin: 0;	padding: 0;	position: absolute;	width: 100%;}ul.hover-menu.vertical>li>ul.menu-list {	top: 100%;	left: 0;}ul.hover-menu.horizontal>li>ul.menu-list {	left: 100%;	top: 0;}ul.hover-menu>li:hover>ul.menu-list {	display: block;}/* default settings */body {	margin : 15px auto;	width : 75%;}h1 {	color : darkblue;}/* main menu styles */div.mainmenu ul {	background-color: #C5DBEC;	padding : 5px;}div.mainmenu a {	color: darkblue;}div.mainmenu a:hover {	color: darkred;}div.mainmenu li {	padding : 5px 15px;}div.mainmenu li:hover {	color : #C5DBEC;	background-color: white;}/* container style */.container {	font-size: 14px;	line-height: 1.5em;	float: right;	width: 85%;	margin: auto;	/*border-left: solid 1px #C5DBEC;*/}.tile-container {	float: left;	width: 12%;}/* layout styles */#ui-global-0 {	margin-top: 1em;	padding: 1em 2em;}/* tile styles */.tile-content {	display: none;}.tile {	display: block;	height: 85px;	width: 85px;	margin: 1em;	border: solid 1px #C5DBEC;	color: darkblue;	text-align: center;}.tile:hover {	background-color: white;	color: darkred;}.tilehead {
-	font-size: large;
-	border-bottom: 1px solid #C5DBEC;
-}
-
-.tile {
-	background-size: 50px 50px;
-	background-repeat: no-repeat;
-	background-position: center bottom;
-}
-
-.successmsg.tile {
-	background-image: url('../img/executive/success.png'); 
-}
-
-.errormsg.tile {
-	background-image: url('../img/executive/error.png'); 
-}
-
-.itbhu.tile {
-	background-image: url('../img/executive/itbhu.png'); 
-}
-
-.ittpo.tile {
-	background-image: url('../img/executive/ittpo.png'); 
-}
-
-.director.tile {
-	background-image: url('../img/executive/director.png'); 
-}
