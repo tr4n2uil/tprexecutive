@@ -14,7 +14,8 @@
 	 *	@invoke Console Tile UI 
 	**/
 	$memory = Snowblozm::run(array(
-		'service' => 'console.interface.tile.service'
+		'service' => 'invoke.interface.tile.service',
+		'cache' => false
 	), $memory);
 	
 	/**
@@ -62,7 +63,6 @@
 	/**
 	 *	Output view for user
 	**/
-	if($memory['ui']){
 		include_once('ui/html/header.html'); 
 ?>
 	<div id="ui-global-0">
@@ -78,5 +78,4 @@
 	</div>
 <?php 
 		include_once('ui/html/footer.html'); 
-	}
 ?>

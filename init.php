@@ -6,9 +6,9 @@
 	define('EXROOT', dirname(__FILE__).'/' );
 	
 	/**
-	 * 	@initialize ThunderSky
+	 * 	@initialize CirrusBolt
 	**/
-	require_once(EXROOT. '../services/thundersky/php/init.php');
+	require_once(EXROOT. '../services/cirrusbolt/php/init.php');
 	Snowblozm::$setmime = 'html';
 	//Snowblozm::$debug = true;
 
@@ -81,6 +81,18 @@
 	define('MAIL_PASS', 'executive');
 	
 	/**
+	 *	@config CacheLite
+	**/
+	Snowblozm::init('cachelite', array(
+		'caching' => false,
+		'cacheDir' => EXROOT.'cache'.DIRECTORY_SEPARATOR,
+		'lifeTime' => 85,
+		'automaticCleaningFactor' => 85,
+		'hashedDirectoryLevel' => 0,
+		'automaticSerialization' => true
+	));
+	
+	/**
 	 *	@initialize $memory
 	**/
 	$memory = array(
@@ -94,7 +106,6 @@
 			'error' => 'ui/html/error'
 		),
 		'templates' => array(
-			'updates' => TSROOT.'display/note/note'
 		),
 		'restype' => 'json',
 		'crypt' => 'none',
@@ -103,14 +114,12 @@
 		'context' => CONTEXT,
 		'access' => array(
 			'root' => array(
-				'display', 
 				'store', 
-				'console', 
 				'score', 
 				'executive'
 			),
 			'maps' => array(
-				'session' => 'console.interface.session'
+				'session' => 'invoke.interface.session'
 			)
 		),
 		'error_page' => 'error'
