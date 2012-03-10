@@ -1,0 +1,10 @@
+{
+	"valid":true,
+	"tpl":[
+		{ "tpl":"#tpl-pfllst-tcs", "sel":">.bands" }
+	],
+	"imports":[
+		"ui/tpl/portal/profile.tpl.html",
+		"ui/tpl/display/pagination.tpl.html"
+	]
+}

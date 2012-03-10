@@ -1,0 +1,17 @@
+/* formtable styles */
+table.formtable { width: 100%; }
+table.formtable>tbody>tr>td { padding: 5px 0; vertical-align: top; }
+table.formtable>tbody>tr>td:first-child { width: 25%; text-align: right; }
+table.formtable>tbody>tr>td:last-child { width: 72%; padding-left: 15px; }
+
+table.formtable.part15>tbody>tr>td:first-child { width: 15%; text-align: right; }
+table.formtable.part15>tbody>tr>td:last-child { width: 85%; padding-left: 15px; }
+
+table.formtable.part15>tbody>tr>td:first-child { width: 10%; text-align: right; }
+table.formtable.part15>tbody>tr>td:last-child { width: 80%; padding-left: 15px; }
+
+/* grey formtable styles */
+table.formtable.grey>tbody>tr>td:first-child { color: grey; }
+
+/* wysiwyg styles */
+.wysiwyg { background-color: white !important; } 

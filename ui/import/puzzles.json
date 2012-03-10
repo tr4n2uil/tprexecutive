@@ -1,0 +1,11 @@
+{
+	"valid":true,
+	"tpl":[
+		{ "tpl":"#tpl-pzle-tcs", "sel":">.bands" }
+	],
+	"imports": [
+		"ui/tpl/quiz/puzzle.tpl.html",
+		"ui/tpl/display/pagination.tpl.html",
+		"ui/tpl/display/menu.tpl.html"
+	]
+}

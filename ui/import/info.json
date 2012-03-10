@@ -1,0 +1,10 @@
+{
+	"valid":true,
+	"tpl":[
+		{ "tpl":"#tpl-cnsl-tls", "sel":">.tiles" },
+		{ "tpl":"#tpl-cnsl-tcs", "sel":">.bands" }
+	],
+	"imports": [
+		"ui/tpl/interface/console.tpl.html"
+	]
+}
