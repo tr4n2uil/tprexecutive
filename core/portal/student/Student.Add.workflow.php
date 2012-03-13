@@ -49,6 +49,9 @@ class StudentAddWorkflow implements Service {
 		
 		$workflow = array(
 		array(
+			'service' => 'executive.batch.info.workflow'
+		),
+		array(
 			'service' => 'cbcore.random.string.service',
 			'length' => 8,
 			'output' => array('random' => 'password')
@@ -64,7 +67,7 @@ class StudentAddWorkflow implements Service {
 		),
 		array(
 			'service' => 'display.board.add.workflow',
-			'input' => array('bname' => 'name', 'forumid' => 'batchid', 'fname' => 'btname'),
+			'input' => array('bname' => 'name', 'forumid' => 'notes', 'fname' => 'btname'),
 			'level' => 2,
 			'output' => array('boardid' => 'home')
 		),
@@ -72,7 +75,7 @@ class StudentAddWorkflow implements Service {
 			'service' => 'storage.file.add.workflow',
 			'filename' => '['.$memory['rollno'].'] '.$memory['name'].'.pdf',
 			'mime' => 'application/pdf',
-			'input' => array('dirid' => 'batchid', 'user' => 'username', 'keyid' => 'owner'),
+			'input' => array('dirid' => 'resumes', 'user' => 'username', 'keyid' => 'owner'),
 			'level' => 2,
 			'output' => array('fileid' => 'resume')
 		),

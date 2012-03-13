@@ -38,7 +38,8 @@ class BatchInfoWorkflow implements Service {
 	public function run($memory){
 		$memory['batchid'] = $memory['batchid'] ? $memory['batchid'] : $memory['id'];
 		
-		$service = array(
+		$workflow = array(
+		array(
 			'service' => 'transpera.entity.info.workflow',
 			'input' => array('id' => 'batchid', 'parent' => 'portalid', 'cname' => 'name', 'pname' => 'plname'),
 			'conn' => 'exconn',
@@ -48,7 +49,12 @@ class BatchInfoWorkflow implements Service {
 			'type' => 'batch',
 			'successmsg' => 'Batch information given successfully',
 			'output' => array('entity' => 'batch')
-		);
+		),
+		array(
+			'service' => 'cbcore.data.select.service',
+			'args' => array('batch'),
+			'params' => array('batch.0.btname' => 'btname', 'batch.0.resumes' => 'resumes', 'batch.0.notes' => 'notes')
+		));
 		
 		return Snowblozm::run($service, $memory);
 	}
@@ -57,7 +63,7 @@ class BatchInfoWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function output(){
-		return array('batch', 'plname', 'portalid', 'admin');
+		return array('batch', 'plname', 'portalid', 'admin', 'btname', 'resumes', 'notes');
 	}
 	
 }

@@ -32,6 +32,9 @@ class StudentRemoveWorkflow implements Service {
 		
 		$workflow = array(
 		array(
+			'service' => 'executive.batch.info.workflow'
+		),
+		array(
 			'service' => 'portal.student.info.workflow'
 		),
 		array(
@@ -40,11 +43,11 @@ class StudentRemoveWorkflow implements Service {
 		),
 		array(
 			'service' => 'display.board.remove.workflow',
-			'input' => array('boardid' => 'home', 'forumid' => 'batchid')
+			'input' => array('boardid' => 'home', 'forumid' => 'notes')
 		),
 		array(
 			'service' => 'storage.file.remove.workflow',
-			'input' => array('fileid' => 'resume', 'dirid' => 'batchid')
+			'input' => array('fileid' => 'resume', 'dirid' => 'resumes')
 		));
 		
 		return Snowblozm::execute($workflow, $memory);

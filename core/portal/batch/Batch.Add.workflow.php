@@ -53,13 +53,28 @@ class BatchAddWorkflow implements Service {
 		array(
 			'service' => 'transpera.entity.add.workflow',
 			'args' => array('btname', 'dept', 'course', 'year'),
-			'input' => array('parent' => 'portalid', 'cname' => 'statement', 'pname' => 'plname'),
+			'input' => array('parent' => 'portalid', 'cname' => 'btname', 'pname' => 'plname'),
 			'conn' => 'exconn',
 			'relation' => '`batches`',
 			'type' => 'batch',
 			'sqlcnd' => "(`batchid`, `owner`, `btname`, `dept`, `course`, `year`) values (\${id}, \${owner}, '\${statement}', '\${dept}', '\${course}', \${year})",
 			'escparam' => array('btname', 'dept', 'course'),
 			'successmsg' => 'Batch added successfully',
+			'construct' => array(
+				array(
+					'service' => 'storage.directory.add.workflow',
+					'name' => 'storage/private/resumes/'.$memory['btname'],
+					'path' => 'storage/private/resumes/'.$memory['btname'],
+					'input' => array('stgid' => 'portalid'),
+					'output' => array('dirid' => 'resumes')
+				),
+				array(
+					'service' => 'transpera.reference.add.workflow',
+					'input' => array('parent' => 'portalid', 'cname' => 'btname', 'pname' => 'plname'),
+					'type' => 'forum',
+					'output' => array('id' => 'notes')
+				)
+			),
 			'output' => array('id' => 'batchid')
 		),
 		array(

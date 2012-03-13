@@ -28,7 +28,11 @@ class BatchRemoveWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function run($memory){
-		$service = array(
+		$workflow = array(
+		array(
+			'service' => 'executive.batch.info.workflow'
+		),
+		array(
 			'service' => 'transpera.entity.remove.workflow',
 			'input' => array('id' => 'batchid', 'parent' => 'portalid'),
 			'conn' => 'exconn',
@@ -36,8 +40,18 @@ class BatchRemoveWorkflow implements Service {
 			'type' => 'batch',
 			'sqlcnd' => "where `batchid`=\${id}",
 			'errormsg' => 'Invalid Batch ID',
+			'destruct' => array(
+				array(
+					'service' => 'storage.directory.remove.workflow',
+					'input' => array('dirid' => 'resumes', 'stgid' => 'portalid')
+				),
+				array(
+					'service' => 'transpera.reference.remove.workflow',
+					'input' => array('parent' => 'portalid', 'id' => 'notes')
+				)
+			),
 			'successmsg' => 'Batch removed successfully'
-		);
+		));
 		
 		return Snowblozm::run($service, $memory);
 	}

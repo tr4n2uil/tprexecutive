@@ -53,7 +53,7 @@ class BatchListWorkflow implements Service {
 			'conn' => 'exconn',
 			'relation' => '`batches`',
 			'type' => 'batch',
-			'sqlprj' => '`batchid`, `btname`, `dept`, `course`, `year`',
+			'sqlprj' => '`batchid`, `btname`, `resumes`, `notes`, `dept`, `course`, `year`',
 			'sqlcnd' => "where `batchid` in \${list} order by `batchid` desc",
 			'successmsg' => 'Batches information given successfully',
 			'lsttrack' => true,
