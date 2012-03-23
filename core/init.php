@@ -41,7 +41,8 @@
 		'host' => $DB_HOST,
 		'user' => $DB_USER,
 		'pass' => $DB_PASS,
-		'database' => $CB_DB_NAME
+		'database' => $CB_DB_NAME,
+		'persist' => $DB_PERSIST
 	));
 	
 	Snowblozm::init('cbqconn', array(
@@ -49,7 +50,8 @@
 		'host' => $DB_HOST,
 		'user' => $DB_USER,
 		'pass' => $DB_PASS,
-		'database' => $CBQ_DB_NAME
+		'database' => $CBQ_DB_NAME,
+		'persist' => $DB_PERSIST
 	));
 	
 	Snowblozm::init('cbsconn', array(
@@ -57,7 +59,8 @@
 		'host' => $DB_HOST,
 		'user' => $DB_USER,
 		'pass' => $DB_PASS,
-		'database' => $CBS_DB_NAME
+		'database' => $CBS_DB_NAME,
+		'persist' => $DB_PERSIST
 	));
 	
 	Snowblozm::init('cbdconn', array(
@@ -65,7 +68,8 @@
 		'host' => $DB_HOST,
 		'user' => $DB_USER,
 		'pass' => $DB_PASS,
-		'database' => $CBD_DB_NAME
+		'database' => $CBD_DB_NAME,
+		'persist' => $DB_PERSIST
 	));
 	
 	Snowblozm::init('cbpconn', array(
@@ -73,7 +77,8 @@
 		'host' => $DB_HOST,
 		'user' => $DB_USER,
 		'pass' => $DB_PASS,
-		'database' => $CBP_DB_NAME
+		'database' => $CBP_DB_NAME,
+		'persist' => $DB_PERSIST
 	));
 	
 	Snowblozm::init('exconn', array(
@@ -81,7 +86,8 @@
 		'host' => $DB_HOST,
 		'user' => $DB_USER,
 		'pass' => $DB_PASS,
-		'database' => $DB_NAME
+		'database' => $DB_NAME,
+		'persist' => $DB_PERSIST
 	));
 	
 	/**

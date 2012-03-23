@@ -30,7 +30,10 @@
 		echo '<h2>Account Verified Successfully</h2><p>You may now login <a href="'.ROOTPATH.'/#!/view/#login/">here</a>.</p>';
 	}
 	else {
-		echo '<h2>System Error</h2><p>Please report to <a href="web.tpo@itbhu.ac.in">web.tpo@itbhu.ac.in</a>. Thank you for your support and understanding</p>';
+		echo '<h2>System Error</h2><p>Please report with the following details to <a href="web.tpo@itbhu.ac.in">web.tpo@itbhu.ac.in</a>. Thank you for your support and understanding</p><br /><p>'.json_encode(array(
+			'msg' => $memory['msg'],
+			'details' => $memory['details']
+		)).'</p>';
 	}
 	
 ?>

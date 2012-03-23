@@ -16,6 +16,7 @@
 	$CBS_DB_NAME = 'cirrusbolt_storage';
 	$CBP_DB_NAME = 'cirrusbolt_people';
 	$DB_NAME = 'tprexecutive';
+	$DB_PERSIST = true;
 
 	$CACHE_ENABLE = true;
 	$CACHE_LIFE = 5;

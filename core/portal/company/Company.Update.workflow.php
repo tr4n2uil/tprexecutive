@@ -2,11 +2,12 @@
 require_once(SBSERVICE);
 
 /**
- *	@class ProfileEditWorkflow
- *	@desc Edits profile using ID
+ *	@class CompanyEditWorkflow
+ *	@desc Updates company using ID
  *
- *	@param plid long int Profile ID [memory]
- *	@param name string Profile name [memory]
+ *	@param comid long int Company ID [memory]
+ *	@param interests string Interests [memory]
+ 
  *	@param title string Title [memory]
  *	@param phone string Phone [memory]
  *	@param dateofbirth string Date of birth [memory] (Format YYYY-MM-DD)
@@ -15,26 +16,20 @@ require_once(SBSERVICE);
  *	@param country string Country [memory]
  *	@param location long int Location [memory] optional default 0
  *
- *	@param org string Organization [memory]
- *	@param dept string Department [memory]
- *	@param post string Post [memory]
- *	@param links string Links [memory]
- *	@param motto string Motto [memory]
- *
  *	@param keyid long int Usage Key ID [memory]
  *	@param user string Username [memory]
  *
  *	@author Vibhaj Rajan <vibhaj8@gmail.com>
  *
 **/
-class ProfileEditWorkflow implements Service {
+class CompanyEditWorkflow implements Service {
 	
 	/**
 	 *	@interface Service
 	**/
 	public function input(){
 		return array(
-			'required' => array('keyid', 'user', 'plid', 'name', 'phone', 'address', 'country', 'org', 'dept', 'post', 'links', 'motto'),
+			'required' => array('keyid', 'user', 'comid', 'phone', 'address', 'interests'),
 			'optional' => array('location' => 0, 'title' => '', 'dateofbirth' => '', 'gender' => 'N')
 		);
 	}
@@ -46,24 +41,25 @@ class ProfileEditWorkflow implements Service {
 		$workflow = array(
 		array(
 			'service' => 'people.person.edit.workflow',
-			'input' => array('pnid' => 'plid')
+			'input' => array('pnid' => 'comid'),
+			'country' => 'India',
 		),
 		array(
 			'service' => 'people.person.update.workflow',
-			'input' => array('pnid' => 'plid'),
+			'input' => array('pnid' => 'comid'),
 			'email' => false,
 			'device' => 'sms'
 		),
 		array(
 			'service' => 'transpera.relation.update.workflow',
-			'args' => array('plid', 'country', 'org', 'dept', 'post', 'links', 'motto'),
-			'conn' => 'ayconn',
-			'relation' => '`profiles`',
-			'sqlcnd' => "set `country`='\${country}', `org`='\${org}', `dept`='\${dept}', `post`='\${post}', `links`='\${links}', `motto`='\${motto}' where `plid`=\${plid}",
-			'escparam' => array('org', 'dept', 'post', 'links', 'motto', 'country'),
-			'successmsg' => 'Profile edited successfully',
+			'args' => array('stuid', 'phone', 'interests'),
+			'conn' => 'exconn',
+			'relation' => '`companies`',
+			'sqlcnd' => "set `phone`='\${phone}', `interests`='\${interests}' where `stuid`=\${stuid}",
+			'successmsg' => 'Company updated successfully',
 			'check' => false,
-			'errormsg' => 'No Change / Invalid Profile ID'
+			'escparam' => array('phone', 'interests'),
+			'errormsg' => 'No Change / Invalid Company ID'
 		));
 		
 		return Snowblozm::execute($workflow, $memory);

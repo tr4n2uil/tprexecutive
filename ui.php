@@ -76,15 +76,8 @@
 	
 	$TILES_0 .= file_get_contents('ui/html/info/home.tile.html');
 	$HTML .= file_get_contents('ui/html/info/home.html');
-	
-	/*$TILES_0 .= file_get_contents('ui/html/'.$YEAR.'/events.tile.html');
-	$HTML.= file_get_contents('ui/html/'.$YEAR.'/events.html');
-	
-	//$TILES_0 .= file_get_contents('ui/html/'.$YEAR.'/interact.tile.html');*/
+
 	$TILES_0 .= file_get_contents('ui/html/downloads.tile.html');
-	//$TILES_0 .= file_get_contents('ui/html/'.$YEAR.'/about.tile.html');
-	
-	//$TILES_1 .= file_get_contents('ui/html/'.$YEAR.'/partners.ribbon.html');
 	
 	if($EMERGENCY)
 		$TILES_1 .= file_get_contents('ui/html/emergency.tile.html');

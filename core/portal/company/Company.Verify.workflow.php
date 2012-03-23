@@ -2,8 +2,8 @@
 require_once(SBSERVICE);
 
 /**
- *	@class ProfileVerifyWorkflow
- *	@desc Changes key for profile by ID
+ *	@class CompanyVerifyWorkflow
+ *	@desc Changes key for company by ID
  *
  *	@param username string Person username [memory]
  *	@param verify string Verification code [memory]
@@ -12,7 +12,7 @@ require_once(SBSERVICE);
  *	@author Vibhaj Rajan <vibhaj8@gmail.com>
  *
 **/
-class ProfileVerifyWorkflow implements Service {
+class CompanyVerifyWorkflow implements Service {
 	
 	/**
 	 *	@interface Service
@@ -36,8 +36,8 @@ class ProfileVerifyWorkflow implements Service {
 		array(
 			'service' => 'transpera.relation.update.workflow',
 			'args' => array('username'),
-			'conn' => 'ayconn',
-			'relation' => '`profiles`',
+			'conn' => 'exconn',
+			'relation' => '`companies`',
 			'sqlcnd' => "set `ustatus`='A' where `username`='\${username}'",
 			'escparam' => array('username'),
 			'check' => false,
