@@ -18,7 +18,7 @@
 	<p>You may also copy and paste the above link to your browser\'s address bar to verify your account.</p>
 	
 	<p>You may even enter the verification code <strong>${verify}</strong> on the <a href="'.ROOTPATH.'/#!/view/#verify/">Verification Page</a> to verify your account.</p>
-	<p>Note that your account username is <strong>${username}</strong>.</p>
+	<p>Note that your account username is <strong>${username}</strong> and password is <strong>${password}</strong>.</p>
 	
 	<p>If you did not actually register with us, please ignore this message and kindly report it to web.tpo@itbhu.ac.in</p>
 	

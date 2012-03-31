@@ -23,7 +23,7 @@
 	$CACHE_LEVEL = 0;
 	
 	$MAIL_HOST = 'smtp.gmail.com';
-	$MAIL_USER = 'TPO IT BHU';
+	$MAIL_USER = 'Adhyayan IT BHU';
 	$MAIL_EMAIL = 'support.adhyayan@itbhu.ac.in';
 	$MAIL_PASS = 'sprtady+itbhu=2012';
 	
@@ -31,15 +31,18 @@
 	 *	@constants System
 	**/
 	define('COOKIEKEY', 'executive-session');
-	define('COOKIEEXPIRY', 1);
+	define('COOKIEEXPIRY', 15);
 	define('ROOTPATH', 'http://127.0.0.1/tpo');
 	define('CONTEXT', 'EX');
 	define('UIBASE', EXROOT. 'ui/');
 	define('CACHELITE', 'Cache/Lite.php');
 	define('CACHELITEOUTPUT', 'Cache/Lite/Output.php');
-	define('UPDATES_BOARD', 15);
+	define('PLACEMENT_UPDATES_BOARD', 15);
+	define('INTERNSHIP_UPDATES_BOARD', 14);
+	define('GENERAL_UPDATES_BOARD', 13);
 	define('PERSON_THUMB', 10);
-	define('PORTAL_ID', 16);
+	define('STUDENT_PORTAL_ID', 16);
+	define('COMPANY_PORTAL_ID', 17);
 	define('FORUM_ID', 18);
 	
 	date_default_timezone_set('Asia/Kolkata');

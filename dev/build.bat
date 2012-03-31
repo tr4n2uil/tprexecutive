@@ -6,13 +6,12 @@ type ..\..\services\cirrusbolt\php\thundersky\display\post\menu.html > ..\ui\tpl
 type ..\..\services\cirrusbolt\php\thundersky\display\post\pagination.html > ..\ui\tpl\display\pagination.tpl.html
 type ..\..\services\cirrusbolt\php\thundersky\display\board\board.html > ..\ui\tpl\display\board.tpl.html
 type ..\..\services\cirrusbolt\php\thundersky\display\post\post.html > ..\ui\tpl\display\post.tpl.html
+type ..\..\services\cirrusbolt\php\thundersky\display\update\update.html > ..\ui\tpl\display\update.tpl.html
 type ..\..\services\cirrusbolt\php\thundersky\display\comment\comment.html > ..\ui\tpl\display\comment.tpl.html
 type ..\..\services\cirrusbolt\php\thundersky\storage\file\file.html > ..\ui\tpl\storage\file.tpl.html
 type ..\..\services\cirrusbolt\php\thundersky\access\permission\permission.html > ..\ui\tpl\access\permission.tpl.html
-type ..\core\portal\profile\profile.html > ..\ui\tpl\portal\profile.tpl.html
-type ..\core\parikshan\submission\scoreboard.html > ..\ui\tpl\submission\scoreboard.tpl.html
-type ..\core\parikshan\submission\feedback.html > ..\ui\tpl\submission\feedback.tpl.html
-type ..\core\parikshan\question\question.html > ..\ui\tpl\quiz\question.tpl.html
-type ..\core\parikshan\problem\problem.html > ..\ui\tpl\quiz\problem.tpl.html
-type ..\core\parikshan\puzzle\puzzle.html > ..\ui\tpl\quiz\puzzle.tpl.html
+type ..\core\executive\student\student.html > ..\ui\tpl\executive\student.tpl.html
+type ..\core\executive\student\students.html > ..\ui\tpl\executive\students.tpl.html
+type ..\core\executive\batch\batch.html > ..\ui\tpl\executive\batch.tpl.html
+type ..\core\executive\grade\grade.html > ..\ui\tpl\executive\grade.tpl.html
 pause

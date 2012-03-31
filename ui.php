@@ -48,6 +48,9 @@
 		$PAGE = isset($message[0]) ? $message[0] : $YEAR;
 	}
 	
+	$TILES_0 .= file_get_contents('ui/html/info/home.tile.html');
+	$HTML .= file_get_contents('ui/html/info/home.html');
+	
 	/**
 	 *	@invoke Get role based user content
 	**/
@@ -68,14 +71,14 @@
 		 *	@state Menu & Profile
 		**/
 		require_once('ui/php/statemenu.php');	
+		
+		$TILES_0 .= file_get_contents('ui/html/info/portal.tile.html');
+		//$HTML .= file_get_contents('ui/html/info/portal.html');
 	}
 	else {
 		$STATEMENU .= file_get_contents('ui/html/login.tile.html');
 		$SHTML.= file_get_contents('ui/html/login.html');
 	}
-	
-	$TILES_0 .= file_get_contents('ui/html/info/home.tile.html');
-	$HTML .= file_get_contents('ui/html/info/home.html');
 
 	$TILES_0 .= file_get_contents('ui/html/downloads.tile.html');
 	

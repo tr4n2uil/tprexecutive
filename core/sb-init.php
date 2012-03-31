@@ -5,8 +5,8 @@
 	**/
 	require_once(EXROOT. '../services/cirrusbolt/php/init.php');
 	
-	Snowblozm::add('portal', array(
-		'root' => EXROOT.'core/portal/',
+	Snowblozm::add('executive', array(
+		'root' => EXROOT.'core/executive/',
 		'location' => 'local'
 	));
 	

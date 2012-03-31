@@ -157,7 +157,27 @@ $(document).ready(function(){
 		}
 	});
 	
+	/**
+	 *	@editor cmnt-text
+	**/
+	$('textarea.cmnt-text').live('focusin', function(){
+		if(!$(this).hasClass('cmnt-text-done')){
+			$(this).addClass('cmnt-text-done');
+		}
+	});
+	
 	$('.smart-panel').live('load', function(){
+		FireSpark.ui.helper.transformSmartpanel($(this).find('.smart-block'));
+		FireSpark.ui.helper.transformSmartpanel($(this).find('.inline-block'), {
+			display: '.inline-display',
+			edit: '.inline-display',
+			form: '.inline-form',
+			cancel: '.inline-cancel'
+		});
+		return false;
+	});
+	
+	$('.smart-panel').each(function(){
 		FireSpark.ui.helper.transformSmartpanel($(this).find('.smart-block'));
 		FireSpark.ui.helper.transformSmartpanel($(this).find('.inline-block'), {
 			display: '.inline-display',

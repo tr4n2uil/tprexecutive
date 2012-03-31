@@ -1,8 +1,8 @@
 /* formtable styles */
 table.formtable { width: 100%; }
 table.formtable>tbody>tr>td { padding: 5px 0; vertical-align: top; }
-table.formtable>tbody>tr>td:first-child { width: 25%; text-align: right; }
-table.formtable>tbody>tr>td:last-child { width: 72%; padding-left: 15px; }
+table.formtable>tbody>tr>td:first-child { width: 20%; text-align: right; }
+table.formtable>tbody>tr>td:last-child { width: 78%; padding-left: 15px; }
 
 table.formtable.part15>tbody>tr>td:first-child { width: 15%; text-align: right; }
 table.formtable.part15>tbody>tr>td:last-child { width: 85%; padding-left: 15px; }

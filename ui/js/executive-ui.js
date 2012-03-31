@@ -2806,7 +2806,27 @@ $(document).ready(function(){
 		}
 	});
 	
+	/**
+	 *	@editor cmnt-text
+	**/
+	$('textarea.cmnt-text').live('focusin', function(){
+		if(!$(this).hasClass('cmnt-text-done')){
+			$(this).addClass('cmnt-text-done');
+		}
+	});
+	
 	$('.smart-panel').live('load', function(){
+		FireSpark.ui.helper.transformSmartpanel($(this).find('.smart-block'));
+		FireSpark.ui.helper.transformSmartpanel($(this).find('.inline-block'), {
+			display: '.inline-display',
+			edit: '.inline-display',
+			form: '.inline-form',
+			cancel: '.inline-cancel'
+		});
+		return false;
+	});
+	
+	$('.smart-panel').each(function(){
 		FireSpark.ui.helper.transformSmartpanel($(this).find('.smart-block'));
 		FireSpark.ui.helper.transformSmartpanel($(this).find('.inline-block'), {
 			display: '.inline-display',
@@ -2846,6 +2866,74 @@ $(document).ready(function(){
 });
 
 
+/**
+ *	@helper readCourse
+ *
+ *	@param crs course character
+ *
+ *	@author Vibhaj Rajan <vibhaj8@gmail.com>
+ *
+**/
+Executive.core.helper.readCourse = function($crs){
+	switch($crs){
+		case 'btech' :
+			return 'B. Tech.';
+		case 'idd' :
+			return 'IDD / IMD';
+		case 'mtech' :
+			return 'M. Tech.';
+		default :
+			return '';
+			break;
+	}
+}
+/**
+ *	@helper readDept
+ *
+ *	@param dept dept character
+ *
+ *	@author Vibhaj Rajan <vibhaj8@gmail.com>
+ *
+**/
+Executive.core.helper.readDept = function($dept){
+	switch($dept){
+		case 'cer' :
+			return 'Ceramic Engineering';
+		case 'che' :
+			return 'Chemical Engineering';
+		case 'civ' :
+			return 'Civil Engineering';
+		case 'cse' :
+			return 'Computer Engineering';
+		case 'eee' :
+			return 'Electrical Engineering';
+		case 'ece' :
+			return 'Electronics Engineering';
+		case 'mec' :
+			return 'Mechanical Engineering';
+		case 'met' :
+			return 'Metallurgical Engineering';
+		case 'min' :
+			return 'Mining Engineering';
+		case 'phe' :
+			return 'Pharmaceutical Engineering';
+		case 'apc' :
+			return 'Applied Chemistry';
+		case 'apm' :
+			return 'Applied Mathematics';
+		case 'app' :
+			return 'Applied Physics';
+		case 'bce' :
+			return 'Bio-Chemical Engineering';
+		case 'bme' :
+			return 'Bio-Medical Engineering';
+		case 'mst' :
+			return 'Material Science & Technology';
+		default :
+			return '';
+			break;
+	}
+}
 /**
  *	@helper readUtype
  *

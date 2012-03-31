@@ -20,7 +20,7 @@
 	$memory = Snowblozm::run(array(
 		'service' => 'invoke.launch.workflow.workflow',
 		'message' => array(
-			'service' => 'portal.profile.verify.workflow',
+			'service' => 'people.person.verify.workflow',
 			'username' => $_GET['username'],
 			'verify' => $_GET['verify']
 		)
