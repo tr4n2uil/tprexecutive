@@ -58,7 +58,7 @@ class StudentFindWorkflow implements Service {
 			'args' => array('pnid'),
 			'conn' => 'exconn',
 			'relation' => '`students`',
-			'sqlprj' => '`stdid`, `username`, `name`, `rollno`, `interests`, `resume`, `home`',
+			'sqlprj' => '`stdid`, `username`, `name`, `rollno`, `interests`, `resume`, `home`, `grade`',
 			'sqlcnd' => "where `stdid`=\${pnid}",
 			'errormsg' => 'Invalid Student',
 			'successmsg' => 'Student information given successfully'
@@ -66,11 +66,15 @@ class StudentFindWorkflow implements Service {
 		array(
 			'service' => 'cbcore.data.select.service',
 			'args' => array('result', 'chain'),
-			'params' => array('result.0' => 'student', 'result.0.stdid' => 'stdid',  'student.resume' => 'resume', 'student.home' => 'home', 'chain.parent' => 'batchid'  /*'student.thumbnail' => 'thumbnail', 'student.username' => 'username'*/)
+			'params' => array('result.0' => 'student', 'result.0.stdid' => 'stdid',  'student.resume' => 'resume', 'student.home' => 'home', 'student.grade' => 'gradeid', 'chain.parent' => 'batchid'  /*'student.thumbnail' => 'thumbnail', 'student.username' => 'username'*/)
 		),
 		array(
 			'service' => 'executive.batch.info.workflow',
 			'output' => array('admin' => 'btadmin')
+		),
+		array(
+			'service' => 'executive.grade.info.workflow',
+			'output' => array('admin' => 'grdadmin', 'chain' => 'grdchain')
 		));
 		
 		$memory = Snowblozm::execute($workflow, $memory);
@@ -84,7 +88,7 @@ class StudentFindWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function output(){
-		return array('student', 'person', 'contact', 'personal', 'stdid', 'id', 'resume', 'home', /*'thumbnail', 'username',*/ 'dirid', 'batchid', 'admin', 'chain', 'batch');
+		return array('student', 'person', 'contact', 'personal', 'stdid', 'id', 'resume', 'home', 'grade', /*'thumbnail', 'username',*/ 'dirid', 'batchid', 'admin', 'chain', 'batch');
 	}
 	
 }

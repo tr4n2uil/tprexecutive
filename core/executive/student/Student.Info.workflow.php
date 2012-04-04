@@ -38,7 +38,7 @@ class StudentInfoWorkflow implements Service {
 	public function input(){
 		return array(
 			'required' => array('keyid'),
-			'optional' => array('user' => '', 'stdid' => false, 'batchid' => PORTAL_ID, 'id' => 0),
+			'optional' => array('user' => '', 'stdid' => false, 'batchid' => STUDENT_PORTAL_ID, 'id' => 0),
 			'set' => array('id', 'name')
 		);
 	}
@@ -72,7 +72,7 @@ class StudentInfoWorkflow implements Service {
 		array(
 			'service' => 'cbcore.data.select.service',
 			'args' => array('result', 'chain'),
-			'params' => array('result.0' => 'student', 'result.0.stdid' => 'stdid',  'student.resume' => 'resume', 'student.home' => 'home', 'chain.parent' => 'batchid' /*'student.thumbnail' => 'thumbnail', 'student.username' => 'username'*/)
+			'params' => array('result.0' => 'student', 'result.0.stdid' => 'stdid',  'student.resume' => 'resume', 'student.home' => 'home', 'student.grade' => 'grade', 'chain.parent' => 'batchid' /*'student.thumbnail' => 'thumbnail', 'student.username' => 'username'*/)
 		),
 		array(
 			'service' => 'executive.batch.info.workflow'
@@ -85,7 +85,7 @@ class StudentInfoWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function output(){
-		return array('student', 'person', 'contact', 'personal', 'stdid', 'resume', 'home', /* 'thumbnail', 'username',*/ 'dirid', 'batchid', 'admin', 'chain', 'batch');
+		return array('student', 'person', 'contact', 'personal', 'stdid', 'resume', 'home', 'grade', /* 'thumbnail', 'username',*/ 'dirid', 'batchid', 'admin', 'chain', 'batch');
 	}
 	
 }

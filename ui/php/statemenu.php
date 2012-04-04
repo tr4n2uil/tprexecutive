@@ -35,8 +35,8 @@
 				<a href="student/'.$student['person']['username'].'/" class="ui tile" style="background-image: url(\'storage/public/thumbnails/person/'.$memory['person']['person']['username'].'.png\')">'.$memory['user'].'</a>
 				<ul class="menu-item">
 					<li><a href="batch/'.$student['batch']['btname'].'/" class="ui" >Batch '.$student['batch']['btname'].'</a></li>
-					<li><a href="batches/'.$student['batch']['year'].'/" class="ui" >Batch '.$student['batch']['year'].'</a></li>
-					<li><a href="batches/'.$student['batch']['dept'].'/" class="ui" >Batch '.strtoupper($student['batch']['dept']).'</a></li>
+					<li><a href="batches/'.$student['batch']['year'].'/" class="ui" >Batches '.$student['batch']['year'].'</a></li>
+					<li><a href="batches/'.$student['batch']['dept'].'/" class="ui" >Batches '.strtoupper($student['batch']['dept']).'</a></li>
 					<li><a href="#/read/~/data/service=session&enc=get/ln/#login" class="launch">Sign Out</a></li>
 				</ul>
 			</li>

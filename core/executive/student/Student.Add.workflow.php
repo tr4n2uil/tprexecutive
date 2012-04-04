@@ -74,11 +74,16 @@ class StudentAddWorkflow implements Service {
 			'output' => array('fileid' => 'resume')
 		),
 		array(
+			'service' => 'executive.grade.add.workflow',
+			'level' => 2,
+			'output' => array('gradeid' => 'grade', 'grade' => 'info')
+		),
+		array(
 			'service' => 'transpera.relation.insert.workflow',
-			'args' => array('pnid', 'owner', 'username', 'name', 'email', 'rollno', 'resume', 'home'),
+			'args' => array('pnid', 'owner', 'username', 'name', 'email', 'rollno', 'resume', 'home', 'grade'),
 			'conn' => 'exconn',
 			'relation' => '`students`',
-			'sqlcnd' => "(`stdid`,`owner`, `username`, `name`, `email`, `rollno`, `resume`, `home`) values (\${pnid}, \${owner}, '\${username}', '\${name}', '\${email}', '\${rollno}', \${resume}, \${home})",
+			'sqlcnd' => "(`stdid`,`owner`, `username`, `name`, `email`, `rollno`, `resume`, `home`, `grade`) values (\${pnid}, \${owner}, '\${username}', '\${name}', '\${email}', '\${rollno}', \${resume}, \${home}, \${grade})",
 			'escparam' => array('username', 'name', 'email', 'rollno'),
 			'output' => array('id' => 'stdid')
 		));

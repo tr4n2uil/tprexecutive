@@ -19,7 +19,7 @@ class StudentRemoveWorkflow implements Service {
 	**/
 	public function input(){
 		return array(
-			'required' => array('keyid', 'stdid'),
+			'required' => array('keyid', 'user', 'stdid'),
 			'optional' => array('batchid' => STUDENT_PORTAL_ID)
 		);
 	}
@@ -35,7 +35,7 @@ class StudentRemoveWorkflow implements Service {
 			'service' => 'executive.batch.info.workflow'
 		),
 		array(
-			'service' => 'portal.student.info.workflow'
+			'service' => 'executive.student.info.workflow'
 		),
 		array(
 			'service' => 'people.person.remove.workflow',
@@ -46,12 +46,16 @@ class StudentRemoveWorkflow implements Service {
 			'args' => array('stdid'),
 			'conn' => 'exconn',
 			'relation' => '`students`',
-			'sqlcnd' => 'where `stdid`=\${stdid}',
+			'sqlcnd' => "where `stdid`=\${stdid}",
 			'errormsg' => 'Invalid Student ID'
 		),
 		array(
 			'service' => 'display.board.remove.workflow',
 			'input' => array('boardid' => 'home', 'forumid' => 'notes')
+		),
+		array(
+			'service' => 'executive.grade.remove.workflow',
+			'input' => array('gradeid' => 'grade')
 		),
 		array(
 			'service' => 'storage.file.remove.workflow',

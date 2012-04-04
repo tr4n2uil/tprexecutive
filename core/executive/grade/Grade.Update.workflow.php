@@ -2,11 +2,12 @@
 require_once(SBSERVICE);
 
 /**
- *	@class GradeAddWorkflow
- *	@desc Adds new grade
+ *	@class GradeUpdateWorkflow
+ *	@desc Updates grade using ID with authentication
  *
- *	@param username string Grade username [memory]
- *	@param rollno string Roll No [memory]
+ *	@param gradeid long int Grade ID [memory]
+ *	@param username string Key username [memory]
+ *	@param password string Key password [memory]
  *	@param sscx float Xth Percentage [memory] optional default 0.0
  *	@param hscxii float XIIth Percentage [memory] optional default 0.0
  *
@@ -25,8 +26,6 @@ require_once(SBSERVICE);
  *	@param user string Key User [memory]
  *	@param batchid long int Batch ID [memory] optional default 0
  *	@param btname string Batch Name [memory] optional default ''
- *	@param level integer Web level [memory] optional default false (inherit portal admin access)
- *	@param owner long int Owner ID [memory] optional default keyid
  *
  *	@return gradeid long int Grade ID [memory]
  *	@return batchid long int Batch ID [memory]
@@ -40,24 +39,22 @@ require_once(SBSERVICE);
  *	@author Vibhaj Rajan <vibhaj8@gmail.com>
  *
 **/
-class GradeAddWorkflow implements Service {
+class GradeUpdateWorkflow implements Service {
 	
 	/**
 	 *	@interface Service
 	**/
 	public function input(){
 		return array(
-			'required' => array('keyid', 'user', 'username', 'rollno'),
-			'optional' => array('batchid' => 0, 'btname' => '', 'level' => false, 'owner' => false, 'sscx' => 0.0, 'hscxii' => 0.0, 'sgpa1' => 0.0, 'sgpa2' => 0.0, 'sgpa3' => 0.0, 'sgpa4' => 0.0, 'sgpa5' => 0.0, 'sgpa6' => 0.0, 'sgpa7' => 0.0, 'sgpa8' => 0.0, 'sgpa9' => 0.0, 'sgpa10' => 0.0)
+			'required' => array('keyid', 'user', 'gradeid', 'username', 'password'),
+			'optional' => array('batchid' => 0, 'btname' => '', 'sscx' => 0.0, 'hscxii' => 0.0, 'sgpa1' => 0.0, 'sgpa2' => 0.0, 'sgpa3' => 0.0, 'sgpa4' => 0.0, 'sgpa5' => 0.0, 'sgpa6' => 0.0, 'sgpa7' => 0.0, 'sgpa8' => 0.0, 'sgpa9' => 0.0, 'sgpa10' => 0.0)
 		);
 	}
 	
 	/**
 	 *	@interface Service
 	**/
-	public function run($memory){
-		$memory['verb'] = 'added';
-		$memory['join'] = 'on';
+	public function run($memory){		
 		$memory['public'] = 1;
 		$memory['cgpa'] = $memory['ygpa1'] = $memory['ygpa2'] = $memory['ygpa3'] = $memory['ygpa4'] = $memory['ygpa5'] = 0.0;
 		$i = $total = 0;
@@ -142,21 +139,23 @@ class GradeAddWorkflow implements Service {
 		
 		$workflow = array(
 		array(
-			'service' => 'transpera.entity.add.workflow',
-			'args' => array('username', 'rollno', 'sscx', 'hscxii', 'cgpa', 'sgpa1', 'sgpa2', 'sgpa3', 'sgpa4', 'sgpa5', 'sgpa6', 'sgpa7', 'sgpa8', 'sgpa9', 'sgpa10', 'ygpa1', 'ygpa2', 'ygpa3', 'ygpa4', 'ygpa5'),
-			'input' => array('parent' => 'batchid', 'cname' => 'btname', 'pname' => 'btname'),
+			'service' => 'guard.key.authenticate.workflow',
+			'input' => array('user' => 'username', 'key' => 'password')
+		),
+		array(
+			'service' => 'transpera.entity.edit.workflow',
+			'args' => array('sscx', 'hscxii', 'cgpa', 'sgpa1', 'sgpa2', 'sgpa3', 'sgpa4', 'sgpa5', 'sgpa6', 'sgpa7', 'sgpa8', 'sgpa9', 'sgpa10', 'ygpa1', 'ygpa2', 'ygpa3', 'ygpa4', 'ygpa5'),
+			'input' => array('id' => 'gradeid', 'cname' => 'username', 'parent' => 'batchid', 'pname' => 'btname'),
 			'conn' => 'exconn',
 			'relation' => '`grades`',
 			'type' => 'grade',
-			'authorize' => 'info:add:edit:remove:list',
-			'sqlcnd' => "(`gradeid`, `owner`, `username`, `rollno`, `sscx`, `hscxii`, `cgpa`, `sgpa1`, `sgpa2`, `sgpa3`, `sgpa4`, `sgpa5`, `sgpa6`, `sgpa7`, `sgpa8`, `sgpa9`, `sgpa10`, `ygpa1`, `ygpa2`, `ygpa3`, `ygpa4`, `ygpa5`) values (\${id}, \${owner}, '\${username}', '\${rollno}', \${sscx}, \${hscxii}, \${cgpa}, \${sgpa1}, \${sgpa2}, \${sgpa3}, \${sgpa4}, \${sgpa5}, \${sgpa6}, \${sgpa7}, \${sgpa8}, \${sgpa9}, \${sgpa10}, \${ygpa1}, \${ygpa2}, \${ygpa3}, \${ygpa4}, \${ygpa5})",
-			'escparam' => array('username', 'rollno'),
-			'successmsg' => 'Grade added successfully',
-			'output' => array('id' => 'gradeid')
+			'sqlcnd' => "set `sscx`=\${sscx}, `hscxii`=\${hscxii}, `cgpa`=\${cgpa}, `sgpa1`=\${sgpa1}, `sgpa2`=\${sgpa2}, `sgpa3`=\${sgpa3}, `sgpa4`=\${sgpa4}, `sgpa5`=\${sgpa5}, `sgpa6`=\${sgpa6}, `sgpa7`=\${sgpa7}, `sgpa8`=\${sgpa8}, `sgpa9`=\${sgpa9}, `sgpa10`=\${sgpa10}, `ygpa1`=\${ygpa1}, `ygpa2`=\${ygpa2}, `ygpa3`=\${ygpa3}, `ygpa4`=\${ygpa4}, `ygpa5`=\${ygpa5} where `gradeid`=\${id}",
+			'check' => false,
+			'successmsg' => 'Grade edited successfully'
 		),
 		array(
 			'service' => 'transpera.entity.info.workflow',
-			'input' => array('id' => 'gradeid', 'parent' => 'batchid', 'cname' => 'name', 'btname' => 'btname'),
+			'input' => array('id' => 'gradeid', 'parent' => 'batchid', 'cname' => 'name', 'pname' => 'btname'),
 			'conn' => 'exconn',
 			'relation' => '`grades`',
 			'sqlcnd' => "where `gradeid`=\${id}",
@@ -169,10 +168,6 @@ class GradeAddWorkflow implements Service {
 			'sinit' => false
 		),
 		array(
-			'service' => 'executive.batch.info.workflow',
-			'output' => array('chain' => 'pchain')
-		),
-		array(
 			'service' => 'guard.chain.info.workflow',
 			'input' => array('chainid' => 'batchid'),
 			'output' => array('chain' => 'pchain')
@@ -181,7 +176,7 @@ class GradeAddWorkflow implements Service {
 		$memory = Snowblozm::execute($workflow, $memory);
 		if(!$memory['valid'])
 			return $memory;
-		
+			
 		$memory['padmin'] = $memory['admin'];
 		$memory['admin'] = 1;
 		return $memory;

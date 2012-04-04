@@ -38,32 +38,36 @@ class GradeInfoWorkflow implements Service {
 	public function run($memory){
 		$memory['gradeid'] = $memory['gradeid'] ? $memory['gradeid'] : $memory['id'];
 		
-		$workflow = array(
-		array(
+		$service = array(
 			'service' => 'transpera.entity.info.workflow',
 			'input' => array('id' => 'gradeid', 'parent' => 'batchid', 'cname' => 'name', 'pname' => 'btname'),
 			'conn' => 'exconn',
-			'relation' => '`gradees`',
+			'relation' => '`grades`',
 			'sqlcnd' => "where `gradeid`=\${id}",
 			'errormsg' => 'Invalid Grade ID',
 			'type' => 'grade',
 			'successmsg' => 'Grade information given successfully',
 			'output' => array('entity' => 'grade')
-		),
-		array(
-			'service' => 'cbcore.data.select.service',
-			'args' => array('grade'),
-			'params' => array('grade.btname' => 'btname', 'grade.resumes' => 'resumes', 'grade.notes' => 'notes')
-		));
+		);
 		
-		return Snowblozm::execute($workflow, $memory);
+		$memory = Snowblozm::run($service, $memory);
+		if(!$memory['valid']){
+			if($memory['status'] != 403)
+				return $memory;
+			$memory['valid'] = true;
+			$memory['grade'] = false;
+			$memory['admin'] = 0;
+			$memory['chain'] = false;
+		}
+		
+		return $memory;
 	}
 	
 	/**
 	 *	@interface Service
 	**/
 	public function output(){
-		return array('grade', 'btname', 'batchid', 'admin', 'btname', 'resumes', 'notes');
+		return array('grade', 'btname', 'batchid', 'admin', 'chain');
 	}
 	
 }
