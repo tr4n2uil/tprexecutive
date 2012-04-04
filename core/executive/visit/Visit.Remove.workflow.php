@@ -7,7 +7,8 @@ require_once(SBSERVICE);
  *
  *	@param visitid long int Visit ID [memory]
  *	@param keyid long int Usage Key ID [memory]
- *	@param comid long int Company ID [memory] optional default 0
+ 
+ *	@param portalid long int Portal ID [memory] optional default COMPANY_PORTAL_ID
  *
  *	@author Vibhaj Rajan <vibhaj8@gmail.com>
  *
@@ -19,8 +20,8 @@ class VisitRemoveWorkflow implements Service {
 	**/
 	public function input(){
 		return array(
-			'required' => array('keyid', 'visitid'),
-			'optional' => array('comid' => 0)
+			'required' => array('keyid', 'user', 'visitid'),
+			'optional' => array('portalid' => COMPANY_PORTAL_ID)
 		);
 	}
 	
@@ -34,7 +35,8 @@ class VisitRemoveWorkflow implements Service {
 		),
 		array(
 			'service' => 'transpera.entity.remove.workflow',
-			'input' => array('id' => 'visitid', 'parent' => 'comid'),
+			'args' => array('files', 'shortlist', 'comid'),
+			'input' => array('id' => 'visitid', 'parent' => 'portalid'),
 			'conn' => 'exconn',
 			'relation' => '`visits`',
 			'type' => 'visit',
@@ -47,13 +49,14 @@ class VisitRemoveWorkflow implements Service {
 				),
 				array(
 					'service' => 'transpera.reference.remove.workflow',
-					'input' => array('parent' => 'comid', 'id' => 'shortlist')
+					'input' => array('id' => 'shortlist'),
+					'type' => 'shortlist'
 				)
 			),
 			'successmsg' => 'Visit removed successfully'
 		));
 		
-		return Snowblozm::run($service, $memory);
+		return Snowblozm::execute($workflow, $memory);
 	}
 	
 	/**

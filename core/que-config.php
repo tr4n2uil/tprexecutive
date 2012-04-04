@@ -10,7 +10,7 @@
 	**/
 	define('PERSON_SEND_MAIL_BODY', 'Hi,
 	<br />
-	<p>Your Training and Placement Profile Registration was successful.</p>
+	<p>Your Training and Placement Registration was successful.</p>
 	<p>Please verify your account by clicking on the following link :</p>
 	
 	<p><a href="'.ROOTPATH.'/verify.php?username=${username}&verify=${verify}" >'.ROOTPATH.'/verify.php?username=${username}&verify=${verify}</a></p>
@@ -28,14 +28,14 @@
 	
 	<p>Training and Placement Cell, IT BHU <a href="http://itbhu.ac.in/tpo/">http://itbhu.ac.in/tpo/</a><br />
 	');
-	define('PERSON_SEND_MAIL_SUBJECT', 'Training and Placement Cell Profile Registration Verification');
+	define('PERSON_SEND_MAIL_SUBJECT', 'Training and Placement Cell Registration Verification');
 	
 	/**
 	 *	@mail People.person.reset
 	**/
 	define('PERSON_RESET_MAIL_BODY', 'Hi,
 	<br />
-	<p>Your Training and Placement Profile password had been successfully reset.</p>
+	<p>Your Training and Placement Account password had been successfully reset.</p>
 	<p>Please note your new password for the account :</p>
 	
 	<p>Password = <strong>${password}</strong></p>
@@ -50,7 +50,7 @@
 	
 	<p>Training and Placement Cell, IT BHU <a href="http://itbhu.ac.in/tpo/">http://itbhu.ac.in/tpo/</a><br />
 	');
-	define('PERSON_RESET_MAIL_SUBJECT', 'Training and Placement Cell Profile Password Reset');
+	define('PERSON_RESET_MAIL_SUBJECT', 'Training and Placement Cell Account Password Reset');
 	
 	/**
 	 *	@sms People.person.send

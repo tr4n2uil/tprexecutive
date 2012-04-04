@@ -6,22 +6,23 @@ require_once(SBSERVICE);
  *	@desc Adds new visit
  *
  *	@param vstname string Visit name [memory]
- *	@param type string Type [memory] optional default 'placement' ('placement', 'internship', 'ppo')
- *	@param year integer Year [memory] 
+ *	@param year string Academic Session Year [memory] 
+ *	@param type string Type [memory] ('placement', 'internship', 'ppo')
  *	@param package float Package [memory]
+ *	@param comuser string Company username [memory]
  *	@param visitdate string Date of visit [memory] (Format YYYY-MM-DD)
- *	@param deadline string Deadline for willingness [memory] (Format YYYY-MM-DD hh:mm:ss)
+ *	@param deadline string Deadline [memory] (Format YYYY-MM-DD)
  *
  *	@param keyid long int Usage Key ID [memory]
  *	@param user string Key User [memory]
- *	@param comid long int Company ID [memory] optional default 0
- *	@param comname string Company Name [memory] optional default ''
+ *	@param portalid long int Portal ID [memory] optional default COMPANY_PORTAL_ID
+ *	@param plname string Portal Name [memory] optional default ''
  *	@param level integer Web level [memory] optional default false (inherit portal admin access)
  *	@param owner long int Owner ID [memory] optional default keyid
  *
  *	@return visitid long int Visit ID [memory]
- *	@return comid long int Company ID [memory]
- *	@return comname string Company Name [memory]
+ *	@return portalid long int Portal ID [memory]
+ *	@return plname string Portal Name [memory]
  *	@return visit array Visit information [memory]
  *	@return chain array Chain information [memory]
  *	@return pchain array Parent chain information [memory]
@@ -38,8 +39,8 @@ class VisitAddWorkflow implements Service {
 	**/
 	public function input(){
 		return array(
-			'required' => array('keyid', 'user', 'vstname', 'type', 'year', 'package', 'visitdate', 'deadline'),
-			'optional' => array('comid' => 0, 'comname' => '', 'level' => false, 'owner' => false)
+			'required' => array('keyid', 'user', 'vstname', 'year', 'vtype', 'package', 'comuser', 'visitdate', 'deadline'),
+			'optional' => array('portalid' => COMPANY_PORTAL_ID, 'plname' => '', 'level' => false, 'owner' => false)
 		);
 	}
 	
@@ -53,50 +54,51 @@ class VisitAddWorkflow implements Service {
 		
 		$workflow = array(
 		array(
-			'service' => 'transpera.entity.add.workflow',
-			'args' => array('vstname', 'type', 'year', 'package', 'visitdate', 'deadline'),
-			'input' => array('parent' => 'comid', 'cname' => 'vstname', 'pname' => 'comname'),
+			'service' => 'transpera.relation.unique.workflow',
+			'args' => array('comuser'),
 			'conn' => 'exconn',
-			'relation' => '`visites`',
+			'relation' => '`companies`',
+			'sqlcnd' => "where `username`='\${comuser}'",
+			'escparam' => array('comuser'),
+			'errormsg' => 'Invalid Company Username',
+			'successmsg' => 'Company information given successfully'
+		),
+		array(
+			'service' => 'cbcore.data.select.service',
+			'args' => array('result'),
+			'params' => array('result.0' => 'company', 'result.0.comid' => 'comid', 'result.0.owner' => 'comowner', 'company.folder' => 'folder', 'company.name' => 'comname')
+		),
+		array(
+			'service' => 'transpera.entity.add.workflow',
+			'args' => array('vstname', 'year', 'vtype', 'package', 'comid', 'comuser', 'visitdate', 'deadline', 'comowner'),
+			'input' => array('parent' => 'portalid', 'cname' => 'vstname', 'pname' => 'plname'),
+			'conn' => 'exconn',
+			'relation' => '`visits`',
 			'type' => 'visit',
-			'sqlcnd' => "(`visitid`, `owner`, `vstname`, `year`, `package`, `visitdate`, `deadline`) values (\${id}, \${owner}, '\${vstname}', \${year}, \${package}, '\${visitdate}', '\${deadline}')",
-			'escparam' => array('vstname', 'visitdate', 'deadline'),
+			'sqlcnd' => "(`visitid`, `owner`, `comid`, `comuser`, `vstname`, `year`, `vtype`, `package`, `visitdate`, `deadline`, `files`, `shortlist`) values (\${id}, \${owner}, \${comid}, '\${comuser}', '\${vstname}', '\${year}', '\${vtype}', '\${package}', '\${visitdate}', '\${deadline}', \${files}, \${shortlist})",
+			'escparam' => array('vstname', 'year', 'vtype', 'package', 'visitdate', 'deadline', 'comuser'),
 			'successmsg' => 'Visit added successfully',
 			'construct' => array(
 				array(
 					'service' => 'storage.directory.add.workflow',
-					'name' => 'storage/private/resumes/'.$memory['vstname'],
-					'path' => 'storage/private/resumes/'.$memory['vstname'],
+					'name' => 'storage/private/folders/'.$memory['comuser'].'/'.$memory['year'].'-'.$memory['vtype'],
+					'path' => 'storage/private/folders/'.$memory['comuser'].'/'.$memory['year'].'-'.$memory['vtype'],
 					'input' => array('stgid' => 'comid'),
-					'output' => array('dirid' => 'resumes')
+					'output' => array('dirid' => 'files')
 				),
 				array(
 					'service' => 'transpera.reference.add.workflow',
-					'input' => array('parent' => 'comid', 'cname' => 'vstname', 'pname' => 'comname'),
-					'type' => 'forum',
-					'output' => array('id' => 'notes')
+					'type' => 'shortlist',
+					'output' => array('id' => 'shortlist', 'owner' => 'comowner')
 				)
 			),
+			'cparam' => array('files', 'shortlist'),
 			'output' => array('id' => 'visitid')
 		),
 		array(
-			'service' => 'transpera.entity.info.workflow',
-			'input' => array('id' => 'visitid', 'parent' => 'comid', 'cname' => 'name', 'comname' => 'comname'),
-			'conn' => 'exconn',
-			'relation' => '`visites`',
-			'sqlcnd' => "where `visitid`=\${id}",
-			'errormsg' => 'Invalid Visit ID',
-			'type' => 'visit',
-			'successmsg' => 'Visit information given successfully',
-			'output' => array('entity' => 'visit'),
-			'auth' => false,
-			'track' => false,
-			'sinit' => false
-		),
-		array(
-			'service' => 'guard.chain.info.workflow',
-			'input' => array('chainid' => 'comid'),
-			'output' => array('chain' => 'pchain')
+			'service' => 'executive.visit.info.workflow',
+			'pgsz' => 5,
+			'padmin' => true
 		));
 		
 		$memory = Snowblozm::execute($workflow, $memory);
@@ -112,7 +114,7 @@ class VisitAddWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function output(){
-		return array('visitid', 'comid', 'comname', 'visit', 'chain', 'pchain', 'admin', 'padmin');
+		return array('visitid', 'visit', 'cutoffs', 'plname', 'portalid', 'ctfadmin', 'vstname', 'files', 'shortlist', 'comid', 'chain', 'pchain', 'admin', 'padmin', 'total', 'pgsz', 'pgno');
 	}
 	
 }

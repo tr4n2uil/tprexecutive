@@ -23,7 +23,7 @@
 	$CACHE_LEVEL = 0;
 	
 	$MAIL_HOST = 'smtp.gmail.com';
-	$MAIL_USER = 'Adhyayan IT BHU';
+	$MAIL_USER = 'TPO IT BHU';
 	$MAIL_EMAIL = 'support.adhyayan@itbhu.ac.in';
 	$MAIL_PASS = 'sprtady+itbhu=2012';
 	
@@ -41,9 +41,10 @@
 	define('INTERNSHIP_UPDATES_BOARD', 14);
 	define('GENERAL_UPDATES_BOARD', 13);
 	define('PERSON_THUMB', 10);
+	define('PEOPLE_ID', 16);
 	define('STUDENT_PORTAL_ID', 16);
 	define('COMPANY_PORTAL_ID', 17);
-	define('FORUM_ID', 18);
+	//define('FORUM_ID', 18);
 	
 	date_default_timezone_set('Asia/Kolkata');
 	

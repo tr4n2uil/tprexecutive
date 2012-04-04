@@ -42,6 +42,14 @@ class StudentRemoveWorkflow implements Service {
 			'input' => array('pnid' => 'stdid', 'peopleid' => 'batchid')
 		),
 		array(
+			'service' => 'transpera.relation.delete.workflow',
+			'args' => array('stdid'),
+			'conn' => 'exconn',
+			'relation' => '`students`',
+			'sqlcnd' => 'where `stdid`=\${stdid}',
+			'errormsg' => 'Invalid Student ID'
+		),
+		array(
 			'service' => 'display.board.remove.workflow',
 			'input' => array('boardid' => 'home', 'forumid' => 'notes')
 		),

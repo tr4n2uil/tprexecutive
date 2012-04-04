@@ -56,10 +56,52 @@ class GradeListWorkflow implements Service {
 			'sqlcnd' => "where `gradeid` in \${list} order by `cgpa` desc, `hscxii` desc, `sscx` desc",
 			'successmsg' => 'Grades information given successfully',
 			//'lsttrack' => true,
+			'action' => 'add',
 			'output' => array('entities' => 'grades'),
 			'mapkey' => 'gradeid',
 			'mapname' => 'grade',
-			'saction' => 'add'
+			'saction' => 'add',
+			'authcustom' => array(
+				array(
+					'service' => 'transpera.relation.unique.workflow',
+					'args' => array('keyid'),
+					'conn' => 'exconn',
+					'relation' => '`students`',
+					'sqlprj' => '`stdid`',
+					'sqlcnd' => "where `owner`=\${keyid}",
+					'errormsg' => 'Unable to Authorize',
+					'successmsg' => 'Student information given successfully'
+				),
+				array(
+					'service' => 'cbcore.data.select.service',
+					'args' => array('result'),
+					'params' => array('result.0.stdid' => 'stdid')
+				),
+				array(
+					'service' => 'transpera.relation.unique.workflow',
+					'args' => array('stdid'),
+					'conn' => 'cbconn',
+					'relation' => '`chains`',
+					'sqlprj' => '`parent`',
+					'sqlcnd' => "where `type`='person' and `chainid`=\${stdid}",
+					'errormsg' => 'Unable to Authorize',
+					'successmsg' => 'Parent information given successfully'
+				),
+				array(
+					'service' => 'cbcore.data.select.service',
+					'args' => array('result'),
+					'params' => array('result.0.parent' => 'parent')
+				),
+				array(
+					'service' => 'transpera.relation.unique.workflow',
+					'args' => array('chainid', 'parent'),
+					'conn' => 'exconn',
+					'relation' => '`batches`',
+					'sqlcnd' => "where `batchid`=\${chainid} and `dept`=(select `dept` from `batches` where `batchid`=\${parent})",
+					'errormsg' => 'Unable to Authorize',
+					'successmsg' => 'Batch information given successfully'
+				),
+			)
 		);
 		
 		return Snowblozm::run($service, $memory);

@@ -7,15 +7,15 @@ require_once(SBSERVICE);
  *
  *	@param comid long int Company ID [memory]
  *	@param name string Company name [memory]
- *	@param site string Website [memory]
+ *	@param scope string Field Scope [memory] optional default ''
+ *	@param site string Website URL [memory] optional default ''
+ *	@param page string Detail Page [memory] optional default ''
  
  *	@param title string Title [memory]
  *	@param phone string Phone [memory]
  *	@param address string Address [memory] 
- *	@param country string Country [memory]
+ *	@param country string Country [memory] optional default India
  *	@param location long int Location [memory] optional default 0
- *	@param dateofbirth string Date of birth [memory] (Format YYYY-MM-DD)
- *	@param gender string Gender [memory]  (M=Male F=Female N=None)
  *
  *	@param keyid long int Usage Key ID [memory]
  *	@param user string Username [memory]
@@ -30,8 +30,8 @@ class CompanyEditWorkflow implements Service {
 	**/
 	public function input(){
 		return array(
-			'required' => array('keyid', 'user', 'comid', 'name', 'phone', 'address', 'site', 'page'),
-			'optional' => array('location' => 0, 'title' => '', 'gender' => 'N', 'dateofbirth' => '')
+			'required' => array('keyid', 'user', 'comid', 'name', 'phone', 'address', 'site', 'country', 'scope', 'page'),
+			'optional' => array('location' => 0, 'title' => '', 'dateofbirth' => '', 'gender' => 'N')
 		);
 	}
 	
@@ -41,9 +41,13 @@ class CompanyEditWorkflow implements Service {
 	public function run($memory){
 		$workflow = array(
 		array(
+			'service' => 'transpera.reference.authorize.workflow',
+			'input' => array('id' => 'comid'),
+			'init' => false
+		),
+		array(
 			'service' => 'people.person.edit.workflow',
-			'input' => array('pnid' => 'comid'),
-			'country' => 'India',
+			'input' => array('pnid' => 'comid')
 		),
 		array(
 			'service' => 'people.person.update.workflow',
@@ -53,13 +57,13 @@ class CompanyEditWorkflow implements Service {
 		),
 		array(
 			'service' => 'transpera.relation.update.workflow',
-			'args' => array('comid', 'name', 'site', 'page'),
+			'args' => array('stuid', 'name', 'phone', 'site', 'scope', 'page'),
 			'conn' => 'exconn',
 			'relation' => '`companies`',
-			'sqlcnd' => "set `name`='\${name}', `site`='\${site}', `page`='\${page}' where `comid`=\${comid}",
+			'sqlcnd' => "set `name`='\${name}', `phone`='\${phone}', `site`='\${site}', `scope`='\${scope}', `page`='\${page}' where `comid`=\${comid}",
 			'successmsg' => 'Company edited successfully',
 			'check' => false,
-			'escparam' => array('name', 'site', 'page'),
+			'escparam' => array('name', 'phone', 'site', 'scope', 'page'),
 			'errormsg' => 'No Change / Invalid Company ID'
 		));
 		

@@ -49,7 +49,7 @@ class BatchEditWorkflow implements Service {
 		array(
 			'service' => 'transpera.entity.edit.workflow',
 			'args' => array('btname', 'dept', 'course', 'year'),
-			'input' => array('id' => 'batchid', 'cname' => 'statement', 'parent' => 'portalid', 'pname' => 'plname'),
+			'input' => array('id' => 'batchid', 'cname' => 'btname', 'parent' => 'portalid', 'pname' => 'plname'),
 			'conn' => 'exconn',
 			'relation' => '`batches`',
 			'type' => 'batch',

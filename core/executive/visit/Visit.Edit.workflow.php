@@ -2,24 +2,26 @@
 require_once(SBSERVICE);
 
 /**
- *	@class BatchEditWorkflow
- *	@desc Edits batch using ID
+ *	@class VisitEditWorkflow
+ *	@desc Edits visit using ID
  *
- *	@param batchid long int Batch ID [memory]
- *	@param btname string Batch name [memory]
- *	@param dept string Department [memory]
- *	@param course string Course [memory]
- *	@param year integer Year [memory] 
+ *	@param visitid long int Visit ID [memory]
+ *	@param vstname string Visit name [memory]
+ *	@param year string Academic Session Year [memory] 
+ *	@param vtype string Type [memory] ('placement', 'internship', 'ppo')
+ *	@param package float Package [memory]
+ *	@param visitdate string Date of visit [memory] (Format YYYY-MM-DD)
+ *	@param deadline string Deadline [memory] (Format YYYY-MM-DD)
  *
  *	@param keyid long int Usage Key ID [memory]
  *	@param user string Key User [memory]
- *	@param portalid long int Portal ID [memory] optional default 0
+ *	@param portalid long int Portal ID [memory] optional default COMPANY_PORTAL_ID
  *	@param plname string Portal Name [memory] optional default ''
  *
- *	@return batchid long int Batch ID [memory]
+ *	@return visitid long int Visit ID [memory]
  *	@return portalid long int Portal ID [memory]
  *	@return plname string Portal Name [memory]
- *	@return batch array Batch information [memory]
+ *	@return visit array Visit information [memory]
  *	@return chain array Chain information [memory]
  *	@return pchain array Parent chain information [memory]
  *	@return admin integer Is admin [memory]
@@ -28,14 +30,14 @@ require_once(SBSERVICE);
  *	@author Vibhaj Rajan <vibhaj8@gmail.com>
  *
 **/
-class BatchEditWorkflow implements Service {
+class VisitEditWorkflow implements Service {
 	
 	/**
 	 *	@interface Service
 	**/
 	public function input(){
 		return array(
-			'required' => array('keyid', 'user', 'batchid', 'btname', 'dept', 'course', 'year', 'portalid', 'plname')
+			'required' => array('keyid', 'user', 'visitid', 'vstname', 'year', 'vtype', 'package', 'visitdate', 'deadline', 'portalid', 'plname')
 		);
 	}
 	
@@ -48,34 +50,20 @@ class BatchEditWorkflow implements Service {
 		$workflow = array(
 		array(
 			'service' => 'transpera.entity.edit.workflow',
-			'args' => array('btname', 'dept', 'course', 'year'),
-			'input' => array('id' => 'batchid', 'cname' => 'statement', 'parent' => 'portalid', 'pname' => 'plname'),
+			'args' => array('vstname', 'year', 'vtype', 'package', 'visitdate', 'deadline'),
+			'input' => array('id' => 'visitid', 'cname' => 'vstname', 'parent' => 'portalid', 'pname' => 'plname'),
 			'conn' => 'exconn',
-			'relation' => '`batches`',
-			'type' => 'batch',
-			'sqlcnd' => "set `btname`='\${btname}', `dept`='\${dept}', `course`='\${course}', `year`=\${year} where `batchid`=\${id}",
-			'escparam' => array('btname', 'dept', 'course'),
+			'relation' => '`visits`',
+			'type' => 'visit',
+			'sqlcnd' => "set `vstname`='\${vstname}', `year`='\${year}', `vtype`='\${vtype}', `package`='\${package}', `visitdate`='\${visitdate}', `deadline`='\${deadline}' where `visitid`=\${id}",
+			'escparam' => array('vstname', 'year', 'vtype', 'package', 'visitdate', 'deadline'),
 			'check' => false,
-			'successmsg' => 'Batch edited successfully'
+			'successmsg' => 'Visit edited successfully'
 		),
 		array(
-			'service' => 'transpera.entity.info.workflow',
-			'input' => array('id' => 'batchid', 'parent' => 'portalid', 'cname' => 'name', 'pname' => 'plname'),
-			'conn' => 'exconn',
-			'relation' => '`batches`',
-			'sqlcnd' => "where `batchid`=\${id}",
-			'errormsg' => 'Invalid Batch ID',
-			'type' => 'batch',
-			'successmsg' => 'Batch information given successfully',
-			'output' => array('entity' => 'batch'),
-			'auth' => false,
-			'track' => false,
-			'sinit' => false
-		),
-		array(
-			'service' => 'guard.chain.info.workflow',
-			'input' => array('chainid' => 'portalid'),
-			'output' => array('chain' => 'pchain')
+			'service' => 'executive.visit.info.workflow',
+			'pgsz' => 5,
+			'padmin' => true
 		));
 		
 		$memory = Snowblozm::execute($workflow, $memory);
@@ -91,7 +79,7 @@ class BatchEditWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function output(){
-		return array('batchid', 'portalid', 'plname', 'batch', 'chain', 'pchain', 'admin', 'padmin');
+		return array('visitid', 'visit', 'cutoffs', 'plname', 'portalid', 'ctfadmin', 'vstname', 'files', 'shortlist', 'comid', 'chain', 'pchain', 'admin', 'padmin', 'total', 'pgsz', 'pgno');
 	}
 	
 }

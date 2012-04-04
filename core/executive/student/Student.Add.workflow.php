@@ -49,11 +49,6 @@ class StudentAddWorkflow implements Service {
 			'service' => 'executive.batch.info.workflow'
 		),
 		array(
-			'service' => 'cbcore.random.string.service',
-			'length' => 8,
-			'output' => array('random' => 'password')
-		),
-		array(
 			'service' => 'people.person.add.workflow',
 			'input' => array('peopleid' => 'batchid', 'cname' => 'username'),
 			'country' => 'India',
@@ -84,7 +79,7 @@ class StudentAddWorkflow implements Service {
 			'conn' => 'exconn',
 			'relation' => '`students`',
 			'sqlcnd' => "(`stdid`,`owner`, `username`, `name`, `email`, `rollno`, `resume`, `home`) values (\${pnid}, \${owner}, '\${username}', '\${name}', '\${email}', '\${rollno}', \${resume}, \${home})",
-			'escparam' => array('username', 'name', 'email', 'rollno', 'dept', 'course'),
+			'escparam' => array('username', 'name', 'email', 'rollno'),
 			'output' => array('id' => 'stdid')
 		));
 		

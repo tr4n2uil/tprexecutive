@@ -14,4 +14,8 @@ type ..\core\executive\student\student.html > ..\ui\tpl\executive\student.tpl.ht
 type ..\core\executive\student\students.html > ..\ui\tpl\executive\students.tpl.html
 type ..\core\executive\batch\batch.html > ..\ui\tpl\executive\batch.tpl.html
 type ..\core\executive\grade\grade.html > ..\ui\tpl\executive\grade.tpl.html
+type ..\core\executive\company\company.html > ..\ui\tpl\executive\company.tpl.html
+type ..\core\executive\company\companies.html > ..\ui\tpl\executive\companies.tpl.html
+type ..\core\executive\visit\visit.html > ..\ui\tpl\executive\visit.tpl.html
+type ..\core\executive\cutoff\cutoff.html > ..\ui\tpl\executive\cutoff.tpl.html
 pause

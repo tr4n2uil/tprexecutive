@@ -2,35 +2,38 @@
 require_once(SBSERVICE);
 
 /**
- *	@class CompanyEditWorkflow
+ *	@class CompanyUpdateWorkflow
  *	@desc Updates company using ID
  *
  *	@param comid long int Company ID [memory]
- *	@param interests string Interests [memory]
- 
- *	@param title string Title [memory]
- *	@param phone string Phone [memory]
- *	@param dateofbirth string Date of birth [memory] (Format YYYY-MM-DD)
- *	@param gender string Gender [memory]  (M=Male F=Female N=None)
- *	@param address string Address [memory] 
- *	@param country string Country [memory]
- *	@param location long int Location [memory] optional default 0
+ *	@param scope array Scope [memory]
+ *	@param site string Website [memory]
  *
  *	@param keyid long int Usage Key ID [memory]
  *	@param user string Username [memory]
+ *	@param portalid long int Batch ID [memory] optional default 0
+ *	@param plname string Batch Name [memory] optional default ''
+ *
+ *	@return comid long int Company ID [memory]
+ *	@return portalid long int Batch ID [memory]
+ *	@return plname string Batch Name [memory]
+ *	@return company array Company information [memory]
+ *	@return chain array Chain information [memory]
+ *	@return pchain array Parent chain information [memory]
+ *	@return admin integer Is admin [memory]
+ *	@return padmin integer Is parent admin [memory]
  *
  *	@author Vibhaj Rajan <vibhaj8@gmail.com>
  *
 **/
-class CompanyEditWorkflow implements Service {
+class CompanyUpdateWorkflow implements Service {
 	
 	/**
 	 *	@interface Service
 	**/
 	public function input(){
 		return array(
-			'required' => array('keyid', 'user', 'comid', 'phone', 'address', 'interests'),
-			'optional' => array('location' => 0, 'title' => '', 'dateofbirth' => '', 'gender' => 'N')
+			'required' => array('keyid', 'user', 'comid', 'scope', 'site', 'portalid', 'plname')
 		);
 	}
 	
@@ -38,38 +41,60 @@ class CompanyEditWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function run($memory){
+		$memory['scope'] = is_array($memory['scope']) ? implode(':', $memory['scope']) : $memory['scope'];
+		
 		$workflow = array(
 		array(
-			'service' => 'people.person.edit.workflow',
-			'input' => array('pnid' => 'comid'),
-			'country' => 'India',
-		),
-		array(
-			'service' => 'people.person.update.workflow',
-			'input' => array('pnid' => 'comid'),
-			'email' => false,
-			'device' => 'sms'
+			'service' => 'transpera.reference.authorize.workflow',
+			'input' => array('id' => 'comid'),
+			'init' => false
 		),
 		array(
 			'service' => 'transpera.relation.update.workflow',
-			'args' => array('stuid', 'phone', 'interests'),
+			'args' => array('comid', 'scope', 'site'),
 			'conn' => 'exconn',
 			'relation' => '`companies`',
-			'sqlcnd' => "set `phone`='\${phone}', `interests`='\${interests}' where `stuid`=\${stuid}",
+			'sqlcnd' => "set `scope`='\${scope}', `site`='\${site}' where `comid`=\${comid}",
 			'successmsg' => 'Company updated successfully',
 			'check' => false,
-			'escparam' => array('phone', 'interests'),
+			'escparam' => array('scope', 'site'),
 			'errormsg' => 'No Change / Invalid Company ID'
+		),
+		array(
+			'service' => 'transpera.entity.info.workflow',
+			'input' => array('id' => 'comid', 'parent' => 'portalid', 'cname' => 'name', 'pname' => 'plname'),
+			'conn' => 'exconn',
+			'relation' => '`companies`',
+			'sqlprj' => '`comid`, `username`, `name`, `email`, `scope`, `folder`, `notes`, `site`',
+			'sqlcnd' => "where `comid`=\${id}",
+			'errormsg' => 'Invalid Company ID',
+			'type' => 'person',
+			'successmsg' => 'Company information given successfully',
+			'output' => array('entity' => 'company'),
+			'auth' => false,
+			'track' => false,
+			'sinit' => false
+		),
+		array(
+			'service' => 'guard.chain.info.workflow',
+			'input' => array('chainid' => 'portalid'),
+			'output' => array('chain' => 'pchain')
 		));
 		
-		return Snowblozm::execute($workflow, $memory);
+		$memory = Snowblozm::execute($workflow, $memory);
+		if(!$memory['valid'])
+			return $memory;
+			
+		$memory['padmin'] = $memory['admin'];
+		$memory['admin'] = 1;
+		return $memory;
 	}
 	
 	/**
 	 *	@interface Service
 	**/
 	public function output(){
-		return array();
+		return array('comid', 'portalid', 'plname', 'company', 'chain', 'pchain', 'admin', 'padmin');
 	}
 	
 }

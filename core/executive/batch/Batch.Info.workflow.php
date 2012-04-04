@@ -37,6 +37,7 @@ class BatchInfoWorkflow implements Service {
 	**/
 	public function run($memory){
 		$memory['batchid'] = $memory['batchid'] ? $memory['batchid'] : $memory['id'];
+		//echo json_encode($memory);
 		
 		$workflow = array(
 		array(

@@ -1,7 +1,7 @@
 <?php 
 require_once(SBSERVICE);
 
-/**
+/** TODO
  *	@class CompanyRemoveWorkflow
  *	@desc Removes company by ID
  *
@@ -19,7 +19,7 @@ class CompanyRemoveWorkflow implements Service {
 	**/
 	public function input(){
 		return array(
-			'required' => array('keyid', 'user', 'comid'),
+			'required' => array('keyid', 'comid'),
 			'optional' => array('portalid' => COMPANY_PORTAL_ID)
 		);
 	}
@@ -32,28 +32,20 @@ class CompanyRemoveWorkflow implements Service {
 		
 		$workflow = array(
 		array(
-			'service' => 'executive.company.info.workflow'
+			'service' => 'portal.company.info.workflow'
 		),
 		array(
 			'service' => 'people.person.remove.workflow',
 			'input' => array('pnid' => 'comid', 'peopleid' => 'portalid')
 		),
 		array(
-			'service' => 'transpera.relation.delete.workflow',
-			'args' => array('comid'),
-			'conn' => 'exconn',
-			'relation' => '`companies`',
-			'sqlcnd' => "where `comid`=\${comid}",
-			'errormsg' => 'Invalid Company ID'
-		),
-		array(
 			'service' => 'display.board.remove.workflow',
-			'input' => array('boardid' => 'notes', 'forumid' => 'portalid')
-		),
+			'input' => array('boardid' => 'notes', 'forumid' => COMPANY_FORUM_ID)
+		),/*
 		array(
-			'service' => 'storage.directory.remove.workflow',
-			'input' => array('dirid' => 'folder', 'stgid' => 'portalid')
-		));
+			'service' => 'storage.file.remove.workflow',
+			'input' => array('fileid' => 'folder', 'dirid' => 'portalid')
+		)*/);
 		
 		return Snowblozm::execute($workflow, $memory);
 	}
