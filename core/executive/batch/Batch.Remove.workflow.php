@@ -45,11 +45,11 @@ class BatchRemoveWorkflow implements Service {
 			'destruct' => array(
 				array(
 					'service' => 'storage.directory.remove.workflow',
-					'input' => array('dirid' => 'resumes', 'stgid' => 'parent')
+					'input' => array('dirid' => 'resumes', 'stgid' => 'id')
 				),
 				array(
 					'service' => 'transpera.reference.remove.workflow',
-					'input' => array('id' => 'notes'),
+					'input' => array('id' => 'notes', 'parent' => 'id'),
 					'type' => 'forum'
 				)
 			),

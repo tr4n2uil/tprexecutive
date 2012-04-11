@@ -63,14 +63,15 @@ class BatchAddWorkflow implements Service {
 			'construct' => array(
 				array(
 					'service' => 'storage.directory.add.workflow',
-					'name' => 'storage/private/resumes/'.$memory['btname'],
-					'path' => 'storage/private/resumes/'.$memory['btname'],
-					'input' => array('stgid' => 'parent'),
+					'name' => 'storage/private/resumes/'.$memory['btname'].'/',
+					'path' => 'storage/private/resumes/'.$memory['btname'].'/',
+					'input' => array('stgid' => 'id'),
 					'output' => array('dirid' => 'resumes')
 				),
 				array(
 					'service' => 'transpera.reference.add.workflow',
 					'type' => 'forum',
+					'input' => array('parent' => 'id'),
 					'output' => array('id' => 'notes')
 				)
 			),

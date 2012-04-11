@@ -10,6 +10,11 @@
 		'location' => 'local'
 	));
 	
+	Snowblozm::add('manager', array(
+		'root' => EXROOT.'core/manager/',
+		'location' => 'local'
+	));
+	
 	/**
 	 *	@constants System
 	**/

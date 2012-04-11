@@ -81,8 +81,8 @@ class VisitAddWorkflow implements Service {
 			'construct' => array(
 				array(
 					'service' => 'storage.directory.add.workflow',
-					'name' => 'storage/private/folders/'.$memory['comuser'].'/'.$memory['year'].'-'.$memory['vtype'],
-					'path' => 'storage/private/folders/'.$memory['comuser'].'/'.$memory['year'].'-'.$memory['vtype'],
+					'name' => 'storage/private/folders/'.$memory['comuser'].'/'.$memory['year'].'-'.$memory['vtype'].'/',
+					'path' => 'storage/private/folders/'.$memory['comuser'].'/'.$memory['year'].'-'.$memory['vtype'].'/',
 					'input' => array('stgid' => 'comid'),
 					'output' => array('dirid' => 'files')
 				),

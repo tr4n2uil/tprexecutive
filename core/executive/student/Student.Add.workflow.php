@@ -101,6 +101,30 @@ class StudentAddWorkflow implements Service {
 		else
 			$memory['msg'] = 'Student created successfully. Error sending verification mail.';
 		
+		$workflow = array(
+		array(
+			'service' => 'transpera.entity.info.workflow',
+			'input' => array('id' => 'pnid', 'parent' => 'portalid', 'cname' => 'name', 'plname' => 'plname'),
+			'conn' => 'exconn',
+			'relation' => '`students`',
+			'sqlcnd' => "where `stdid`=\${id}",
+			'errormsg' => 'Invalid Student ID',
+			'type' => 'person',
+			'successmsg' => 'Student information given successfully',
+			'output' => array('entity' => 'student'),
+			'auth' => false,
+			'track' => false,
+			'sinit' => false
+		),
+		array(
+			'service' => 'guard.chain.info.workflow',
+			'input' => array('chainid' => 'portalid'),
+			'output' => array('chain' => 'pchain')
+		));
+		
+		$memory = Snowblozm::execute($workflow, $memory);
+		$memory['padmin'] = $memory['admin'];
+		$memory['admin'] = 1;
 		return $memory;
 	}
 	
@@ -108,7 +132,7 @@ class StudentAddWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function output(){
-		return array('stdid');
+		return array('stdid', 'portalid', 'plname', 'student', 'chain', 'pchain', 'admin', 'padmin', 'batch');
 	}
 	
 }

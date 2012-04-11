@@ -18,4 +18,5 @@ type ..\core\executive\company\company.html > ..\ui\tpl\executive\company.tpl.ht
 type ..\core\executive\company\companies.html > ..\ui\tpl\executive\companies.tpl.html
 type ..\core\executive\visit\visit.html > ..\ui\tpl\executive\visit.tpl.html
 type ..\core\executive\cutoff\cutoff.html > ..\ui\tpl\executive\cutoff.tpl.html
+type ..\core\manager\contact\contact.html > ..\ui\tpl\manager\contact.tpl.html
 pause

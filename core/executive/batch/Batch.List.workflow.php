@@ -84,7 +84,7 @@ class BatchListWorkflow implements Service {
 			'sqlcnd' => "where `batchid` in \${list} $qry order by `year` desc, `dept` asc, `course` asc",
 			'escparam' => $esc,
 			'successmsg' => 'Batches information given successfully',
-			'lsttrack' => true,
+			//'lsttrack' => true,
 			'output' => array('entities' => 'batches'),
 			'mapkey' => 'batchid',
 			'mapname' => 'batch',

@@ -24,8 +24,8 @@
 	
 	$MAIL_HOST = 'smtp.gmail.com';
 	$MAIL_USER = 'TPO IT BHU';
-	$MAIL_EMAIL = 'support.adhyayan@itbhu.ac.in';
-	$MAIL_PASS = 'sprtady+itbhu=2012';
+	$MAIL_EMAIL = 'web.tpo@itbhu.ac.in';
+	$MAIL_PASS = 'w@itbhu';
 	
 	/**
 	 *	@constants System
@@ -44,6 +44,7 @@
 	define('PEOPLE_ID', 16);
 	define('STUDENT_PORTAL_ID', 16);
 	define('COMPANY_PORTAL_ID', 17);
+	define('MANAGER_ID', 18);
 	//define('FORUM_ID', 18);
 	
 	date_default_timezone_set('Asia/Kolkata');

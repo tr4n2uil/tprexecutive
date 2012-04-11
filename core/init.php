@@ -129,6 +129,7 @@
 				'display',
 				'people',
 				'executive',
+				'manager',
 				'access'
 			),
 			'maps' => array(
@@ -140,6 +141,7 @@
 				'verify' => 'people.person.verify',
 				'reset' => 'people.person.reset',
 				'file' => 'storage.file.read',
+				'files' => 'storage.file.list',
 				'permissions' => 'access.permission.list',
 				'batch' => 'executive.batch.find',
 				'batches' => 'executive.batch.list',
@@ -151,6 +153,7 @@
 				'companies' => 'executive.company.list',
 				'visit' => 'executive.visit.info',
 				'calendar' => 'executive.visit.list',
+				'contacts' => 'manager.contact.list',
 				'update' => 'display.update.info',
 				'updates' => 'display.update.list',
 				'post' => 'display.post.info',

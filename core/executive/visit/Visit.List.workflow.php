@@ -105,7 +105,7 @@ class VisitListWorkflow implements Service {
 			'sqlcnd' => "where `visitid` in \${list} $qry order by `year` desc, `vtype` desc",
 			'escparam' => $esc,
 			'successmsg' => 'Visits information given successfully',
-			'lsttrack' => true,
+			//'lsttrack' => true,
 			'output' => array('entities' => 'visits'),
 			'mapkey' => 'visitid',
 			'mapname' => 'visit',

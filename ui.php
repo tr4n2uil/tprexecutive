@@ -83,7 +83,7 @@
 	$TILES_0 .= file_get_contents('ui/html/downloads.tile.html');
 	
 	if($EMERGENCY)
-		$TILES_1 .= file_get_contents('ui/html/emergency.tile.html');
+		$TILES_0 .= file_get_contents('ui/html/emergency.tile.html');
 		
 	//$TILES_1 .= file_get_contents('ui/html/portal.tile.html');
 	

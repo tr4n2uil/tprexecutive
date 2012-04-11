@@ -717,11 +717,16 @@ if (!JSON) {
               allText = $.trim( $this.text() ),
               summaryText = allHtml.slice(0, o.slicePoint);
 
-          // bail out if we've already set up the expander on this element
-          if ( $.data(this, 'expander') ) {
+			// bail out if we've already set up the expander on this element
+			if($(this).hasClass('expander-done')){
+				return;
+			}
+			$(this).addClass('expander-done');
+		
+          /*if ( $.data(this, 'expander') ) {
             return;
           }
-          $.data(this, 'expander', true);
+          $.data(this, 'expander', true);*/
 
           // determine which callback functions are defined
           $.each(['onSlice','beforeExpand', 'afterExpand', 'onCollapse'], function(index, val) {

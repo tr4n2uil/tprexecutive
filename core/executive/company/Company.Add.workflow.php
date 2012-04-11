@@ -63,8 +63,8 @@ class CompanyAddWorkflow implements Service {
 		),
 		array(
 			'service' => 'storage.directory.add.workflow',
-			'name' => 'storage/private/folders/'.$memory['username'],
-			'path' => 'storage/private/folders/'.$memory['username'],
+			'name' => 'storage/private/folders/'.$memory['username'].'/',
+			'path' => 'storage/private/folders/'.$memory['username'].'/',
 			'input' => array('stgid' => 'portalid', 'user' => 'username'),
 			'output' => array('dirid' => 'folder')
 		),
