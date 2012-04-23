@@ -88,7 +88,7 @@ class StudentFindWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function output(){
-		return array('student', 'person', 'contact', 'personal', 'stdid', 'id', 'resume', 'home', 'grade', /*'thumbnail', 'username',*/ 'dirid', 'batchid', 'admin', 'chain', 'batch');
+		return array('student', 'person', 'contact', 'personal', 'stdid', 'id', 'resume', 'home', 'grade', /*'thumbnail', 'username',*/ 'dirid', 'batchid', 'admin', 'chain', 'batch', 'btadmin');
 	}
 	
 }

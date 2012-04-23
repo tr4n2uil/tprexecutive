@@ -37,7 +37,7 @@ class StudentListWorkflow implements Service {
 	public function input(){
 		return array(
 			'required' => array('keyid'),
-			'optional' => array('batchid' => false, 'id' => STUDENT_PORTAL_ID, 'btname' => false, 'name' => '', 'pgsz' => 100, 'pgno' => 0, 'total' => false, 'padmin' => true),
+			'optional' => array('batchid' => false, 'id' => STUDENT_PORTAL_ID, 'btname' => false, 'name' => '', 'pgsz' => false, 'pgno' => 0, 'total' => false, 'padmin' => true),
 			'set' => array('id', 'name')
 		);
 	}

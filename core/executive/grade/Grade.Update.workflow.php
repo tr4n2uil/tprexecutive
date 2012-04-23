@@ -1,5 +1,6 @@
 <?php 
 require_once(SBSERVICE);
+require_once(EXGPACONF);
 
 /**
  *	@class GradeUpdateWorkflow
@@ -59,14 +60,27 @@ class GradeUpdateWorkflow implements Service {
 		$memory['cgpa'] = $memory['ygpa1'] = $memory['ygpa2'] = $memory['ygpa3'] = $memory['ygpa4'] = $memory['ygpa5'] = 0.0;
 		$i = $total = 0;
 		
+		$memory = Snowblozm::run(array(
+			'service' => 'executive.batch.info.workflow'
+		), $memory);
+		
+		if(!$memory['valid'])
+			return $memory;
+		
+		$dept = $memory['batch']['dept'];
+		$course = $memory['batch']['course'];
+		
+		$gpa = Snowblozm::get('all_gpa');
+		$gpa = $gpa[$dept][$course];
+		
 		if($memory['sgpa1'] != ''){
-			$i++;
-			$total += $memory['sgpa1'];
+			$i+= $gpa[0];
+			$total += $memory['sgpa1']*$gpa[0];
 			$memory['ygpa1'] = $memory['sgpa1'];
 			if($memory['sgpa2'] != ''){
-				$i++;
-				$total += $memory['sgpa2'];
-				$memory['ygpa1'] = ($memory['sgpa1'] + $memory['sgpa2'])/2;
+				$i+= $gpa[1];
+				$total += $memory['sgpa2']*$gpa[1];
+				$memory['ygpa1'] = ($memory['sgpa1']*$gpa[0] + $memory['sgpa2']*$gpa[1])/($gpa[0] + $gpa[1]);
 			}
 			else 
 				$memory['sgpa2'] = 0.0;
@@ -75,13 +89,13 @@ class GradeUpdateWorkflow implements Service {
 			$memory['sgpa1'] = $memory['sgpa2'] = 0.0;
 		
 		if($memory['sgpa3'] != ''){
-			$i++;
-			$total += $memory['sgpa3'];
+			$i+= $gpa[2];
+			$total += $memory['sgpa3']*$gpa[2];
 			$memory['ygpa2'] = $memory['sgpa3'];
 			if($memory['sgpa4'] != ''){
-				$i++;
-				$total += $memory['sgpa4'];
-				$memory['ygpa2'] = ($memory['sgpa3'] + $memory['sgpa4'])/2;
+				$i+= $gpa[3];
+				$total += $memory['sgpa4']*$gpa[3];
+				$memory['ygpa2'] = ($memory['sgpa3']*$gpa[2] + $memory['sgpa4']*$gpa[3])/($gpa[2] + $gpa[3]);
 			}
 			else 
 				$memory['sgpa4'] = 0.0;
@@ -90,13 +104,13 @@ class GradeUpdateWorkflow implements Service {
 			$memory['sgpa3'] = $memory['sgpa4'] = 0.0;
 		
 		if($memory['sgpa5'] != ''){
-			$i++;
-			$total += $memory['sgpa5'];
+			$i+= $gpa[4];
+			$total += $memory['sgpa5']*$gpa[4];
 			$memory['ygpa3'] = $memory['sgpa5'];
 			if($memory['sgpa6'] != ''){
-				$i++;
-				$total += $memory['sgpa6'];
-				$memory['ygpa3'] = ($memory['sgpa5'] + $memory['sgpa6'])/2;
+				$i+= $gpa[5];
+				$total += $memory['sgpa6']*$gpa[5];
+				$memory['ygpa3'] = ($memory['sgpa5']*$gpa[4] + $memory['sgpa6']*$gpa[5])/($gpa[4] + $gpa[5]);
 			}
 			else 
 				$memory['sgpa6'] = 0.0;
@@ -105,13 +119,13 @@ class GradeUpdateWorkflow implements Service {
 			$memory['sgpa5'] = $memory['sgpa6'] = 0.0;
 		
 		if($memory['sgpa7'] != ''){
-			$i++;
-			$total += $memory['sgpa7'];
+			$i+= $gpa[6];
+			$total += $memory['sgpa7']*$gpa[6];
 			$memory['ygpa4'] = $memory['sgpa7'];
 			if($memory['sgpa8'] != ''){
-				$i++;
-				$total += $memory['sgpa8'];
-				$memory['ygpa4'] = ($memory['sgpa7'] + $memory['sgpa8'])/2;
+				$i+= $gpa[7];
+				$total += $memory['sgpa8']*$gpa[7];
+				$memory['ygpa4'] = ($memory['sgpa7']*$gpa[6] + $memory['sgpa8']*$gpa[7])/($gpa[6] + $gpa[7]);
 			}
 			else 
 				$memory['sgpa8'] = 0.0;
@@ -120,13 +134,13 @@ class GradeUpdateWorkflow implements Service {
 			$memory['sgpa7'] = $memory['sgpa8'] = 0.0;
 		
 		if($memory['sgpa9'] != ''){
-			$i++;
-			$total += $memory['sgpa9'];
+			$i+= $gpa[8];
+			$total += $memory['sgpa9']*$gpa[8];
 			$memory['ygpa5'] = $memory['sgpa9'];
 			if($memory['sgpa10'] != ''){
-				$i++;
-				$total += $memory['sgpa10'];
-				$memory['ygpa5'] = ($memory['sgpa9'] + $memory['sgpa10'])/2;
+				$i+= $gpa[9];
+				$total += $memory['sgpa10']*$gpa[9];
+				$memory['ygpa5'] = ($memory['sgpa9']*$gpa[8] + $memory['sgpa10']*$gpa[9])/($gpa[8] + $gpa[9]);
 			}
 			else 
 				$memory['sgpa10'] = 0.0;
@@ -176,7 +190,31 @@ class GradeUpdateWorkflow implements Service {
 		$memory = Snowblozm::execute($workflow, $memory);
 		if(!$memory['valid'])
 			return $memory;
-			
+		
+		if($memory['sqlrc']){
+			$grade = $memory['grade'];
+			Snowblozm::run(array(
+				'service' => 'people.person.alert.workflow',
+				'input' => array('chainid' => 'batchid'),
+				'subject' => '[TPO Portal Alerts] '.$memory['btname'].' Grades Updated : '.$memory['username'],
+				'body' => 'User '.$memory['username'].' updated Grades. The new grades are as follows :<br />
+				<table><tbody><tr><td>Roll No</td><td>'.$grade['rollno'].'</td></tr>
+				<tr><td>Username</td><td>'.$grade['username'].'</td></tr>
+				<tr><td>X %</td><td>'.$grade['sscx'].'</td></tr>
+				<tr><td>XII %</td><td>'.$grade['hscxii'].'</td></tr>
+				<tr><td>CGPA</td><td>'.$grade['cgpa'].'</td></tr>
+				<tr><td>Details</td><td>
+					<table><thead><tr><th>Part</th><th>SGPA Odd</th><th>SGPA Even</th><th>YGPA</th></tr></thead><tbody>
+					<tr><td>1</td><td>'.$grade['sgpa1'].'</td><td>'.$grade['sgpa2'].'</td><td>'.$grade['ygpa1'].'</td></tr>
+					<tr><td>2</td><td>'.$grade['sgpa3'].'</td><td>'.$grade['sgpa4'].'</td><td>'.$grade['ygpa2'].'</td></tr>
+					<tr><td>3</td><td>'.$grade['sgpa5'].'</td><td>'.$grade['sgpa6'].'</td><td>'.$grade['ygpa3'].'</td></tr>
+					<tr><td>4</td><td>'.$grade['sgpa7'].'</td><td>'.$grade['sgpa8'].'</td><td>'.$grade['ygpa4'].'</td></tr>
+					<tr><td>5</td><td>'.$grade['sgpa9'].'</td><td>'.$grade['sgpa10'].'</td><td>'.$grade['ygpa5'].'</td></tr>
+					</tbody></table>
+				</td></tr></tbody></table>'
+			), $memory);
+		}
+		
 		$memory['padmin'] = $memory['admin'];
 		$memory['admin'] = 1;
 		return $memory;

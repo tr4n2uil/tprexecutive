@@ -6,8 +6,10 @@
 		<link rel='shortcut icon' href="ui/img/executive/itbhu.png"/>
 		<!--<link rel="stylesheet" type="text/css" href="ui/css/jquery.jtweetsanywhere-1.3.1.css" />-->
 		<title>Training &amp; Placement Cell, IT BHU</title>
+		<link rel="stylesheet" type="text/css" href="ui/css/datatable/jquery.dataTables.css" />
 		<link rel="stylesheet" type="text/css" href="ui/css/executive-ui.css" />
 		<script charset="utf-8" type="text/javascript" src="ui/js/executive-ui.js"></script>
+		<script type="text/javascript" src="ui/js/jquery.dataTables.js"></script>
 		<script type="text/javascript">
 			Executive.root = '<?php echo ROOTPATH; ?>';
 			Executive.year = '?/<?php echo $YEAR; ?>/';
@@ -61,18 +63,18 @@
 							<ul class="menu-item">
 								<li><a href="info/companies/#!/view/#com-procedure/" class="ui">Procedure</a></li>
 								<li><a href="info/companies/#!/view/#com-facilities/" class="ui">Facilities</a></li>
-								<li><a href="info/companies/#!/view/#com-policy/" class="ui">Policy</a></li>
 								<li><a href="info/companies/#!/view/#com-recruiters/" class="ui">Past Recruiters</a></li>
+								<li><a href="info/companies/#!/view/#com-policy/" class="ui">Training &amp; Placement Policy</a></li>
+								<li><a href="info/forms/#!/view/#response-sheet/" class="ui">Company Response Sheet</a></li>
 								<li><a href="storage/public/downloads/IT-BHU_Placement_Brochure_2010-11.pdf" class="" target="_blank">IT BHU Placement Brochure</a></li>
-								<li><a href="storage/public/downloads/Response_Sheet.doc" class="" target="_blank">Company Response Sheet</a></li>
 							</ul>
 						</li>
 						<li>
 							<a href="info/contact-us/" class="ui">Contact Us</a>
 							<ul class="menu-item">
 								<li><a href="info/contact-us/#!/view/#cnt-office/" class="ui">Office</a></li>
-								<li><a href="info/contact-us/#!/view/#cnt-online/" class="ui">Contact Online</a></li>
-								<li><a href="info/contact-us/#!/view/#cnt-coordinators/" class="ui">Student Coordinators</a></li>
+								<li><a href="info/forms/#!/view/#contact/" class="ui">Contact Online</a></li>
+								<!--<li><a href="info/contact-us/#!/view/#cnt-coordinators/" class="ui">Student Coordinators</a></li>-->
 								<li><a href="info/contact-us/#!/view/#cnt-varanasi/" class="ui">Varanasi</a></li>
 							</ul>
 						</li>

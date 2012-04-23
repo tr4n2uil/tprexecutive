@@ -35,8 +35,8 @@ class ContactListWorkflow implements Service {
 	public function input(){
 		return array(
 			'required' => array('keyid'),
-			'optional' => array('user' => '', 'mngrid' => false, 'id' => MANAGER_ID, 'mngrname' => false, 'name' => '', 'pgsz' => 50, 'pgno' => 0, 'total' => false, 'padmin' => true),
-			'set' => array('id', 'name')
+			'optional' => array('user' => '', 'mngrid' => false, 'id' => MANAGER_ID, 'mngrname' => false, 'name' => '', 'pgsz' => false, 'pgno' => 0, 'total' => false, 'padmin' => true),
+			'set' => array('pgno', 'id', 'name')
 		);
 	}
 	
@@ -59,9 +59,10 @@ class ContactListWorkflow implements Service {
 			'output' => array('entities' => 'contacts'),
 			'mapkey' => 'cntid',
 			'mapname' => 'contact',
-			'saction' => 'add'
+			'saction' => 'add',
+			'iaction' => 'add',
 		);
-		
+		//Snowblozm::$debug = true;
 		return Snowblozm::run($service, $memory);
 	}
 	

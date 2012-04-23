@@ -51,6 +51,9 @@
 	$TILES_0 .= file_get_contents('ui/html/info/home.tile.html');
 	$HTML .= file_get_contents('ui/html/info/home.html');
 	
+	if($EMERGENCY)
+		$TILES_0 .= file_get_contents('ui/html/emergency.tile.html');
+	
 	/**
 	 *	@invoke Get role based user content
 	**/
@@ -72,6 +75,10 @@
 		**/
 		require_once('ui/php/statemenu.php');	
 		
+		if($TPR){
+			$TILES_0 .= file_get_contents('ui/html/info/tpr.tile.html');
+		}
+		
 		$TILES_0 .= file_get_contents('ui/html/info/portal.tile.html');
 		//$HTML .= file_get_contents('ui/html/info/portal.html');
 	}
@@ -81,9 +88,6 @@
 	}
 
 	$TILES_0 .= file_get_contents('ui/html/downloads.tile.html');
-	
-	if($EMERGENCY)
-		$TILES_0 .= file_get_contents('ui/html/emergency.tile.html');
 		
 	//$TILES_1 .= file_get_contents('ui/html/portal.tile.html');
 	

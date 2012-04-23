@@ -5,6 +5,7 @@
 	**/
 	$YEAR = '2012';
 	$TILES_0 = $TILES_1 = $HTML = $STATEMENU = $SHTML = '';
+	$TPR = false;
 	
 	$DB_HOST = 'localhost';
 	$DB_USER = 'root';
@@ -15,6 +16,7 @@
 	$CBQ_DB_NAME = 'cirrusbolt_queue';
 	$CBS_DB_NAME = 'cirrusbolt_storage';
 	$CBP_DB_NAME = 'cirrusbolt_people';
+	$CBSL_DB_NAME = 'cirrusbolt_shortlist';
 	$DB_NAME = 'tprexecutive';
 	$DB_PERSIST = true;
 
@@ -32,7 +34,7 @@
 	**/
 	define('COOKIEKEY', 'executive-session');
 	define('COOKIEEXPIRY', 15);
-	define('ROOTPATH', 'http://127.0.0.1/tpo');
+	define('ROOTPATH', 'http://'.$_SERVER['SERVER_NAME'].'/tpo');
 	define('CONTEXT', 'EX');
 	define('UIBASE', EXROOT. 'ui/');
 	define('CACHELITE', 'Cache/Lite.php');
@@ -40,11 +42,13 @@
 	define('PLACEMENT_UPDATES_BOARD', 15);
 	define('INTERNSHIP_UPDATES_BOARD', 14);
 	define('GENERAL_UPDATES_BOARD', 13);
+	define('TPR_UPDATES_BOARD', 19);
 	define('PERSON_THUMB', 10);
 	define('PEOPLE_ID', 16);
 	define('STUDENT_PORTAL_ID', 16);
 	define('COMPANY_PORTAL_ID', 17);
 	define('MANAGER_ID', 18);
+	define('FORM_ID', 32);
 	//define('FORUM_ID', 18);
 	
 	date_default_timezone_set('Asia/Kolkata');

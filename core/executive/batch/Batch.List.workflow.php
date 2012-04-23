@@ -37,7 +37,7 @@ class BatchListWorkflow implements Service {
 	public function input(){
 		return array(
 			'required' => array('keyid'),
-			'optional' => array('user' => '', 'portalid' => false, 'id' => STUDENT_PORTAL_ID, 'plname' => false, 'name' => 'IT BHU', 'pgsz' => 25, 'pgno' => 0, 'total' => false, 'padmin' => true, 'filter' => false, 'year' => false),
+			'optional' => array('user' => '', 'portalid' => false, 'id' => STUDENT_PORTAL_ID, 'plname' => false, 'name' => 'IT BHU', 'pgsz' => false, 'pgno' => 0, 'total' => false, 'padmin' => true, 'filter' => false, 'year' => false),
 			'set' => array('filter', 'year', 'id', 'name')
 		);
 	}
@@ -50,6 +50,7 @@ class BatchListWorkflow implements Service {
 		$memory['plname'] = $memory['plname'] ? $memory['plname'] : $memory['name'];
 		
 		$args = $esc = array();
+		$qry = '';
 		if($memory['filter']){
 			if(is_numeric($memory['filter'])){
 				$memory['year'] = $memory['filter'];

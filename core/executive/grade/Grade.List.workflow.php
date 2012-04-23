@@ -35,7 +35,7 @@ class GradeListWorkflow implements Service {
 	public function input(){
 		return array(
 			'required' => array('keyid'),
-			'optional' => array('user' => '', 'batchid' => false, 'id' => STUDENT_PORTAL_ID, 'btname' => false, 'name' => 'IT BHU', 'pgsz' => 100, 'pgno' => 0, 'total' => false, 'padmin' => true),
+			'optional' => array('user' => '', 'batchid' => false, 'id' => STUDENT_PORTAL_ID, 'btname' => false, 'name' => 'IT BHU', 'pgsz' => false, 'pgno' => 0, 'total' => false, 'padmin' => true),
 			'set' => array('id', 'name')
 		);
 	}

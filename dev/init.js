@@ -158,14 +158,8 @@ $(document).ready(function(){
 	});
 	
 	/**
-	 *	@editor cmnt-text
+	 *	@panel smart-panel
 	**/
-	$('textarea.cmnt-text').live('focusin', function(){
-		if(!$(this).hasClass('cmnt-text-done')){
-			$(this).addClass('cmnt-text-done');
-		}
-	});
-	
 	$('.smart-panel').live('load', function(){
 		FireSpark.ui.helper.transformSmartpanel($(this).find('.smart-block'));
 		FireSpark.ui.helper.transformSmartpanel($(this).find('.inline-block'), {
@@ -186,6 +180,33 @@ $(document).ready(function(){
 			cancel: '.inline-cancel'
 		});
 		return false;
+	});
+	
+	/**
+	 *	@datatable dataTable
+	**/
+	$.extend($.fn.dataTable.defaults, {
+		//bSort: false,
+		aaSorting : [],
+		sPaginationType: "full_numbers",
+		iDisplayLength: 50,
+		aLengthMenu: [[50, 100, 150, -1], [50, 100, 150, "All"]]
+	});
+	
+	$('.data-table-panel').live('load', function(){
+		var $el = $(this).find('table.datatable');
+		if(!$el.hasClass('datatable-done')){
+			$el.dataTable().addClass('datatable-done');
+		}
+		return false;
+	});
+	
+	$('.data-table-panel').each(function(){
+		var $el = $(this).find('table.datatable');
+		if(!$el.hasClass('datatable-done')){
+			$el.dataTable().addClass('datatable-done');
+		}
+		return true
 	});
 	
 	$.expander.defaults = {

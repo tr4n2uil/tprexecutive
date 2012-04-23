@@ -20,5 +20,6 @@
 	**/
 	define('PHPMAILER', EXROOT .'dev/libraries/phpmailer/PHPMailer.class.php');
 	define('CBQUEUECONF', EXROOT. 'core/que-config.php');
+	define('EXGPACONF', EXROOT. 'core/gpa-config.php');
 	
 ?>

@@ -35,7 +35,7 @@ class CompanyListWorkflow implements Service {
 	public function input(){
 		return array(
 			'required' => array('keyid'),
-			'optional' => array('portalid' => false, 'id' => COMPANY_PORTAL_ID, 'plname' => false, 'name' => 'IT BHU Training & Placement Cell', 'pgsz' => 100, 'pgno' => 0, 'total' => false, 'padmin' => true, 'scope' => false),
+			'optional' => array('portalid' => false, 'id' => COMPANY_PORTAL_ID, 'plname' => false, 'name' => 'IT BHU Training & Placement Cell', 'pgsz' => false, 'pgno' => 0, 'total' => false, 'padmin' => true, 'scope' => false),
 			'set' => array('scope', 'id', 'name')
 		);
 	}

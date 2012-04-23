@@ -65,7 +65,7 @@ class ContactAddWorkflow implements Service {
 		),
 		array(
 			'service' => 'transpera.entity.info.workflow',
-			'input' => array('id' => 'cntid', 'parent' => 'mngrid', 'cname' => 'comname', 'mngrname' => 'mngrname'),
+			'input' => array('id' => 'cntid', 'parent' => 'mngrid', 'cname' => 'comname', 'pname' => 'mngrname'),
 			'conn' => 'exconn',
 			'relation' => '`contacts`',
 			'sqlcnd' => "where `cntid`=\${id}",

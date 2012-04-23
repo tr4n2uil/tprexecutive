@@ -81,6 +81,15 @@
 		'persist' => $DB_PERSIST
 	));
 	
+	Snowblozm::init('cbslconn', array(
+		'type' => 'mysql',
+		'host' => $DB_HOST,
+		'user' => $DB_USER,
+		'pass' => $DB_PASS,
+		'database' => $CBSL_DB_NAME,
+		'persist' => $DB_PERSIST
+	));
+	
 	Snowblozm::init('exconn', array(
 		'type' => 'mysql',
 		'host' => $DB_HOST,
@@ -114,6 +123,24 @@
 	));
 	
 	/**
+	 *	@config Updates
+	**/
+	Snowblozm::init('update_mailto', array(
+		13 => 'tpr09@itbhu.ac.in',
+		14 => 'tpr09@itbhu.ac.in',
+		15 => 'tpr09@itbhu.ac.in',
+		19 => 'tpr09@itbhu.ac.in'
+	));
+	
+	/**
+	 *	@config Form
+	**/
+	Snowblozm::init('form_mailto', array(
+		'response' => 'tpo@itbhu.ac.in, web.tpo@itbhu.ac.in',
+		'contact' => 'tpo@itbhu.ac.in, web.tpo@itbhu.ac.in',
+	));
+	
+	/**
 	 *	@initialize $memory
 	**/
 	$memory = array(
@@ -130,7 +157,8 @@
 				'people',
 				'executive',
 				'manager',
-				'access'
+				'access',
+				'shortlist'
 			),
 			'maps' => array(
 				'default' => 'invoke.interface.console',
@@ -142,9 +170,12 @@
 				'reset' => 'people.person.reset',
 				'file' => 'storage.file.read',
 				'files' => 'storage.file.list',
+				'directories' => 'storage.directory.list',
 				'permissions' => 'access.permission.list',
+				'tprs' => 'access.permission.list',
 				'batch' => 'executive.batch.find',
 				'batches' => 'executive.batch.list',
+				'profile' => 'executive.student.find',
 				'student' => 'executive.student.find',
 				'students' => 'executive.student.list',
 				'grade' => 'executive.grade.find',
@@ -154,6 +185,7 @@
 				'visit' => 'executive.visit.info',
 				'calendar' => 'executive.visit.list',
 				'contacts' => 'manager.contact.list',
+				'candidates' => 'manager.shortlist.list',
 				'update' => 'display.update.info',
 				'updates' => 'display.update.list',
 				'post' => 'display.post.info',

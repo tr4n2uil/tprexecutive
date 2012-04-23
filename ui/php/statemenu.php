@@ -13,7 +13,7 @@
 	/**
 	 *	@launch Read response
 	**/
-	if($memory['message']['valid']) {
+	if($memory['message']['valid']){
 		$student = $memory['message'];
 		$stdid = $student['stdid'];
 		
@@ -26,7 +26,7 @@
 				Executive.data.username = "'.$student['person']['username'].'";
 				Executive.data.dept = "'.$student['batch']['dept'].'";
 			</script>';
-			
+		
 		$memory['person'] = $student;
 		
 		$STATEMENU .=
@@ -41,6 +41,8 @@
 				</ul>
 			</li>
 		</ul>';
+		
+		$TPR = $memory['message']['btadmin'];
 	}
 	
 ?>

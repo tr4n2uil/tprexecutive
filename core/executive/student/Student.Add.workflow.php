@@ -27,7 +27,7 @@ class StudentAddWorkflow implements Service {
 	**/
 	public function input(){
 		return array(
-			'required' => array('keyid', 'user', 'name', 'username', 'email', 'rollno'),
+			'required' => array('keyid', 'user', 'email', 'rollno'),
 			'optional' => array('batchid' => STUDENT_PORTAL_ID, 'level' => 2, 'btname' => ''),
 			'set' => array('batchid', 'btname')
 		);
@@ -43,6 +43,11 @@ class StudentAddWorkflow implements Service {
 		$memory['verb'] = 'registered';
 		$memory['join'] = 'on';
 		$memory['public'] = 1;
+		
+		$parts = explode('@', $memory['email']);
+		$memory['username'] = $parts[0];
+		$parts = explode('.', $parts[0]);
+		$memory['name'] = ucfirst($parts[0]).' '.ucfirst($parts[1]);
 		
 		$workflow = array(
 		array(
