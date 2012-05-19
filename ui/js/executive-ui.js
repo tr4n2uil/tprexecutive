@@ -2866,6 +2866,15 @@ $(document).ready(function(){
 		return true
 	});
 	
+	/**
+	 *	@editor cmnt-text
+	**/
+	$('textarea.cmnt-text').live('focusin', function(){
+		if(!$(this).hasClass('cmnt-text-done')){
+			$(this).addClass('cmnt-text-done');
+		}
+	});
+	
 	$.expander.defaults = {
 		slicePoint: 150,
 		preserveWords: true,
@@ -2945,6 +2954,8 @@ Executive.core.helper.readCourse = function($crs){
 			return 'IDD / IMD';
 		case 'mtech' :
 			return 'M. Tech.';
+		case 'web' :
+			return 'IT BHU';
 		default :
 			return '';
 			break;

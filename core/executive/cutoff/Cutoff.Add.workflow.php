@@ -5,7 +5,6 @@ require_once(SBSERVICE);
  *	@class CutoffAddWorkflow
  *	@desc Adds new cutoff
  *
- *	@param year integer Year [memory]
  *	@param dept array Departments [memory]
  *	@param course array Courses [memory]
  *	@param eligibility float Eligibility [memory]
@@ -37,7 +36,7 @@ class CutoffAddWorkflow implements Service {
 	**/
 	public function input(){
 		return array(
-			'required' => array('keyid', 'user', 'year', 'dept', 'course', 'eligibility', 'margin', 'max'),
+			'required' => array('keyid', 'user', 'dept', 'course', 'eligibility', 'margin', 'max'),
 			'optional' => array('visitid' => 0, 'vstname' => '', 'level' => false, 'owner' => false)
 		);
 	}
@@ -56,12 +55,12 @@ class CutoffAddWorkflow implements Service {
 		$workflow = array(
 		array(
 			'service' => 'transpera.entity.add.workflow',
-			'args' => array('year', 'dept', 'course', 'eligibility', 'margin', 'max'),
+			'args' => array('dept', 'course', 'eligibility', 'margin', 'max'),
 			'input' => array('parent' => 'visitid', 'cname' => 'eligibility', 'vstname' => 'vstname'),
 			'conn' => 'exconn',
 			'relation' => '`cutoffs`',
 			'type' => 'cutoff',
-			'sqlcnd' => "(`ctfid`, `owner`, `year`, `dept`, `course`, `eligibility`, `margin`, `max`) values (\${id}, \${owner}, \${year}, '\${dept}', '\${course}', \${eligibility}, \${margin}, \${max})",
+			'sqlcnd' => "(`ctfid`, `owner`, `dept`, `course`, `eligibility`, `margin`, `max`) values (\${id}, \${owner}, '\${dept}', '\${course}', \${eligibility}, \${margin}, \${max})",
 			'escparam' => array('dept', 'course'),
 			'successmsg' => 'Cutoff added successfully',
 			'output' => array('id' => 'ctfid')
@@ -71,7 +70,7 @@ class CutoffAddWorkflow implements Service {
 			'input' => array('id' => 'ctfid', 'parent' => 'visitid', 'cname' => 'name', 'vstname' => 'vstname'),
 			'conn' => 'exconn',
 			'relation' => '`cutoffs`',
-			'sqlprj' => '`ctfid`, `year`, `dept`, `course`, `eligibility`, `margin`, `max`',
+			'sqlprj' => '`ctfid`, `dept`, `course`, `eligibility`, `margin`, `max`',
 			'sqlcnd' => "where `ctfid`=\${id}",
 			'errormsg' => 'Invalid Cutoff ID',
 			'type' => 'cutoff',

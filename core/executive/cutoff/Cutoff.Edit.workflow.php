@@ -6,7 +6,6 @@ require_once(SBSERVICE);
  *	@desc Edits cutoff using ID
  *
  *	@param ctfid long int Cutoff ID [memory]
- *	@param year integer Year [memory]
  *	@param dept array Departments [memory]
  *	@param course array Courses [memory]
  *	@param eligibility float Eligibility [memory]
@@ -36,7 +35,7 @@ class CutoffEditWorkflow implements Service {
 	**/
 	public function input(){
 		return array(
-			'required' => array('keyid', 'user', 'ctfid', 'year', 'dept', 'course', 'eligibility', 'margin', 'max', 'visitid', 'vstname')
+			'required' => array('keyid', 'user', 'ctfid', 'dept', 'course', 'eligibility', 'margin', 'max', 'visitid', 'vstname')
 		);
 	}
 	
@@ -52,12 +51,12 @@ class CutoffEditWorkflow implements Service {
 		$workflow = array(
 		array(
 			'service' => 'transpera.entity.edit.workflow',
-			'args' => array('year', 'dept', 'course', 'eligibility', 'margin', 'max'),
+			'args' => array('dept', 'course', 'eligibility', 'margin', 'max'),
 			'input' => array('id' => 'ctfid', 'cname' => 'eligibility', 'parent' => 'visitid', 'vstname' => 'vstname'),
 			'conn' => 'exconn',
 			'relation' => '`cutoffs`',
 			'type' => 'cutoff',
-			'sqlcnd' => "set `year`=\${year}, `dept`='\${dept}', `course`='\${course}', `eligibility`=\${eligibility}, `margin`=\${margin}, `max`=\${max} where `ctfid`=\${id}",
+			'sqlcnd' => "set `dept`='\${dept}', `course`='\${course}', `eligibility`=\${eligibility}, `margin`=\${margin}, `max`=\${max} where `ctfid`=\${id}",
 			'escparam' => array('dept', 'course'),
 			'check' => false,
 			'successmsg' => 'Cutoff edited successfully'
@@ -67,7 +66,7 @@ class CutoffEditWorkflow implements Service {
 			'input' => array('id' => 'ctfid', 'parent' => 'visitid', 'cname' => 'name', 'vstname' => 'vstname'),
 			'conn' => 'exconn',
 			'relation' => '`cutoffs`',
-			'sqlprj' => '`ctfid`, `year`, `dept`, `course`, `eligibility`, `margin`, `max`',
+			'sqlprj' => '`ctfid`, `dept`, `course`, `eligibility`, `margin`, `max`',
 			'sqlcnd' => "where `ctfid`=\${id}",
 			'errormsg' => 'Invalid Cutoff ID',
 			'type' => 'cutoff',

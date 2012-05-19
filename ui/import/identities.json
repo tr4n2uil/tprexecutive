@@ -1,10 +1,10 @@
 {
 	"valid":true,
 	"tpl":[
-		{ "tpl":"#tpl-qstn-tcs", "sel":">.bands" }
+		{ "tpl":"#tpl-idty-tcs", "sel":">.bands" }
 	],
 	"imports": [
-		"ui/tpl/quiz/question.tpl.html",
+		"ui/tpl/access/identity.tpl.html",
 		"ui/tpl/display/pagination.tpl.html",
 		"ui/tpl/display/menu.tpl.html"
 	]

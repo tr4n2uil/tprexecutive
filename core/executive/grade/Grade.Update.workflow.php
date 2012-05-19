@@ -195,7 +195,7 @@ class GradeUpdateWorkflow implements Service {
 			$grade = $memory['grade'];
 			Snowblozm::run(array(
 				'service' => 'people.person.alert.workflow',
-				'input' => array('chainid' => 'batchid'),
+				'input' => array('chainid' => 'batchid', 'queid' => 'gradeid'),
 				'subject' => '[TPO Portal Alerts] '.$memory['btname'].' Grades Updated : '.$memory['username'],
 				'body' => 'User '.$memory['username'].' updated Grades. The new grades are as follows :<br />
 				<table><tbody><tr><td>Roll No</td><td>'.$grade['rollno'].'</td></tr>

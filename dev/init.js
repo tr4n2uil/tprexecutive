@@ -209,6 +209,15 @@ $(document).ready(function(){
 		return true
 	});
 	
+	/**
+	 *	@editor cmnt-text
+	**/
+	$('textarea.cmnt-text').live('focusin', function(){
+		if(!$(this).hasClass('cmnt-text-done')){
+			$(this).addClass('cmnt-text-done');
+		}
+	});
+	
 	$.expander.defaults = {
 		slicePoint: 150,
 		preserveWords: true,

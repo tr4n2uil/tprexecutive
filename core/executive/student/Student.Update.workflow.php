@@ -8,6 +8,7 @@ require_once(SBSERVICE);
  *	@param stdid long int Student ID [memory]
  *	@param rollno string Roll no [memory]
  *	@param interests string Interests [memory]
+ *	@param ustatus string UStatus [memory]
  *
  *	@param keyid long int Usage Key ID [memory]
  *	@param user string Username [memory]
@@ -33,7 +34,7 @@ class StudentUpdateWorkflow implements Service {
 	**/
 	public function input(){
 		return array(
-			'required' => array('keyid', 'user', 'stdid', 'rollno', 'interests', 'batchid', 'btname')
+			'required' => array('keyid', 'user', 'stdid', 'rollno', 'interests', 'ustatus', 'batchid', 'btname')
 		);
 	}
 	
@@ -49,13 +50,13 @@ class StudentUpdateWorkflow implements Service {
 		),
 		array(
 			'service' => 'transpera.relation.update.workflow',
-			'args' => array('stdid', 'rollno', 'interests'),
+			'args' => array('stdid', 'rollno', 'interests', 'ustatus'),
 			'conn' => 'exconn',
 			'relation' => '`students`',
-			'sqlcnd' => "set `rollno`='\${rollno}', `interests`='\${interests}' where `stdid`=\${stdid}",
+			'sqlcnd' => "set `rollno`='\${rollno}', `interests`='\${interests}', `ustatus`='\${ustatus}' where `stdid`=\${stdid}",
 			'successmsg' => 'Student updated successfully',
 			'check' => false,
-			'escparam' => array('rollno', 'interests'),
+			'escparam' => array('rollno', 'interests', 'ustatus'),
 			'errormsg' => 'No Change / Invalid Student ID'
 		),
 		array(
@@ -63,7 +64,7 @@ class StudentUpdateWorkflow implements Service {
 			'input' => array('id' => 'stdid', 'parent' => 'batchid', 'cname' => 'name', 'pname' => 'btname'),
 			'conn' => 'exconn',
 			'relation' => '`students`',
-			'sqlprj' => '`stdid`, `username`, `name`, `email`, `rollno`, `resume`, `home`, `interests`',
+			'sqlprj' => '`stdid`, `username`, `name`, `email`, `rollno`, `resume`, `home`, `interests`, `ustatus`',
 			'sqlcnd' => "where `stdid`=\${id}",
 			'errormsg' => 'Invalid Student ID',
 			'type' => 'person',

@@ -14,6 +14,8 @@ Executive.core.helper.readCourse = function($crs){
 			return 'IDD / IMD';
 		case 'mtech' :
 			return 'M. Tech.';
+		case 'web' :
+			return 'IT BHU';
 		default :
 			return '';
 			break;

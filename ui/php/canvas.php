@@ -1,4 +1,5 @@
 		<div id="board">
+			<div class="page">
 			<div id="ui-global-0">
 				<div class="tiles tilemenu azure-left">
 					<?php echo $TILES_0; ?>
@@ -10,6 +11,7 @@
 					<?php echo $HTML; ?>
 				</div>
 				<div class="clearfloat"></div>
+			</div>
 			</div>
 		</div>
 		

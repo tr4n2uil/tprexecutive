@@ -84,11 +84,16 @@ class StudentAddWorkflow implements Service {
 			'output' => array('gradeid' => 'grade', 'grade' => 'info')
 		),
 		array(
+			'service' => 'executive.slot.add.workflow',
+			'level' => 2,
+			'output' => array('slotid' => 'slot', 'slot' => 'slinfo')
+		),
+		array(
 			'service' => 'transpera.relation.insert.workflow',
-			'args' => array('pnid', 'owner', 'username', 'name', 'email', 'rollno', 'resume', 'home', 'grade'),
+			'args' => array('pnid', 'owner', 'username', 'name', 'email', 'rollno', 'resume', 'home', 'grade', 'slot'),
 			'conn' => 'exconn',
 			'relation' => '`students`',
-			'sqlcnd' => "(`stdid`,`owner`, `username`, `name`, `email`, `rollno`, `resume`, `home`, `grade`) values (\${pnid}, \${owner}, '\${username}', '\${name}', '\${email}', '\${rollno}', \${resume}, \${home}, \${grade})",
+			'sqlcnd' => "(`stdid`,`owner`, `username`, `name`, `email`, `rollno`, `resume`, `home`, `grade`, `slot`) values (\${pnid}, \${owner}, '\${username}', '\${name}', '\${email}', '\${rollno}', \${resume}, \${home}, \${grade}, \${slot})",
 			'escparam' => array('username', 'name', 'email', 'rollno'),
 			'output' => array('id' => 'stdid')
 		));

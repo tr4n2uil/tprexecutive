@@ -5,7 +5,6 @@ require_once(SBSERVICE);
  *	@class VisitAddWorkflow
  *	@desc Adds new visit
  *
- *	@param vstname string Visit name [memory]
  *	@param year string Academic Session Year [memory] 
  *	@param type string Type [memory] ('placement', 'internship', 'ppo')
  *	@param package float Package [memory]
@@ -39,7 +38,7 @@ class VisitAddWorkflow implements Service {
 	**/
 	public function input(){
 		return array(
-			'required' => array('keyid', 'user', 'vstname', 'year', 'vtype', 'package', 'comuser', 'visitdate', 'deadline'),
+			'required' => array('keyid', 'user', 'year', 'vtype', 'package', 'comuser', 'visitdate', 'deadline'),
 			'optional' => array('portalid' => COMPANY_PORTAL_ID, 'plname' => '', 'level' => false, 'owner' => false)
 		);
 	}
@@ -51,6 +50,8 @@ class VisitAddWorkflow implements Service {
 		$memory['verb'] = 'added';
 		$memory['join'] = 'on';
 		$memory['public'] = 1;
+		
+		$memory['vstname'] = $memory['comuser'].'.'.$memory['vtype'].'.'.$memory['year'];
 		
 		$workflow = array(
 		array(
@@ -81,15 +82,16 @@ class VisitAddWorkflow implements Service {
 			'construct' => array(
 				array(
 					'service' => 'storage.directory.add.workflow',
-					'name' => 'storage/private/folders/'.$memory['comuser'].'/'.$memory['year'].'-'.$memory['vtype'].'/',
-					'path' => 'storage/private/folders/'.$memory['comuser'].'/'.$memory['year'].'-'.$memory['vtype'].'/',
-					'input' => array('stgid' => 'comid'),
+					'name' => $memory['year'].'-'.$memory['vtype'].'-'.$memory['visitdate'],
+					'path' => 'storage/private/folders/'.$memory['comuser'].'/'.$memory['year'].'-'.$memory['vtype'].'-'.$memory['visitdate'].'/',
+					'input' => array('stgid' => 'comid', 'owner' => 'comowner'),
 					'output' => array('dirid' => 'files')
 				),
 				array(
 					'service' => 'transpera.reference.add.workflow',
 					'type' => 'shortlist',
-					'output' => array('id' => 'shortlist', 'owner' => 'comowner')
+					'input' => array('owner' => 'comowner'),
+					'output' => array('id' => 'shortlist')
 				)
 			),
 			'cparam' => array('files', 'shortlist'),

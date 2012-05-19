@@ -163,6 +163,7 @@
 			'maps' => array(
 				'default' => 'invoke.interface.console',
 				'session' => 'invoke.interface.session',
+				'openid' => 'invoke.interface.openid',
 				'register' => 'portal.profile.add',
 				'available' => 'people.person.available',
 				'send' => 'people.person.send',
@@ -172,6 +173,7 @@
 				'files' => 'storage.file.list',
 				'directories' => 'storage.directory.list',
 				'permissions' => 'access.permission.list',
+				'identities' => 'access.identity.list',
 				'tprs' => 'access.permission.list',
 				'batch' => 'executive.batch.find',
 				'batches' => 'executive.batch.list',
@@ -180,6 +182,7 @@
 				'students' => 'executive.student.list',
 				'grade' => 'executive.grade.find',
 				'grades' => 'executive.grade.list',
+				'slots' => 'executive.slot.list',
 				'company' => 'executive.company.find',
 				'companies' => 'executive.company.list',
 				'visit' => 'executive.visit.info',

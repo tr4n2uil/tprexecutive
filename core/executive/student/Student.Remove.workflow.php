@@ -58,6 +58,10 @@ class StudentRemoveWorkflow implements Service {
 			'input' => array('gradeid' => 'grade')
 		),
 		array(
+			'service' => 'executive.slot.remove.workflow',
+			'input' => array('slotid' => 'slot')
+		),
+		array(
 			'service' => 'storage.file.remove.workflow',
 			'input' => array('fileid' => 'resume', 'dirid' => 'resumes')
 		));

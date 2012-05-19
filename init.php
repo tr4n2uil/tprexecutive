@@ -9,7 +9,7 @@
 	 *	@config System
 	**/
 	$EMERGENCY = false && !isset($_COOKIE['tamasomajyothirgamaya']);
-	$STATUS = '<span class="state">Loading T&P Portal ...</span>';
+	$STATUS = '<span class="state loading">Loading T&P Portal ...</span>';
 	//$STATUS = '<span class="state">System maintenance in progress.</span>';
 	
 	/**

@@ -43,7 +43,7 @@ class CutoffInfoWorkflow implements Service {
 			'input' => array('id' => 'ctfid', 'parent' => 'visitid', 'cname' => 'name', 'vstname' => 'vstname'),
 			'conn' => 'exconn',
 			'relation' => '`cutoffs`',
-			'sqlprj' => '`ctfid`, `year`, `dept`, `course`, `eligibility`, `margin`, `max`',
+			'sqlprj' => '`ctfid`, `dept`, `course`, `eligibility`, `margin`, `max`',
 			'sqlcnd' => "where `ctfid`=\${id}",
 			'errormsg' => 'Invalid Cutoff ID',
 			'type' => 'cutoff',

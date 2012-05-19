@@ -6,6 +6,7 @@
 	$YEAR = '2012';
 	$TILES_0 = $TILES_1 = $HTML = $STATEMENU = $SHTML = '';
 	$TPR = false;
+	$PORTAL = '';
 	
 	$DB_HOST = 'localhost';
 	$DB_USER = 'root';
@@ -34,7 +35,7 @@
 	**/
 	define('COOKIEKEY', 'executive-session');
 	define('COOKIEEXPIRY', 15);
-	define('ROOTPATH', 'http://'.$_SERVER['SERVER_NAME'].'/tpo');
+	define('ROOTPATH', 'http://'.$_SERVER['SERVER_NAME'].($_SERVER['SERVER_NAME'] == 'tpo.iitbhu.org.in' ? '' : '/tpo'));
 	define('CONTEXT', 'EX');
 	define('UIBASE', EXROOT. 'ui/');
 	define('CACHELITE', 'Cache/Lite.php');
@@ -49,7 +50,9 @@
 	define('COMPANY_PORTAL_ID', 17);
 	define('MANAGER_ID', 18);
 	define('FORM_ID', 32);
-	//define('FORUM_ID', 18);
+	define('FORUM_ID', 33);
+	define('FORUM_MAIL_SUBJECT_PREFIX', '[TPO Portal Discussion Alerts]');
+	define('FORUM_MAIL_BODY_SIGNATURE', 'TPO Portal Alerts<br />http://itbhu.org.in/tpo/');
 	
 	date_default_timezone_set('Asia/Kolkata');
 	

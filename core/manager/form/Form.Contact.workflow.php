@@ -18,7 +18,7 @@ require_once(SBSERVICE);
  *	@author Vibhaj Rajan <vibhaj8@gmail.com>
  *
 **/
-class FormResponseWorkflow implements Service {
+class FormContactWorkflow implements Service {
 	
 	/**
 	 *	@interface Service

@@ -53,7 +53,7 @@ class CutoffListWorkflow implements Service {
 			'conn' => 'exconn',
 			'relation' => '`cutoffs`',
 			'type' => 'cutoff',
-			'sqlprj' => '`ctfid`, `year`, `dept`, `course`, `eligibility`, `margin`, `max`',
+			'sqlprj' => '`ctfid`,  `dept`, `course`, `eligibility`, `margin`, `max`',
 			'sqlcnd' => "where `ctfid` in \${list}",
 			'successmsg' => 'Cutoffs information given successfully',
 			'lsttrack' => true,

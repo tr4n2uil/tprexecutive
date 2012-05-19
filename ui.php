@@ -79,7 +79,7 @@
 			$TILES_0 .= file_get_contents('ui/html/info/tpr.tile.html');
 		}
 		
-		$TILES_0 .= file_get_contents('ui/html/info/portal.tile.html');
+		$TILES_0 .= file_get_contents('ui/html/info/portal-'.$PORTAL.'.tile.html');
 		//$HTML .= file_get_contents('ui/html/info/portal.html');
 	}
 	else {
