@@ -186,6 +186,8 @@
 				'company' => 'executive.company.find',
 				'companies' => 'executive.company.list',
 				'visit' => 'executive.visit.info',
+				'willinglists' => 'executive.willinglist.list',
+				'willingness' => 'executive.willingness.list',
 				'calendar' => 'executive.visit.list',
 				'contacts' => 'manager.contact.list',
 				'candidates' => 'manager.shortlist.list',

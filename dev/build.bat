@@ -22,6 +22,8 @@ type ..\core\executive\company\company.html > ..\ui\tpl\executive\company.tpl.ht
 type ..\core\executive\company\companies.html > ..\ui\tpl\executive\companies.tpl.html
 type ..\core\executive\visit\visit.html > ..\ui\tpl\executive\visit.tpl.html
 type ..\core\executive\cutoff\cutoff.html > ..\ui\tpl\executive\cutoff.tpl.html
+type ..\core\executive\willinglist\willinglist.html > ..\ui\tpl\executive\willinglist.tpl.html
+type ..\core\executive\willingness\willingness.html > ..\ui\tpl\executive\willingness.tpl.html
 type ..\core\manager\shortlist\shortlist.html > ..\ui\tpl\manager\shortlist.tpl.html
 type ..\core\manager\selection\selection.html > ..\ui\tpl\manager\selection.tpl.html
 type ..\core\manager\contact\contact.html > ..\ui\tpl\manager\contact.tpl.html

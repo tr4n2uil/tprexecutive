@@ -29,27 +29,35 @@
 		
 		$memory['person'] = $student;
 		
+		$STATEMENU .=
+		'<ul class="hover-menu vertical">
+			<li>
+				<a href="student/'.$student['person']['username'].'/" class="ui" >'.$memory['user'].'<img src="storage/public/thumbnails/person/'.$memory['person']['person']['username'].'.png" alt="USER_THUMBNAIL" class="thumbhead" style="margin: -8px 0;"></a>
+				<ul class="menu-item">
+					<li><a href="identities/" class="ui">Identities</a></li>
+					<li><a href="#/read/~/data/service=session&enc=get/ln/#login" class="launch">Sign Out</a></li>
+				</ul>
+			</li>
+		</ul>';
+		
 		if($student['person']['username'] != 'tpo.iitbhu')
 			$STATEMENU .=
 			'<ul class="hover-menu vertical">
 				<li>
-					<a href="student/'.$student['person']['username'].'/" class="ui" >'.$memory['user'].'<img src="storage/public/thumbnails/person/'.$memory['person']['person']['username'].'.png" alt="USER_THUMBNAIL" class="thumbhead" style="margin: -8px 0;"></a>
+					<a href="#" class="navigate" >T&P</a>
+					<ul class="menu-item">
+						<li><a href="opportunities/" class="ui" >Opportunities</a></li>
+						<li><a href="selections/'.$student['student']['username'].'/" class="ui" >Selections</a></li>
+					</ul>
+				</li>
+			</ul>
+			<ul class="hover-menu vertical">
+				<li>
+					<a href="#" class="navigate" >People</a>
 					<ul class="menu-item">
 						<li><a href="batch/'.$student['batch']['btname'].'/" class="ui" >Batch '.$student['batch']['btname'].'</a></li>
 						<li><a href="batches/'.$student['batch']['year'].'/" class="ui" >Batches '.$student['batch']['year'].'</a></li>
 						<li><a href="batches/'.$student['batch']['dept'].'/" class="ui" >Batches '.strtoupper($student['batch']['dept']).'</a></li>
-						<li><a href="identities/" class="ui">Identities</a></li>
-						<li><a href="#/read/~/data/service=session&enc=get/ln/#login" class="launch">Sign Out</a></li>
-					</ul>
-				</li>
-			</ul>';
-		else
-			$STATEMENU .=
-			'<ul class="hover-menu vertical">
-				<li>
-					<a href="student/'.$student['person']['username'].'/" class="ui" >'.$memory['user'].'<img src="storage/public/thumbnails/person/'.$memory['person']['person']['username'].'.png" alt="USER_THUMBNAIL" class="thumbhead" style="margin: -8px 0;"></a>
-					<ul class="menu-item">
-						<li><a href="#/read/~/data/service=session&enc=get/ln/#login" class="launch">Sign Out</a></li>
 					</ul>
 				</li>
 			</ul>';
