@@ -16,7 +16,7 @@
 	$CBD_DB_NAME = 'cirrusbolt_display';
 	$CBQ_DB_NAME = 'cirrusbolt_queue';
 	$CBS_DB_NAME = 'cirrusbolt_storage';
-	$CBP_DB_NAME = 'cirrusbolt_people';
+	$CBP_DB_NAME = 'tprexecutive';
 	$CBSL_DB_NAME = 'cirrusbolt_shortlist';
 	$DB_NAME = 'tprexecutive';
 	$DB_PERSIST = true;

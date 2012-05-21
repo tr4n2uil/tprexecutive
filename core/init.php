@@ -188,6 +188,7 @@
 				'visit' => 'executive.visit.info',
 				'willinglists' => 'executive.willinglist.list',
 				'willingness' => 'executive.willingness.list',
+				'opportunities' => 'executive.willingness.list',
 				'calendar' => 'executive.visit.list',
 				'contacts' => 'manager.contact.list',
 				'candidates' => 'manager.shortlist.list',

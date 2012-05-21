@@ -62,7 +62,7 @@ class WillingnessEditWorkflow implements Service {
 			'input' => array('id' => 'wlgsid', 'parent' => 'wgltid', 'cname' => 'name', 'wgltname' => 'wgltname'),
 			'conn' => 'exconn',
 			'relation' => '`willingnesses` w, `students` s, `grades` g',
-			'sqlprj' => 'w.`wlgsid`, w.`visitid`, w.`resume`, w.`status`, w.`approval`, w.`name` as `wname`, s.`stdid`, s.`username`, s.`name`, s.`email`, s.`rollno`, g.`cgpa`, g.`sscx`, g.`hscxii`',
+			'sqlprj' => 'w.`wlgsid`, w.`visitid`, w.`resume`, w.`status`, w.`approval`, w.`name` as `wname`, w.`batch`, s.`stdid`, s.`username`, s.`name`, s.`email`, s.`rollno`, g.`cgpa`, g.`sscx`, g.`hscxii`',
 			'sqlcnd' => "where `wlgsid`=\${id} and w.`owner`=s.`owner` and s.`grade`=g.`gradeid`",
 			'errormsg' => 'Invalid Willingness ID',
 			'type' => 'willingness',

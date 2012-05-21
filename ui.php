@@ -63,11 +63,12 @@
 		 *	@role Administrator
 		**/
 		if(in_array($memory['user'], array(
-			'admin.tpo', 
+			'tpo.iitbhu', 
 			'web.tpo', 
 			'vibhaj'
 		))){
-			$STATEMENU .= file_get_contents('ui/html/admin.tile.html');
+			$TILES_0 .= file_get_contents('ui/html/info/tpo.tile.html');
+			//$STATEMENU .= file_get_contents('ui/html/admin.tile.html');
 		}
 		
 		/**

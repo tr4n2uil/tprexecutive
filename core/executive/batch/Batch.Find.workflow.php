@@ -55,7 +55,7 @@ class BatchFindWorkflow implements Service {
 		array(
 			'service' => 'cbcore.data.select.service',
 			'args' => array('batch'),
-			'params' => array('batch.batchid' => 'batchid')
+			'params' => array('batch.batchid' => 'batchid', 'batch.resumes' => 'resumes')
 		),
 		array(
 			'service' => 'executive.student.list.workflow',
@@ -75,7 +75,7 @@ class BatchFindWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function output(){
-		return array('batch', 'id', 'batchid', 'plname', 'portalid', 'admin', 'btname', 'students', 'id', 'batchid', 'btname', 'stdadmin', 'chain', 'total', 'pgno', 'pgsz');
+		return array('batch', 'id', 'batchid', 'plname', 'portalid', 'admin', 'btname', 'resumes', 'students', 'id', 'batchid', 'btname', 'stdadmin', 'chain', 'total', 'pgno', 'pgsz');
 	}
 	
 }

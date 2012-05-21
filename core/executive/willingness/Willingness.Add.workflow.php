@@ -7,6 +7,7 @@ require_once(SBSERVICE);
  *
  *	@param name string Name [memory]
  *	@param visitid long int Visit ID [memory]
+ *	@param btname long int Batch name [memory]
  *	@param username string Owner Username [memory]
  *	@param keyid long int Usage Key ID [memory]
  *	@param user string Key User [memory]
@@ -34,7 +35,7 @@ class WillingnessAddWorkflow implements Service {
 	**/
 	public function input(){
 		return array(
-			'required' => array('keyid', 'user', 'username', 'name', 'visitid'),
+			'required' => array('keyid', 'user', 'username', 'name', 'visitid', 'btname'),
 			'optional' => array('wgltid' => 0, 'wgltname' => '', 'level' => false, 'owner' => false)
 		);
 	}
@@ -56,14 +57,18 @@ class WillingnessAddWorkflow implements Service {
 			'output' => array('keyid' => 'owner')
 		),
 		array(
+			'service' => 'executive.batch.find.workflow',
+			'output' => array('resumes' => 'resdir')
+		),
+		array(
 			'service' => 'transpera.entity.add.workflow',
-			'args' => array('visitid', 'name', 'owner'),
+			'args' => array('visitid', 'name', 'owner', 'batchid', 'resdir', 'btname'),
 			'input' => array('parent' => 'wgltid', 'cname' => 'eligibility', 'wgltname' => 'wgltname'),
 			'conn' => 'exconn',
 			'relation' => '`willingnesses`',
 			'type' => 'willingness',
-			'sqlcnd' => "(`wlgsid`, `owner`, `visitid`, `name`) values (\${id}, \${owner}, \${visitid}, '\${name}')",
-			'escparam' => array('name'),
+			'sqlcnd' => "(`wlgsid`, `owner`, `visitid`, `batchid`, `resdir`, `name`, `batch`) values (\${id}, \${owner}, \${visitid}, \${batchid}, \${resdir}, '\${name}', '\${btname}')",
+			'escparam' => array('name', 'btname'),
 			'successmsg' => 'Willingness added successfully',
 			'output' => array('id' => 'wlgsid')
 		),
@@ -72,7 +77,7 @@ class WillingnessAddWorkflow implements Service {
 			'input' => array('id' => 'wlgsid', 'parent' => 'wgltid', 'cname' => 'name', 'wgltname' => 'wgltname'),
 			'conn' => 'exconn',
 			'relation' => '`willingnesses` w, `students` s, `grades` g',
-			'sqlprj' => 'w.`wlgsid`, w.`visitid`, w.`resume`, w.`status`, w.`approval`, w.`name` as `wname`, s.`stdid`, s.`username`, s.`name`, s.`email`, s.`rollno`, g.`cgpa`, g.`sscx`, g.`hscxii`',
+			'sqlprj' => 'w.`wlgsid`, w.`visitid`, w.`resume`, w.`status`, w.`approval`, w.`name` as `wname`, w.`batch`, s.`stdid`, s.`username`, s.`name`, s.`email`, s.`rollno`, g.`cgpa`, g.`sscx`, g.`hscxii`',
 			'sqlcnd' => "where `wlgsid`=\${id} and w.`owner`=s.`owner` and s.`grade`=g.`gradeid`",
 			'errormsg' => 'Invalid Willingness ID',
 			'type' => 'willingness',

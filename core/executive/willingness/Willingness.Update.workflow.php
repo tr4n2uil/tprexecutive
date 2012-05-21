@@ -62,9 +62,9 @@ class WillingnessUpdateWorkflow implements Service {
 			'service' => 'transpera.entity.info.workflow',
 			'input' => array('id' => 'wlgsid', 'parent' => 'wgltid', 'cname' => 'name', 'wgltname' => 'wgltname'),
 			'conn' => 'exconn',
-			'relation' => '`willingnesses` w, `students` s, `grades` g',
-			'sqlprj' => 'w.`wlgsid`, w.`visitid`, w.`resume`, w.`status`, w.`approval`, w.`name` as `wname`, s.`stdid`, s.`username`, s.`name`, s.`email`, s.`rollno`, g.`cgpa`, g.`sscx`, g.`hscxii`',
-			'sqlcnd' => "where `wlgsid`=\${id} and w.`owner`=s.`owner` and s.`grade`=g.`gradeid`",
+			'relation' => '`willingnesses` w, `students` s, `grades` g,`visits` v',
+			'sqlprj' => 'w.`wlgsid`, w.`visitid`, w.`resume`, w.`status`, w.`approval`, w.`name` as `wname`, w.`batch`, s.`stdid`, s.`username`, s.`name`, s.`email`, s.`rollno`, g.`cgpa`, g.`sscx`, g.`hscxii`, v.`comuser`, v.`comid`, v.`vtype`, v.`year`, v.`visitdate`, v.`package`',
+			'sqlcnd' => "where `wlgsid`=\${id} and w.`owner`=s.`owner` and s.`grade`=g.`gradeid` and v.`visitid`=w.`visitid`",
 			'errormsg' => 'Invalid Willingness ID',
 			'type' => 'willingness',
 			'successmsg' => 'Willingness information given successfully',
@@ -78,6 +78,15 @@ class WillingnessUpdateWorkflow implements Service {
 			'service' => 'guard.chain.info.workflow',
 			'input' => array('chainid' => 'wgltid'),
 			'output' => array('chain' => 'pchain')
+		),
+		array(
+			'service' => 'executive.batch.find.workflow',
+			'input' => array('btname' => 'wgltname')
+		),
+		array(
+			'service' => 'storage.file.list.workflow',
+			'input' => array('dirid' => 'resumes', 'filter' => 'keyid'),
+			'output' => array('files' => 'resumelist', 'admin' => 'fadmin', 'padmin' => 'fpadmin', 'pchain' => 'fpchain')
 		));
 		
 		$memory = Snowblozm::execute($workflow, $memory);
@@ -93,7 +102,7 @@ class WillingnessUpdateWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function output(){
-		return array('wlgsid', 'wgltid', 'wgltname', 'willingness', 'chain', 'pchain', 'admin', 'padmin');
+		return array('wlgsid', 'wgltid', 'wgltname', 'willingness', 'chain', 'pchain', 'admin', 'padmin', 'resumelist');
 	}
 	
 }
