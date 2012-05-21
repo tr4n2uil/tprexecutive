@@ -47,7 +47,7 @@
 					<a href="#" class="navigate" >T&P</a>
 					<ul class="menu-item">
 						<li><a href="me/opportunities/'.$student['student']['stdid'].'/'.$student['batch']['btname'].'/" class="ui" >Opportunities</a></li>
-						<li><a href="selections/'.$student['student']['username'].'/" class="ui" >Selections</a></li>
+						<li><a href="me/selections/'.$student['student']['stdid'].'/'.$student['batch']['btname'].'/" class="ui" >Selections</a></li>
 						<li><a href="docs/TPR Executive User Manual.pdf" target="_blank" >Portal User Manual</a></li>
 					</ul>
 				</li>

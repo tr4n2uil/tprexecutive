@@ -2,15 +2,15 @@
 require_once(SBSERVICE);
 
 /**
- *	@class ShortlistListWorkflow
- *	@desc Returns all shortlist information
+ *	@class SelectionListWorkflow
+ *	@desc Returns all selections information in post
  *
  *	@param keyid long int Usage Key ID [memory]
- *	@param shlstid/id long int Shortlist ID [memory]
+ *	@param shlstid/id long int Shortlist/Visit ID [memory] optional default 0
  *	@param shlstname/name string Shortlist name [memory] optional default ''
  *	@param export boolean Is Export [memory] optional default false
  *	@param archive boolean Is Archive [memory] optional default false
- *	@param me boolean Is Selection [memory] optional default false
+ *	@param me boolean Is Opportunity [memory] optional default false
  *
  *	@param pgsz long int Paging Size [memory] optional default 50
  *	@param pgno long int Paging Index [memory] optional default 0
@@ -18,8 +18,7 @@ require_once(SBSERVICE);
  *	@param padmin boolean Is parent information needed [memory] optional default true
  *
  *	@return selections array Selections information [memory]
- *	@return stages array Stages information [memory]
- *	@return shlstid long int Shortlist ID [memory]
+ *	@return shlstid long int Shortlist/Visit ID [memory]
  *	@return shlstname string Shortlist Name [memory]
  *	@return admin integer Is admin [memory]
  *	@return padmin integer Is parent admin [memory]
@@ -31,7 +30,7 @@ require_once(SBSERVICE);
  *	@author Vibhaj Rajan <vibhaj8@gmail.com>
  *
 **/
-class ShortlistListWorkflow implements Service {
+class SelectionListWorkflow implements Service {
 	
 	/**
 	 *	@interface Service
@@ -54,32 +53,30 @@ class ShortlistListWorkflow implements Service {
 		$qry = "l.`selid` in \${list}";
 		
 		if($memory['me']){
-			$rel = '`selections` l, `stages` t, `students` s, `visits` v';
-			$prj = 'w.`wlgsid`, w.`visitid`, w.`resume`, w.`status`, w.`approval`, w.`name`, w.`batch`, s.`stdid`, s.`username`, v.`comuser`, v.`comid`, v.`vtype`, v.`year`, v.`visitdate`, v.`package`';
-			$cnd = "where s.`stdid`=\${shlstid} and w.`owner`=s.`owner` and v.`visitid`=w.`visitid` order by w.`wlgsid` desc";
+			$qry = "s.`stdid`=\${shlstid}";
+			$rel = '`selections` l, `students` s, `visits` v';
+			$prj = 'l.`selid`, l.`visitid`, l.`resume`, l.`stage`, l.`name`, l.`batch`, s.`stdid`, s.`username`, v.`comuser`, v.`comid`, v.`vtype`, v.`year`, v.`visitdate`, v.`package`';
+			$cnd = "where $qry and l.`owner`=s.`owner` and v.`visitid`=l.`visitid` order by l.`selid` desc";
 		}
 		elseif($memory['export']){
-			$rel = '`willingnesses` w, `students` s, `grades` g, `persons` p, `batches` b';
-			$prj = "s.`name`, s.`rollno`, 
+			$rel = '`selections` l, `students` s, `grades` g, `persons` p, `batches` b';
+			$prj = "l.`stage`, s.`name`, s.`rollno`, 
 			(case b.`course` when 'btech' then 'B Tech' when 'idd' then 'IDD / IMD' when 'mtech' then 'M Tech' else '' end) as `course`, 
 			(case b.`dept` when 'cer' then 'Ceramic Engineering' when 'che' then 'Chemical Engineering' when 'civ' then 'Civil Engineering' when 'cse' then 'Computer Engineering' when 'eee' then 'Electrical Engineering' when 'ece' then 'Electronics Engineering' when 'mec' then 'Mechanical Engineering' when 'met' then 'Metallurgical Engineering' when 'min' then 'Mining Engineering' when 'phe' then 'Pharmaceutical Engineering' when 'apc' then 'Applied Chemistry' when 'apm' then 'Applied Mathematics' when 'app' then 'Applied Physics' when 'bce' then 'Bio-Chemical Engineering' when 'bme' then 'Bio-Medical Engineering' when 'mst' then 'Material Science & Technology' else '' end) as `dept`, b.`year`, s.`email`, p.`phone`, p.`dateofbirth`, p.`gender`, g.`cgpa`, g.`sscx`, g.`hscxii`, g.`sgpa1`, g.`sgpa2`, g.`sgpa3`, g.`sgpa4`, g.`sgpa5`, g.`sgpa6`, g.`sgpa7`, g.`sgpa8`, g.`sgpa9`, g.`sgpa10`, g.`ygpa1`, g.`ygpa2`, g.`ygpa3`, g.`ygpa4`, g.`ygpa5`";
-			$cnd = "where $qry and w.`owner`=s.`owner` and s.`grade`=g.`gradeid` and p.`pnid`=s.`stdid` and b.`batchid`=w.`batchid`";
+			$cnd = "where $qry and l.`owner`=s.`owner` and s.`grade`=g.`gradeid` and p.`pnid`=s.`stdid` and b.`batchid`=l.`batchid`";
 		}
 		elseif($memory['archive']){
-			$rel = '`willingnesses` w, `students` s, `directories` d, `files` f';
-			$prj = "concat(s.`name`, '[', s.`rollno`, '].pdf') as `asname`, d.`path` as `filepath`, f.`filename`, (case w.`resume` when 0 then s.`resume` else w.`resume` end) as `fresume`";
-			$cnd = "where $qry and w.`owner`=s.`owner` and f.`fileid`=(case w.`resume` when 0 then s.`resume` else w.`resume` end) and d.`dirid`=w.`resdir`";
+			$rel = '`selections` l, `students` s, `directories` d, `files` f';
+			$prj = "concat(s.`name`, '[', s.`rollno`, '].pdf') as `asname`, d.`path` as `filepath`, f.`filename`, (case l.`resume` when 0 then s.`resume` else l.`resume` end) as `fresume`";
+			$cnd = "where $qry and l.`owner`=s.`owner` and f.`fileid`=(case l.`resume` when 0 then s.`resume` else l.`resume` end) and d.`dirid`=l.`resdir`";
 		}
 		else {
-			$rel = '`willingnesses` w, `students` s, `grades` g';
-			$prj = 'w.`wlgsid`, w.`visitid`, w.`resume`, w.`status`, w.`approval`, w.`name` as `wname`, w.`batch`, s.`stdid`, s.`username`, s.`name`, s.`email`, s.`rollno`, g.`cgpa`, g.`sscx`, g.`hscxii`';
-			$cnd = "where $qry and w.`owner`=s.`owner` and s.`grade`=g.`gradeid`";
+			$rel = '`selections` l, `students` s, `grades` g';
+			$prj = 'l.`selid`, l.`visitid`, l.`resume`, l.`stage`, l.`name` as `lname`, l.`batch`, s.`stdid`, s.`username`, s.`name`, s.`email`, s.`rollno`, g.`cgpa`, g.`sscx`, g.`hscxii`';
+			$cnd = "where $qry and l.`owner`=s.`owner` and s.`grade`=g.`gradeid`";
 		}
 		
 		$workflow = array(
-		array(
-			'service' => 'shortlist.stage.list.workflow',
-		),
 		array(
 			'service' => 'transpera.entity.list.workflow',
 			'args' => array('shlstid'),
@@ -90,16 +87,9 @@ class ShortlistListWorkflow implements Service {
 			'sqlprj' => $prj,
 			'sqlcnd' => $cnd,
 			'successmsg' => 'Selections information given successfully',
-			'output' => array(
-				'entities' => 'selections',
-				'admin' => 'sladmin', 
-				'padmin' => 'slpadmin', 
-				'pchain' => 'slpchain', 
-				'total' => 'sltotal', 
-				'pgno' => 'slpgno', 
-				'pgsz' => 'slpgsz'
-			)
-			'action' => 'add',
+			//'lsttrack' => true,
+			'output' => array('entities' => 'selections'),
+			'action' => 'list',
 			'ismap' => !$memory['export'] && !$memory['archive'],
 			'mapkey' => 'selid',
 			'mapname' => 'selection',
@@ -109,16 +99,16 @@ class ShortlistListWorkflow implements Service {
 		if($memory['export']){
 			array_push($workflow, array(
 				'service' => 'cbcore.data.export.service',
-				'input' => array('data' => 'willingnesses'),
+				'input' => array('data' => 'selections'),
 				'type' => 'csv',
-				'default' => "Student Name,Roll No,Course,Department,Year,Email,Phone,Date of Birth,Gender,CGPA,X %,XII %,SGPA I,SGPA II,SGPA III,SGPA IV,SGPA V,SGPA VI,SGPA VII,SGPA VIII,SGPA IX,SGPA X,YGPA I,YGPA II,YGPA III,YGPA IV,YGPA V\r\n",
-				'filename' => 'Willingness.'.$memory['shlstname'].'.'.$memory['user'].'.csv',
+				'default' => "Selection Stage,Student Name,Roll No,Course,Department,Year,Email,Phone,Date of Birth,Gender,CGPA,X %,XII %,SGPA I,SGPA II,SGPA III,SGPA IV,SGPA V,SGPA VI,SGPA VII,SGPA VIII,SGPA IX,SGPA X,YGPA I,YGPA II,YGPA III,YGPA IV,YGPA V\r\n",
+				'filename' => 'Selections.'.$memory['shlstname'].'.'.$memory['user'].'.csv',
 				'output' => array('result' => 'csv')
 			),
 			array(
 				'service' => 'storage.file.download.service',
 				'filepath' => 'storage/private/exports/',
-				'filename' => 'Willingness.'.$memory['shlstname'].'.'.$memory['user'].'.csv',
+				'filename' => 'Selections.'.$memory['shlstname'].'.'.$memory['user'].'.csv',
 				'mime' => 'application/vnd.ms-excel'
 			));
 		}
@@ -126,26 +116,31 @@ class ShortlistListWorkflow implements Service {
 		if($memory['archive']){
 			array_push($workflow, array(
 				'service' => 'storage.file.archive.service',
-				'input' => array('filelist' => 'willingnesses'),
+				'input' => array('filelist' => 'selections'),
 				'directory' => 'storage/private/exports/',
-				'filename' => 'Willingness.'.$memory['shlstname'].'.'.$memory['user'].'.zip',
+				'filename' => 'Selection.'.$memory['shlstname'].'.'.$memory['user'].'.zip',
 			),
 			array(
 				'service' => 'storage.file.download.service',
 				'filepath' => 'storage/private/exports/',
-				'filename' => 'Willingness.'.$memory['shlstname'].'.'.$memory['user'].'.zip',
+				'filename' => 'Selection.'.$memory['shlstname'].'.'.$memory['user'].'.zip',
 				'mime' => 'application/zip'
 			));
 		}
 		
-		return Snowblozm::execute($workflow, $memory);
+		$memory = Snowblozm::execute($workflow, $memory);
+		if(!$memory['valid'])
+			return $memory;
+			
+		$memory['uiadmin'] = $memory['admin'] || $memory['padmin'];
+		return $memory;
 	}
 	
 	/**
 	 *	@interface Service
 	**/
 	public function output(){
-		return array('selections', 'stages', 'shlstid', 'shlstname', 'admin', 'padmin', 'pchain', 'total', 'pgno', 'pgsz', 'sladmin', 'slpadmin', 'slpchain', 'sltotal', 'slpgno', 'slpgsz');
+		return array('selections', 'shlstid', 'shlstname', 'admin', 'padmin', 'pchain', 'total', 'pgno', 'pgsz', 'uiadmin');
 	}
 	
 }

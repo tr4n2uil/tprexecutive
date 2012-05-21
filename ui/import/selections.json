@@ -1,7 +1,7 @@
 {
 	"valid":true,
 	"tpl":[
-		{ "tpl":"#tpl-sel-tcs", "sel":">.bands" }
+		{ "tpl":"#tpl-sel-me", "sel":">.bands" }
 	],
 	"imports":[
 		"ui/tpl/executive/selection.tpl.html",

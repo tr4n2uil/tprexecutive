@@ -10,6 +10,7 @@ require_once(SBSERVICE);
  *	@param wgltname/name string Willinglist name [memory] optional default ''
  *	@param export boolean Is Export [memory] optional default false
  *	@param archive boolean Is Archive [memory] optional default false
+ *	@param me boolean Is Opportunity [memory] optional default false
  *
  *	@param pgsz long int Paging Size [memory] optional default 50
  *	@param pgno long int Paging Index [memory] optional default 0
