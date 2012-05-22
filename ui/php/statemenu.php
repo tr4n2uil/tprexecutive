@@ -25,6 +25,7 @@
 				Executive.data.student = '.$stdid.';
 				Executive.data.username = "'.$student['person']['username'].'";
 				Executive.data.dept = "'.$student['batch']['dept'].'";
+				Executive.data.batch = "'.$student['batch']['btname'].'";
 			</script>';
 		
 		$memory['person'] = $student;

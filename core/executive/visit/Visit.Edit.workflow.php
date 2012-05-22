@@ -12,6 +12,22 @@ require_once(SBSERVICE);
  *	@param package float Package [memory]
  *	@param visitdate string Date of visit [memory] (Format YYYY-MM-DD)
  *	@param deadline string Deadline [memory] (Format YYYY-MM-DD)
+ *	@param cer string Requirement [memory] ('mr', 'ordinary', 'dream', 'super')
+ *	@param che string Requirement [memory] ('mr', 'ordinary', 'dream', 'super')
+ *	@param civ string Requirement [memory] ('mr', 'ordinary', 'dream', 'super')
+ *	@param cse string Requirement [memory] ('mr', 'ordinary', 'dream', 'super')
+ *	@param eee string Requirement [memory] ('mr', 'ordinary', 'dream', 'super')
+ *	@param ece string Requirement [memory] ('mr', 'ordinary', 'dream', 'super')
+ *	@param mec string Requirement [memory] ('mr', 'ordinary', 'dream', 'super')
+ *	@param met string Requirement [memory] ('mr', 'ordinary', 'dream', 'super')
+ *	@param min string Requirement [memory] ('mr', 'ordinary', 'dream', 'super')
+ *	@param phe string Requirement [memory] ('mr', 'ordinary', 'dream', 'super')
+ *	@param apc string Requirement [memory] ('mr', 'ordinary', 'dream', 'super')
+ *	@param apm string Requirement [memory] ('mr', 'ordinary', 'dream', 'super')
+ *	@param app string Requirement [memory] ('mr', 'ordinary', 'dream', 'super')
+ *	@param bce string Requirement [memory] ('mr', 'ordinary', 'dream', 'super')
+ *	@param bme string Requirement [memory] ('mr', 'ordinary', 'dream', 'super')
+ *	@param mst string Requirement [memory] ('mr', 'ordinary', 'dream', 'super')
  *
  *	@param keyid long int Usage Key ID [memory]
  *	@param user string Key User [memory]
@@ -37,7 +53,8 @@ class VisitEditWorkflow implements Service {
 	**/
 	public function input(){
 		return array(
-			'required' => array('keyid', 'user', 'visitid', 'vstname', 'year', 'vtype', 'package', 'visitdate', 'deadline', 'portalid', 'plname')
+			'required' => array('keyid', 'user', 'visitid', 'vstname', 'year', 'vtype', 'package', 'visitdate', 'deadline', 'portalid', 'plname'),
+			'optional' => array('cer' => '', 'che' => '', 'civ' => '', 'cse' => '', 'eee' => '', 'ece' => '', 'mec' => '', 'met' => '', 'min' => '', 'phe' => '', 'apc' => '', 'apm' => '', 'app' => '', 'bce' => '', 'bme' => '', 'mst' => '')
 		);
 	}
 	
@@ -50,13 +67,13 @@ class VisitEditWorkflow implements Service {
 		$workflow = array(
 		array(
 			'service' => 'transpera.entity.edit.workflow',
-			'args' => array('vstname', 'year', 'vtype', 'package', 'visitdate', 'deadline'),
+			'args' => array('vstname', 'year', 'vtype', 'package', 'visitdate', 'deadline', 'cer', 'che', 'civ', 'cse', 'eee', 'ece', 'mec', 'met', 'min', 'phe', 'apc', 'apm', 'app', 'bce', 'bme', 'mst'),
 			'input' => array('id' => 'visitid', 'cname' => 'vstname', 'parent' => 'portalid', 'pname' => 'plname'),
 			'conn' => 'exconn',
 			'relation' => '`visits`',
 			'type' => 'visit',
-			'sqlcnd' => "set `vstname`='\${vstname}', `year`='\${year}', `vtype`='\${vtype}', `package`='\${package}', `visitdate`='\${visitdate}', `deadline`='\${deadline}' where `visitid`=\${id}",
-			'escparam' => array('vstname', 'year', 'vtype', 'package', 'visitdate', 'deadline'),
+			'sqlcnd' => "set `vstname`='\${vstname}', `year`='\${year}', `vtype`='\${vtype}', `package`='\${package}', `visitdate`='\${visitdate}', `deadline`='\${deadline}', `cer`='\${cer}', `che`='\${che}', `civ`='\${civ}', `cse`='\${cse}', `eee`='\${eee}', `ece`='\${ece}', `mec`='\${mec}', `met`='\${met}', `min`='\${min}', `phe`='\${phe}', `apc`='\${apc}', `apm`='\${apm}', `app`='\${app}', `bce`='\${bce}', `bme`='\${bme}', `mst`='\${mst}' where `visitid`=\${id}",
+			'escparam' => array('vstname', 'year', 'vtype', 'package', 'visitdate', 'deadline', 'cer', 'che', 'civ', 'cse', 'eee', 'ece', 'mec', 'met', 'min', 'phe', 'apc', 'apm', 'app', 'bce', 'bme', 'mst'),
 			'check' => false,
 			'successmsg' => 'Visit edited successfully'
 		),

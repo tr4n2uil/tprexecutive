@@ -66,7 +66,16 @@ class BatchAddWorkflow implements Service {
 					'name' => 'storage/private/resumes/'.$memory['btname'].'/',
 					'path' => 'storage/private/resumes/'.$memory['btname'].'/',
 					'input' => array('stgid' => 'id'),
+					'authorize' => 'gradd:remove:edit:grlist',
+					'grlevel' => -2,
 					'output' => array('dirid' => 'resumes')
+				),
+				array(
+					'service' => 'guard.web.add.workflow',
+					'input' => array('parent' => 'resumes', 'child' => 'id'),
+					'istate' => 'G',
+					'icontrol' => 'info:gradd:remove:edit:grlist',
+					'output' => array('id' => 'webid')
 				),
 				array(
 					'service' => 'transpera.reference.add.workflow',

@@ -74,20 +74,27 @@ class VisitCreateWorkflow implements Service {
 			}
 		}
 		
-		$qry .= ')';
+		$qry .= ")";
+		
+		if($memory['visit']['vtype'] == 'placement'){
+			$qry .= " and (case b.`dept` when 'cer' then ".($memory['visit']['cer'] != '' ? '`'.$memory['visit']['cer']."`=''" : "1")." when 'che' then ".($memory['visit']['che'] != '' ? '`'.$memory['visit']['che']."`=''" : "1")." when 'civ' then ".($memory['visit']['civ'] != '' ? '`'.$memory['visit']['civ']."`=''" : "1")." when 'cse' then ".($memory['visit']['cse'] != '' ? '`'.$memory['visit']['cse']."`=''" : "1")." when 'eee' then ".($memory['visit']['eee'] != '' ? '`'.$memory['visit']['eee']."`=''" : "1")." when 'ece' then ".($memory['visit']['ece'] != '' ? '`'.$memory['visit']['ece']."`=''" : "1")." when 'mec' then ".($memory['visit']['mec'] != '' ? '`'.$memory['visit']['mec']."`=''" : "1")." when 'met' then ".($memory['visit']['met'] != '' ? '`'.$memory['visit']['met']."`=''" : "1")." when 'min' then ".($memory['visit']['min'] != '' ? '`'.$memory['visit']['min']."`=''" : "1")." when 'phe' then ".($memory['visit']['phe'] != '' ? '`'.$memory['visit']['phe']."`=''" : "1")." when 'apc' then ".($memory['visit']['apc'] != '' ? '`'.$memory['visit']['apc']."`=''" : "1")." when 'apm' then ".($memory['visit']['apm'] != '' ? '`'.$memory['visit']['apm']."`=''" : "1")." when 'app' then ".($memory['visit']['app'] != '' ? '`'.$memory['visit']['app']."`=''" : "1")." when 'bce' then ".($memory['visit']['bce'] != '' ? '`'.$memory['visit']['bce']."`=''" : "1")." when 'bme' then ".($memory['visit']['bme'] != '' ? '`'.$memory['visit']['bme']."`=''" : "1")." when 'mst' then ".($memory['visit']['mst'] != '' ? '`'.$memory['visit']['mst']."`=''" : "1")." else '' end)";
+		}
 		
 		$memory = Snowblozm::run(array(
 			'service' => 'transpera.relation.select.workflow',
 			'conn' => 'exconn',
-			'relation' => '`students` s, `grades` g, `batches` b',
+			'relation' => '`students` s, `grades` g, `batches` b, `slots` t',
 			'sqlprj' => 's.`name`, s.`username`, b.`btname`',
-			'sqlcnd' => "where s.`grade`=g.`gradeid` and s.`batchid`=b.`batchid` and $qry",
+			'sqlcnd' => "where s.`grade`=g.`gradeid` and s.`batchid`=b.`batchid` and s.`slot`=t.`slotid` and $qry",
 			'ismap' => false,
+			'check' => false,
 			'output' => array('result' => 'students')
 		), $memory);
 		
 		if(!$memory['valid'])
 			return $memory;
+		
+		echo json_encode($memory['students']);exit;
 			
 		foreach($memory['students'] as $stds){
 			$memory = Snowblozm::run(array(

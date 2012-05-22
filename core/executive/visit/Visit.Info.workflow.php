@@ -44,7 +44,7 @@ class VisitInfoWorkflow implements Service {
 			'input' => array('id' => 'visitid', 'parent' => 'portalid', 'cname' => 'name', 'pname' => 'plname'),
 			'conn' => 'exconn',
 			'relation' => '`visits`',
-			'sqlprj' => '`visitid`, `vstname`, `files`, `shortlist`, `vtype`, `year`, `comid`, `comuser`, `package`, `visitdate`, UNIX_TIMESTAMP(`deadline`)*1000 as `deadline_ts`, `deadline`, (select c.`name` from `companies` c where c.`comid`=`comid`) as `comname`',
+			'sqlprj' => '`visitid`, `vstname`, `files`, `shortlist`, `vtype`, `year`, `comid`, `comuser`, `package`, `visitdate`, UNIX_TIMESTAMP(`deadline`)*1000 as `deadline_ts`, `deadline`, (select c.`name` from `companies` c where c.`comid`=`comid`) as `comname`, `cer`, `che`, `civ`, `cse`, `eee`, `ece`, `mec`, `met`, `min`, `phe`, `apc`, `apm`, `app`, `bce`, `bme`, `mst`',
 			'sqlcnd' => "where `visitid`=\${id}",
 			'errormsg' => 'Invalid Visit ID',
 			'type' => 'visit',

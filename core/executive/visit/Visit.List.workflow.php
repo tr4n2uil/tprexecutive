@@ -58,26 +58,34 @@ class VisitListWorkflow implements Service {
 				array_push($esc, 'vtype');
 				
 				if($memory['year']){
-					$qry = "and `year`='\${year}'";
+					$qry .= "and YEAR(`visitdate`)='\${year}'";
 					array_push($args, 'year');
 					array_push($esc, 'year');
 				}
 				
 				if($memory['comuser']){
-					$qry = "and `comuser`='\${comuser}'";
+					$qry .= "and `comuser`='\${comuser}'";
 					array_push($args, 'comuser');
 					array_push($esc, 'comuser');
 				}
 			}
-			elseif(is_numeric(substr($memory['filter'], 0, 4))){
+			elseif(is_numeric($memory['filter'])){
 				$memory['vtype'] = false;
+				$memory['tmp'] = $memory['year'];
 				$memory['year'] = $memory['filter'];
-				$qry = "and `year`='\${year}'";
+				$qry = "and YEAR(`visitdate`)='\${year}'";
 				array_push($args, 'year');
 				array_push($esc, 'year');
 				
+				if($memory['tmp'] && in_array($memory['tmp'], array('placement', 'internship', 'ppo'))){
+					$qry .= "and `vtype`='\${vtype}'";
+					array_push($args, 'vtype');
+					array_push($esc, 'vtype');
+					$memory['vtype'] = $memory['tmp'];
+				}
+				
 				if($memory['comuser']){
-					$qry = "and `comuser`='\${comuser}'";
+					$qry .= "and `comuser`='\${comuser}'";
 					array_push($args, 'comuser');
 					array_push($esc, 'comuser');
 				}
@@ -101,8 +109,8 @@ class VisitListWorkflow implements Service {
 			'conn' => 'exconn',
 			'relation' => '`visits`',
 			'type' => 'visit',
-			'sqlprj' => '`visitid`, `vstname`, `files`, `shortlist`, `vtype`, `year`, `comid`, `comuser`, `package`, `visitdate`, UNIX_TIMESTAMP(`deadline`)*1000 as `deadline_ts`, `deadline`, (select c.`name` from `companies` c where c.`comid`=`comid`) as `comname`',
-			'sqlcnd' => "where `visitid` in \${list} $qry order by `year` desc, `vtype` desc",
+			'sqlprj' => '`visitid`, `vstname`, `files`, `shortlist`, `vtype`, `year`, `comid`, `comuser`, `package`, `visitdate`, UNIX_TIMESTAMP(`deadline`)*1000 as `deadline_ts`, `deadline`, (select c.`name` from `companies` c where c.`comid`=`comid`) as `comname`, `cer`, `che`, `civ`, `cse`, `eee`, `ece`, `mec`, `met`, `min`, `phe`, `apc`, `apm`, `app`, `bce`, `bme`, `mst`',
+			'sqlcnd' => "where `visitid` in \${list} $qry order by `visitdate` desc, `vtype` desc, `visitid` desc",
 			'escparam' => $esc,
 			'successmsg' => 'Visits information given successfully',
 			//'lsttrack' => true,
