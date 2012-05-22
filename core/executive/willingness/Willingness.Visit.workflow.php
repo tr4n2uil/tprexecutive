@@ -2,8 +2,8 @@
 require_once(SBSERVICE);
 
 /**
- *	@class WillinglistListWorkflow
- *	@desc Returns all willinglists information in post
+ *	@class WillingnessVisitWorkflow
+ *	@desc Returns all willinglists information
  *
  *	@param keyid long int Usage Key ID [memory]
  *	@param batchid/id long int Batch/Visit ID [memory] optional default 0
@@ -27,7 +27,7 @@ require_once(SBSERVICE);
  *	@author Vibhaj Rajan <vibhaj8@gmail.com>
  *
 **/
-class WillinglistListWorkflow implements Service {
+class WillingnessVisitWorkflow implements Service {
 	
 	/**
 	 *	@interface Service
@@ -35,7 +35,7 @@ class WillinglistListWorkflow implements Service {
 	public function input(){
 		return array(
 			'required' => array('keyid'),
-			'optional' => array('user' => '', 'batchid' => false, 'id' => 0, 'btname' => false, 'name' => '', 'pgsz' => 15, 'pgno' => 0, 'total' => false, 'padmin' => true),
+			'optional' => array('user' => '', 'batchid' => false, 'id' => 0, 'btname' => false, 'name' => '', 'pgsz' => false, 'pgno' => 0, 'total' => false, 'padmin' => true),
 			'set' => array('id', 'name')
 		);
 	}
@@ -47,22 +47,20 @@ class WillinglistListWorkflow implements Service {
 		$memory['batchid'] = $memory['batchid'] ? $memory['batchid'] : $memory['id'];
 		$memory['btname'] = $memory['btname'] ? $memory['btname'] : $memory['name'];
 		
-		$attr = $memory['btname'] == '' ? 'visitid' : 'batchid';
-		
 		$service = array(
 			'service' => 'transpera.entity.list.workflow',
 			'args' => array('batchid'),
 			'input' => array('id' => 'batchid', 'btname' => 'btname'),
 			'conn' => 'exconn',
-			'relation' => '`willinglists`',
-			'type' => 'willinglist',
-			'sqlprj' => '`wgltid`, `batchid`, `visitid`, `name`',
-			'sqlcnd' => "where `$attr`=\${batchid}",
+			'relation' => '`willingnesses`',
+			'type' => 'willingness',
+			'sqlprj' => 'distinct `visitid`, `name`',
+			'sqlcnd' => "where `batchid`=\${batchid}",
 			'successmsg' => 'Willinglists information given successfully',
 			'lsttrack' => true,
 			'output' => array('entities' => 'willinglists'),
 			'action' => 'add',
-			'mapkey' => 'wgltid',
+			'mapkey' => 'visitid',
 			'mapname' => 'willinglist',
 			'saction' => 'add',
 			'authcustom' => array(

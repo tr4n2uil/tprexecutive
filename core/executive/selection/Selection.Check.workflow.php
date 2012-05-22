@@ -2,8 +2,8 @@
 require_once(SBSERVICE);
 
 /**
- *	@class SelectionAddWorkflow
- *	@desc Adds new selection
+ *	@class SelectioCheckWorkflow
+ *	@desc Checks exists selection
  *
  *	@param name string Name [memory]
  *	@param visitid long int Visit ID [memory]
@@ -28,7 +28,7 @@ require_once(SBSERVICE);
  *	@author Vibhaj Rajan <vibhaj8@gmail.com>
  *
 **/
-class SelectionAddWorkflow implements Service {
+class SelectionCheckWorkflow implements Service {
 	
 	/**
 	 *	@interface Service
@@ -65,59 +65,16 @@ class SelectionAddWorkflow implements Service {
 			'sqlcnd' => "where `owner`=\${owner} and `visitid`=\${visitid}",
 			'not' => false,
 			'errormsg' => 'User already selected'
-		),
-		array(
-			'service' => 'executive.batch.find.workflow',
-			'output' => array('resumes' => 'resdir')
-		),
-		array(
-			'service' => 'transpera.entity.add.workflow',
-			'args' => array('visitid', 'name', 'owner', 'batchid', 'resdir', 'btname'),
-			'input' => array('parent' => 'shlstid', 'cname' => 'eligibility', 'shlstname' => 'shlstname'),
-			'conn' => 'exconn',
-			'relation' => '`selections`',
-			'type' => 'selection',
-			'sqlcnd' => "(`selid`, `owner`, `visitid`, `batchid`, `resdir`, `name`, `batch`) values (\${id}, \${owner}, \${visitid}, \${batchid}, \${resdir}, '\${name}', '\${btname}')",
-			'escparam' => array('name', 'btname'),
-			'successmsg' => 'Selection added successfully',
-			'output' => array('id' => 'selid')
-		),
-		array(
-			'service' => 'transpera.entity.info.workflow',
-			'input' => array('id' => 'selid', 'parent' => 'shlstid', 'cname' => 'name', 'shlstname' => 'shlstname'),
-			'conn' => 'exconn',
-			'relation' => '`selections` l, `students` s, `grades` g',
-			'sqlprj' => 'l.`selid`, l.`visitid`, l.`resume`, l.`stage`, l.`name` as `lname`, l.`batch`, s.`stdid`, s.`username`, s.`name`, s.`email`, s.`rollno`, g.`cgpa`, g.`sscx`, g.`hscxii`',
-			'sqlcnd' => "where `selid`=\${id} and l.`owner`=s.`owner` and s.`grade`=g.`gradeid`",
-			'errormsg' => 'Invalid Selection ID',
-			'type' => 'selection',
-			'successmsg' => 'Selection information given successfully',
-			'output' => array('entity' => 'selection'),
-			'auth' => false,
-			'track' => false,
-			'sinit' => false,
-			'cache' => false
-		),
-		array(
-			'service' => 'guard.chain.info.workflow',
-			'input' => array('chainid' => 'shlstid'),
-			'output' => array('chain' => 'pchain')
 		));
 		
-		$memory = Snowblozm::execute($workflow, $memory);
-		if(!$memory['valid'])
-			return $memory;
-		
-		$memory['padmin'] = $memory['admin'];
-		$memory['admin'] = 1;
-		return $memory;
+		return Snowblozm::execute($workflow, $memory);
 	}
 	
 	/**
 	 *	@interface Service
 	**/
 	public function output(){
-		return array('selid', 'shlstid', 'shlstname', 'selection', 'chain', 'pchain', 'admin', 'padmin');
+		return array();
 	}
 	
 }

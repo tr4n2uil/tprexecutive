@@ -6,8 +6,8 @@ require_once(SBSERVICE);
  *	@desc Returns all willingnesses information in post
  *
  *	@param keyid long int Usage Key ID [memory]
- *	@param wgltid/id long int Willinglist/Visit ID [memory] optional default 0
- *	@param wgltname/name string Willinglist name [memory] optional default ''
+ *	@param visitid/id long int Visit ID [memory] optional default 0
+ *	@param btname/name string Batch name [memory] optional default ''
  *	@param export boolean Is Export [memory] optional default false
  *	@param archive boolean Is Archive [memory] optional default false
  *	@param me boolean Is Opportunity [memory] optional default false
@@ -18,8 +18,9 @@ require_once(SBSERVICE);
  *	@param padmin boolean Is parent information needed [memory] optional default true
  *
  *	@return willingnesses array Willingnesss information [memory]
- *	@return wgltid long int Willinglist/Visit ID [memory]
- *	@return wgltname string Willinglist Name [memory]
+ *	@return visitid long int Visit ID [memory]
+ *	@return batchid long int Batch ID [memory]
+ *	@return btname string Batch Name [memory]
  *	@return admin integer Is admin [memory]
  *	@return padmin integer Is parent admin [memory]
  *	@return pchain array Parent chain information [memory]
@@ -38,7 +39,7 @@ class WillingnessListWorkflow implements Service {
 	public function input(){
 		return array(
 			'required' => array('keyid'),
-			'optional' => array('user' => '', 'wgltid' => false, 'id' => 0, 'wgltname' => false, 'name' => '', 'pgsz' => 15, 'pgno' => 0, 'total' => false, 'padmin' => true, 'export' => false, 'archive' => false, 'me' => false),
+			'optional' => array('user' => '', 'visitid' => false, 'id' => 0, 'btname' => false, 'name' => '', 'pgsz' => 15, 'pgno' => 0, 'total' => false, 'padmin' => true, 'export' => false, 'archive' => false, 'me' => false),
 			'set' => array('id', 'name', 'me')
 		);
 	}
@@ -47,20 +48,22 @@ class WillingnessListWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function run($memory){
-		$memory['wgltid'] = $memory['wgltid'] ? $memory['wgltid'] : $memory['id'];
-		$memory['wgltname'] = $memory['wgltname'] ? $memory['wgltname'] : $memory['name'];
+		$memory['visitid'] = $memory['visitid'] ? $memory['visitid'] : $memory['id'];
+		$memory['btname'] = $memory['btname'] ? $memory['btname'] : $memory['name'];
 		$memory['resumelist'] = '';
+		$name = $memory['btname'] != '' ? 'Willingness.'.$memory['btname'].'.'.$memory['user'] : 'Willing Candidates.'.$memory['user'];
+		$memory['batchid'] = $memory['visitid'];
 		
-		if($memory['wgltname'] == '')
-			$qry = "w.`visitid`=\${wgltid}";
+		if($memory['btname'] == ''){
+			$qry = "w.`visitid`=\${visitid} and (w.`status`=1 and w.`approval`>-1)";
+		}
 		else
-			$qry = "w.`wlgsid` in \${list}";
+			$qry = "w.`visitid`=\${visitid} and w.`batch`='\${btname}'";
 		
 		if($memory['me']){
-			$qry = "s.`stdid`=\${wgltid}";
 			$rel = '`willingnesses` w, `students` s, `visits` v';
 			$prj = 'w.`wlgsid`, w.`visitid`, w.`resume`, w.`status`, w.`approval`, w.`name`, w.`batch`, s.`stdid`, s.`username`, v.`comuser`, v.`comid`, v.`vtype`, v.`year`, v.`visitdate`, v.`package`';
-			$cnd = "where $qry and w.`owner`=s.`owner` and v.`visitid`=w.`visitid` order by w.`wlgsid` desc";
+			$cnd = "where s.`stdid`=\${visitid} and w.`owner`=s.`owner` and v.`visitid`=w.`visitid` order by w.`wlgsid` desc";
 			$authcustom = false;
 		}
 		elseif($memory['export']){
@@ -117,7 +120,7 @@ class WillingnessListWorkflow implements Service {
 					'args' => array('chainid', 'parent'),
 					'conn' => 'exconn',
 					'relation' => '`batches`',
-					'sqlcnd' => "where `batchid`=(select `batchid` from `willinglists` where `wgltid`=\${chainid}) and `dept`=(select `dept` from `batches` where `batchid`=\${parent})",
+					'sqlcnd' => "where `batchid`=\${chainid} and `dept`=(select `dept` from `batches` where `batchid`=\${parent})",
 					'errormsg' => 'Unable to Authorize',
 					'successmsg' => 'Batch information given successfully'
 				),
@@ -127,14 +130,15 @@ class WillingnessListWorkflow implements Service {
 		$workflow = array(
 		array(
 			'service' => 'transpera.entity.list.workflow',
-			'args' => array('wgltid'),
-			'input' => array('id' => 'wgltid', 'wgltname' => 'wgltname'),
+			'args' => array('batchid', 'btname', 'visitid'),
+			'input' => array('id' => 'batchid', 'pname' => 'btname'),
 			'conn' => 'exconn',
 			'relation' => $rel,
 			'type' => 'willingness',
 			'sqlprj' => $prj,
 			'sqlcnd' => $cnd,
 			'successmsg' => 'Willingnesses information given successfully',
+			'escparam' => array('btname'),
 			//'lsttrack' => true,
 			'output' => array('entities' => 'willingnesses'),
 			'action' => 'add',
@@ -145,19 +149,25 @@ class WillingnessListWorkflow implements Service {
 			'authcustom' => $authcustom
 		));
 		
+		if($memory['btname'] != ''){
+			array_unshift($workflow, array(
+				'service' => 'executive.batch.find.workflow'
+			));
+		}
+		
 		if($memory['export']){
 			array_push($workflow, array(
 				'service' => 'cbcore.data.export.service',
 				'input' => array('data' => 'willingnesses'),
 				'type' => 'csv',
 				'default' => "Student Name,Roll No,Course,Department,Year,Email,Phone,Date of Birth,Gender,CGPA,X %,XII %,SGPA I,SGPA II,SGPA III,SGPA IV,SGPA V,SGPA VI,SGPA VII,SGPA VIII,SGPA IX,SGPA X,YGPA I,YGPA II,YGPA III,YGPA IV,YGPA V\r\n",
-				'filename' => 'Willingness.'.$memory['wgltname'].'.'.$memory['user'].'.csv',
+				'filename' => $name.'.csv',
 				'output' => array('result' => 'csv')
 			),
 			array(
 				'service' => 'storage.file.download.service',
 				'filepath' => 'storage/private/exports/',
-				'filename' => 'Willingness.'.$memory['wgltname'].'.'.$memory['user'].'.csv',
+				'filename' => $name.'.csv',
 				'mime' => 'application/vnd.ms-excel'
 			));
 		}
@@ -167,22 +177,18 @@ class WillingnessListWorkflow implements Service {
 				'service' => 'storage.file.archive.service',
 				'input' => array('filelist' => 'willingnesses'),
 				'directory' => 'storage/private/exports/',
-				'filename' => 'Willingness.'.$memory['wgltname'].'.'.$memory['user'].'.zip',
+				'filename' => $name.'.zip',
 			),
 			array(
 				'service' => 'storage.file.download.service',
 				'filepath' => 'storage/private/exports/',
-				'filename' => 'Willingness.'.$memory['wgltname'].'.'.$memory['user'].'.zip',
+				'filename' => $name.'.zip',
 				'mime' => 'application/zip'
 			));
 		}
 		
 		if($memory['me']){
 			array_push($workflow, array(
-				'service' => 'executive.batch.find.workflow',
-				'input' => array('btname' => 'wgltname')
-			),
-			array(
 				'service' => 'storage.file.list.workflow',
 				'input' => array('dirid' => 'resumes', 'filter' => 'keyid'),
 				'output' => array('files' => 'resumelist', 'admin' => 'fadmin', 'padmin' => 'fpadmin', 'pchain' => 'fpchain')
@@ -193,7 +199,7 @@ class WillingnessListWorkflow implements Service {
 		if(!$memory['valid'])
 			return $memory;
 			
-		$memory['uiadmin'] = ($memory['admin'] || $memory['padmin']) && ($memory['wgltname'] != '');
+		$memory['uiadmin'] = ($memory['admin'] || $memory['padmin']) && ($memory['btname'] != '');
 		return $memory;
 	}
 	
@@ -201,7 +207,7 @@ class WillingnessListWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function output(){
-		return array('willingnesses', 'wgltid', 'wgltname', 'admin', 'padmin', 'pchain', 'total', 'pgno', 'pgsz', 'uiadmin', 'resumelist');
+		return array('willingnesses', 'visitid', 'batchid', 'btname', 'admin', 'padmin', 'pchain', 'total', 'pgno', 'pgsz', 'uiadmin', 'resumelist');
 	}
 	
 }

@@ -7,7 +7,7 @@ require_once(SBSERVICE);
  *
  *	@param wlgsid long int Willingness ID [memory]
  *	@param keyid long int Usage Key ID [memory]
- *	@param wgltid long int Willinglist ID [memory] optional default 0
+ *	@param batchid long int Batch ID [memory] optional default 0
  *
  *	@author Vibhaj Rajan <vibhaj8@gmail.com>
  *
@@ -20,7 +20,7 @@ class WillingnessRemoveWorkflow implements Service {
 	public function input(){
 		return array(
 			'required' => array('keyid', 'user', 'wlgsid'),
-			'optional' => array('wgltid' => 0)
+			'optional' => array('batchid' => 0)
 		);
 	}
 	
@@ -30,7 +30,7 @@ class WillingnessRemoveWorkflow implements Service {
 	public function run($memory){
 		$service = array(
 			'service' => 'transpera.entity.remove.workflow',
-			'input' => array('id' => 'wlgsid', 'parent' => 'wgltid'),
+			'input' => array('id' => 'wlgsid', 'parent' => 'batchid'),
 			'conn' => 'exconn',
 			'relation' => '`willingnesses`',
 			'type' => 'willingness',

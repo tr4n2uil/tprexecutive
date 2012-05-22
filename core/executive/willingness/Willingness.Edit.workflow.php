@@ -10,12 +10,12 @@ require_once(SBSERVICE);
  *	@param approval integer Approval [memory] (0=Pending 1=Positive -1=Negative)
  *	@param keyid long int Usage Key ID [memory]
  *	@param user string Key User [memory]
- *	@param wgltid long int Willinglist ID [memory] optional default 0
- *	@param wgltname string Willinglist Name [memory] optional default ''
+ *	@param batchid long int Batch ID [memory] optional default 0
+ *	@param btname string Batch Name [memory] optional default ''
  *
  *	@return wlgsid long int Willingness ID [memory]
- *	@return wgltid long int Willinglist ID [memory]
- *	@return wgltname string Willinglist Name [memory]
+ *	@return batchid long int Batch ID [memory]
+ *	@return btname string Batch Name [memory]
  *	@return willingness array Willingness information [memory]
  *	@return chain array Chain information [memory]
  *	@return pchain array Parent chain information [memory]
@@ -32,7 +32,7 @@ class WillingnessEditWorkflow implements Service {
 	**/
 	public function input(){
 		return array(
-			'required' => array('keyid', 'user', 'wlgsid', 'name', 'approval', 'wgltid', 'wgltname')
+			'required' => array('keyid', 'user', 'wlgsid', 'name', 'approval', 'batchid', 'btname')
 		);
 	}
 	
@@ -46,7 +46,7 @@ class WillingnessEditWorkflow implements Service {
 		array(
 			'service' => 'transpera.entity.edit.workflow',
 			'args' => array('name', 'approval'),
-			'input' => array('id' => 'wlgsid', 'cname' => 'name', 'parent' => 'wgltid', 'wgltname' => 'wgltname'),
+			'input' => array('id' => 'wlgsid', 'cname' => 'name', 'parent' => 'batchid', 'btname' => 'btname'),
 			'conn' => 'exconn',
 			'relation' => '`willingnesses`',
 			'type' => 'willingness',
@@ -59,7 +59,7 @@ class WillingnessEditWorkflow implements Service {
 		),
 		array(
 			'service' => 'transpera.entity.info.workflow',
-			'input' => array('id' => 'wlgsid', 'parent' => 'wgltid', 'cname' => 'name', 'wgltname' => 'wgltname'),
+			'input' => array('id' => 'wlgsid', 'parent' => 'batchid', 'cname' => 'name', 'btname' => 'btname'),
 			'conn' => 'exconn',
 			'relation' => '`willingnesses` w, `students` s, `grades` g',
 			'sqlprj' => 'w.`wlgsid`, w.`visitid`, w.`resume`, w.`status`, w.`approval`, w.`name` as `wname`, w.`batch`, s.`stdid`, s.`username`, s.`name`, s.`email`, s.`rollno`, g.`cgpa`, g.`sscx`, g.`hscxii`',
@@ -75,7 +75,7 @@ class WillingnessEditWorkflow implements Service {
 		),
 		array(
 			'service' => 'guard.chain.info.workflow',
-			'input' => array('chainid' => 'wgltid'),
+			'input' => array('chainid' => 'batchid'),
 			'output' => array('chain' => 'pchain')
 		));
 		
@@ -92,7 +92,7 @@ class WillingnessEditWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function output(){
-		return array('wlgsid', 'wgltid', 'wgltname', 'willingness', 'chain', 'pchain', 'admin', 'padmin');
+		return array('wlgsid', 'batchid', 'btname', 'willingness', 'chain', 'pchain', 'admin', 'padmin');
 	}
 	
 }
