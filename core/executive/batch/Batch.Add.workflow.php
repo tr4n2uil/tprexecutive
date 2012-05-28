@@ -36,8 +36,8 @@ class BatchAddWorkflow implements Service {
 	**/
 	public function input(){
 		return array(
-			'required' => array('keyid', 'user', 'btname', 'dept', 'course', 'year'),
-			'optional' => array('portalid' => 0, 'plname' => '', 'level' => false, 'owner' => false)
+			'required' => array('keyid', 'user', 'dept', 'course', 'year'),
+			'optional' => array('portalid' => STUDENT_PORTAL_ID, 'plname' => '', 'level' => false, 'owner' => false, 'btname' => false)
 		);
 	}
 	
@@ -49,6 +49,31 @@ class BatchAddWorkflow implements Service {
 		$memory['join'] = 'on';
 		$memory['public'] = 1;
 		
+		if(!$memory['btname']){
+			$memory['btname'] = $memory['course'].'.'.$memory['dept'];
+			$year = $memory['year'];
+			switch($memory['course']){
+				case 'btech' :
+					$year -= 4;
+					break;
+				case 'idd' :
+				case 'imd' :
+					$year -= 5;
+					break;
+				case 'mtech' :
+					$year -= 2;
+					break;
+				default :
+					break;
+			}
+			
+			$year %= 100;
+			$year = (($year == 0) ? '00' : ($year < 10 ? '0'.$year : $year));
+			$memory['btname'] .= $year;
+		}
+		
+		$memory['course'] = $memory['course'] == 'imd' ? 'idd' : $memory['course'];
+		
 		$workflow = array(
 		array(
 			'service' => 'transpera.entity.add.workflow',
@@ -57,6 +82,7 @@ class BatchAddWorkflow implements Service {
 			'conn' => 'exconn',
 			'relation' => '`batches`',
 			'type' => 'batch',
+			'icontrol' => 'add:edit:remove:list:info',
 			'sqlcnd' => "(`batchid`, `owner`, `btname`, `dept`, `course`, `year`, `resumes`, `notes`) values (\${id}, \${owner}, '\${btname}', '\${dept}', '\${course}', \${year}, \${resumes}, \${notes})",
 			'escparam' => array('btname', 'dept', 'course'),
 			'successmsg' => 'Batch added successfully',
@@ -65,17 +91,10 @@ class BatchAddWorkflow implements Service {
 					'service' => 'storage.directory.add.workflow',
 					'name' => 'storage/private/resumes/'.$memory['btname'].'/',
 					'path' => 'storage/private/resumes/'.$memory['btname'].'/',
-					'input' => array('stgid' => 'id'),
+					'input' => array('stgid' => 'id', 'grroot' => 'id'),
 					'authorize' => 'gradd:remove:edit:grlist',
-					'grlevel' => -2,
+					'grlevel' => -1,
 					'output' => array('dirid' => 'resumes')
-				),
-				array(
-					'service' => 'guard.web.add.workflow',
-					'input' => array('parent' => 'resumes', 'child' => 'id'),
-					'istate' => 'G',
-					'icontrol' => 'info:gradd:remove:edit:grlist',
-					'output' => array('id' => 'webid')
 				),
 				array(
 					'service' => 'transpera.reference.add.workflow',

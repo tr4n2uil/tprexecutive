@@ -67,7 +67,8 @@ class StudentInfoWorkflow implements Service {
 			'sqlcnd' => "where `$attr`='\${stdid}'",
 			'errormsg' => 'Invalid Student ID',
 			'successmsg' => 'Student information given successfully',
-			'output' => array('entity' => 'student')
+			'output' => array('entity' => 'student'),
+			'cache' => false
 		),
 		array(
 			'service' => 'cbcore.data.select.service',

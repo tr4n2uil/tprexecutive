@@ -1,0 +1,968 @@
+/* @group Main */
+
+html {
+  height: 100%;
+  margin-bottom: 1px;
+}
+
+body {
+	margin: 0;
+	padding: 0;
+}
+
+p {
+  margin-top: 10px;
+  margin-bottom: 15px;
+}
+
+h1, h2, h3, h4, h4 {
+	padding-bottom: 5px;
+	margin: 15px 0;
+}
+
+fieldset {
+	border: 0;
+	padding: 5px 0;
+}
+
+/* @group Fonts */
+
+/* @group Sizes */
+
+
+body {
+	font-size: 13px;
+}
+
+h1 {
+	font-size: 200%;
+}
+
+h2 {
+	font-size: 170%;
+}
+
+h3 { 
+	font-size: 150%;
+}
+
+h4 {
+	font-size:  120%;
+}
+
+.small,
+.modifydate,
+.createdate,
+div.mosimage_caption {
+	font-size: 100%;
+}
+
+#nav a {
+	font-size: 110%;
+}
+
+div.moduletable h3,
+div.moduletable-hilite h3,
+div.moduletable-flush h3,
+.componentheading {
+	font-size: 100%;
+}
+
+.contentheading {
+	font-size: 200%;
+}
+
+
+
+.componentheading {
+ margin-bottom: 15px;
+}
+
+td.componentheading {
+	padding-bottom: 15px;
+}
+
+/* @end */
+
+/* @group Family */
+
+body {
+		line-height: 125%;
+		font-family: Arial, Helvetica, sans-serif;
+}
+
+h3,
+.contentheading,
+.componentheading,
+#nav,
+div#menu_horiz, 
+.sectiontableheader,
+span.pathway,
+.small,
+.createdate,
+.modifydate,
+span.loginsubmit,
+span.logoutsubmit,
+a.readon {
+	font-family: Arial Narrow, Helvetica, sans-serif;
+
+}
+
+.contentheading,
+.componentheading {
+	font-weight: bold;
+}
+
+.contentheading {
+	/* see primary style css */
+}
+
+a:link,
+a:visited {
+	text-decoration: none;
+	/* see primary style css */
+}
+
+a:hover {
+	/* see primary style css */
+}
+
+/* @end */
+
+/* @end */
+
+/* @end */
+
+/* @group Custom */
+
+#page_bg {
+	height: 100%; 
+	padding: 0;
+	margin-bottom: 1px;
+}
+
+body.b-medium {
+	background: #fff url(../images/background/medium/bg.png) repeat-x;
+}
+
+body.b-light {
+	background: #fff url(../images/background/light/bg.png) repeat-x;
+}
+
+body.b-dark {
+	background: #999 url(../images/background/dark/bg.png) repeat-x;
+}
+
+body.b-blue{
+	background: #fff url(../images/background/blue/bg.png) repeat-x;
+}
+
+div.mainbg {
+	/* see body style css */
+	margin-bottom: 30px;
+}
+
+div.wrapper {
+	width: 845px;  /* control the width here */
+	margin: 0 auto;
+	position: relative;
+	padding-bottom: 1px;
+}
+
+
+#header {
+	position: relative;
+	height: 107px;
+}
+
+#logo {
+	/* see primary style css */
+	position: absolute;
+	top: 36px;
+	left: 20px;
+	display: block;
+	width: 705px;
+	height: 77px;
+	border: 0;
+}
+
+#scroller {
+	position: absolute;
+	width: 350px;
+	height: 28px;
+	line-height: 28px;
+	overflow:hidden;
+}
+
+#header_spotlight {
+	/* see primary style css */
+	position: absolute;
+	height:  107px;
+	right: 0;
+	width: 403px;
+}
+
+#searchbox {
+	position: absolute;
+	height: 28px;
+	width: 100%;
+}
+
+#searchbox div.search {
+	float: right;
+	margin-top: 2px;
+	margin-right: 10px;
+}
+
+div.thedate {
+	float:  left;
+	line-height: 28px;
+	height: 28px;
+	color: #fff;
+	font-weight: bold;
+	padding:  0 10px 0 5px;
+}
+
+#searchbox form#searchform {
+	margin-left: 230px;
+	margin-top: 2px;
+}
+
+#topbox {
+	position: absolute;
+	top: 28px;
+	width: 100%;
+	height: 78px;
+
+}
+
+table.mainbg,
+table.user {
+	width: 100%;
+}
+
+table.mainbg {
+	/* see body style css */
+}
+
+td.main {
+	/* see body style css */
+}
+
+td.middle {
+	/* see body style css */
+	width: 200px;
+}
+
+td.side {
+	border-left: 1px solid #fff;	
+	width: 200px;
+}
+
+td.spacer {
+	width: 5px;
+}
+
+table.userblock {
+	width: 100%;
+}
+
+td.user {
+	width: 50%;
+}
+
+div.mainbody {
+	/* see body style css */
+	padding: 10px;
+}
+
+/* Blocks */
+
+div.block {
+	padding: 5px 5px 0 5px;
+	/* see body style css */
+}
+
+div.block.dark {
+	/* see body style css */
+	width: 100%;
+	padding: 0;
+}
+
+div.extra_pad {
+	padding: 6px 5px 2px 5px;
+}
+
+.moduletable-dummy {
+	padding: 10px 10px 0 10px;
+}
+
+.moduletable,
+.moduletable-hilite,
+.moduletable-flush {
+ 	padding: 5px;
+	margin: 0;
+	margin-bottom: 10px;
+}
+
+.moduletable-flush {
+	padding: 0;
+}
+
+.moduletable h3,
+.moduletable-hilite h3,
+.moduletable-flush h3 {
+	padding: 0;
+	margin-top: -5px;
+	margin-left: -5px;
+	margin-right: -5px;
+	margin-bottom: 10px;
+	padding: 5px 5px 5px 23px;
+	line-height: 100%;
+}
+
+.moduletable-flush h3 {
+	margin: 0;
+}
+
+div#footer {
+	/* see body style css */
+	height: 31px;
+	line-height: 31px;
+	text-align: center;
+}
+
+div#footer table {
+	width:auto;
+	margin: 0 auto;
+}
+
+div#footer a.mainlevel {
+	display: inline;
+	width: auto;
+	padding: 0 5px;
+	border: 0;
+}
+
+/***************************/
+/**************************/
+
+/* @group content */
+
+/* @group slideshow */
+#mySlideshow
+{
+	z-index:5;
+	margin-bottom: -10px;
+}
+
+.jdSlideshow
+{
+	display: none;
+	overflow:hidden;
+	position: relative;
+}
+
+.jdSlideshow img
+{
+	border: 0;
+	margin: 0;
+}
+
+.jdSlideshow .slideElement
+{
+	width: 100%;
+	height: 100%;
+	background-color: #000;
+	background-repeat: no-repeat;
+}
+
+.jdSlideshow .loadingElement
+{
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	left: 0;
+	top: 0;
+	background-color: #000;
+	background-repeat: no-repeat;
+	background-position: center center;
+	background-image: url('../images/loading-bar-black.gif');
+}
+
+.jdSlideshow .slideInfoZone
+{
+	position: absolute;
+	z-index: 10;
+	width: 100%;
+	margin: 0px;
+	left: 0;
+	bottom: 0;
+	height: 40px;
+	background: #333;
+	color: #fff;
+	text-indent: 0;
+}
+
+.jdSlideshow .slideInfoZone h2
+{
+	padding: 0;
+	font-size: 90%;
+	margin: 0;
+	margin: 2px 5px;
+	font-weight: bold;
+	color: inherit;
+}
+
+.jdSlideshow .slideInfoZone p
+{
+	padding: 0;
+	font-size: 80%;
+	margin: 2px 5px;
+	color: #eee;
+}
+
+.jdSlideshow a
+{
+	font-size: 100%;
+	text-decoration: none;
+	color: inherit;
+}
+/* @end */
+
+/* @group scroller */
+
+
+div#scroller-v {
+	height: 28px;
+	color: #fff;
+}
+
+div#scroller-v_inner {
+
+}
+
+div#scroller-v div {
+	padding: 0;
+	padding-left: 5px;
+	height: 28px;
+	line-height: 24px;
+}
+
+div#scroller-v a:link,
+div#scroller-v a:visited {
+	color: #ccc;
+	text-decoration: none;
+}
+
+/* @end */
+
+/* @group styles */
+
+div.style {
+	float: left;
+	width: 280px;
+	text-align: center;
+	margin-top: 20px;
+	margin-left: 20px;
+}
+
+div.style img.album {
+	border: 3px solid #ddd;
+}
+
+div.style img {
+	border: 0;
+}
+
+img.album.left {
+	float: left;
+	margin-right: 15px;
+	margin-top: -5px;
+	margin-bottom: 25px;
+}
+
+img.album.right {
+	float: right;
+	margin-left: 15px;
+	margin-top: -5px;
+	margin-bottom: 25px;
+}
+
+
+
+/* @end */
+
+/* @group livesearch */
+
+#LSShadow {
+	/* see primary style css */
+	padding: 2px;
+	position: relative;
+	left: -3px;
+	top: -3px;
+}
+
+#LSResult {
+	/* see primary style css */
+	position: absolute;
+	width: 200px;
+	font-size: 95%;
+	z-index: 500;
+	margin-left: 3px;
+	background: url(../images/dropshadow.png);
+}
+
+.LSRow {
+	/* see primary style css */
+	text-align: left;
+	padding: 3px;
+}
+
+#LSResult a:link,
+#LSResult a:visited {
+	/* see primary style css */
+	text-decoration: none;
+}
+
+#LSResult a:hover {
+	/* see primary style css */
+}
+
+#LSHeader {
+	z-index: 550;
+}
+
+#LSHighlight {
+	/* see primary style css */
+}
+
+#LSHighlight.LSRow a {
+	/* see primary style css */
+}
+
+#searchcontrols {
+	padding: 3px;
+}
+
+
+/* @end */
+
+/* @group lists */
+
+ul {
+	list-style: none;
+	margin-left: 0;
+	padding-left: 10px;
+}
+
+ul li {
+	/* see primary style css */
+	padding-left: 20px;
+}
+
+td.left ul li,
+td.right ul li {
+	margin-left: -30px;
+}
+
+ul.arrow {
+	margin: 25px 0;
+	padding: 0;
+	list-style: none;
+	padding-left: 20px;
+}
+
+ul.arrow li {
+	/* see primary style css */
+	padding-left: 25px;
+	padding-bottom: 10px;
+}
+
+ul.big {
+	margin: 25px 0;
+	list-style: none;
+	padding-left:  20px;
+}
+
+ul.big li {
+	/* see primary style css */
+	padding-left: 25px;
+	padding-right: 20px;
+}
+
+/* @end */
+
+/* @group alert styles */
+
+span.notice {
+	display: block;
+	background: #ffd;
+	padding: 10px;
+	margin-bottom: 10px;
+	color: #333;
+	border: 3px double #ddb;
+}
+
+/* @end */
+
+/* @group quote */
+
+span.quote {
+	display: block;
+	font-style: italic;
+}
+
+div.author {
+	text-align: right;
+	font-weight: bold;
+}
+
+/* @end */
+
+/* @group blockquote */
+
+div.moduletable blockquote,
+div.moduletable-hilite blockquote {
+	margin: -10px;
+}
+
+blockquote {
+	/* see primary style css */
+	padding: 10px;
+	padding-left: 50px;
+	margin:  15px 0;
+}
+
+/* @end */
+
+/* @group code */
+
+pre {
+	padding: 10px;
+	font-size: 95%;
+	background: #fff;
+	border: 1px solid #ddd;
+	border-left: 15px solid #ddd;
+}
+
+/* @end */
+
+/* @group login form */
+
+div#topbox div.moduletable h3 {
+	/* see primary style css */
+	margin-bottom: 3px;
+	margin-left: 0px;
+	padding: 2px 0 0 0;
+	font-size: 110%;
+}
+
+div.loginelement {
+	/* see primary style css */
+	float:  left;
+	margin-right: 10px;
+	line-height: 16px;
+}
+
+div.loginelement label {
+	/* see primary style css */
+	display: block;
+	float: left;
+	text-align: right;
+	padding-right: 5px;;
+	width: 65px;
+	line-height:24px;
+}
+
+div.loginelement input {
+	width: 90px;
+}
+
+span.loginsubmit,
+span.logoutsubmit {
+	position: absolute;
+	top: 50px;
+	right: 60px;
+	width: 61px;
+	height: 20px;
+	line-height: 20px;
+	border: 1px solid #333;
+	text-align: center;
+	cursor: pointer;
+	font-weight: bold;
+	color: #fff;
+	background: url(../images/button_bg2.png) 0 0 repeat-x;
+}
+
+span.logoutsubmit {
+	top: 35px;
+	left: 40%;
+}
+
+/* @end */
+
+/* @group content area */
+
+.right_image {
+	float: right;
+	margin-left: 10px;
+	border: 0;
+}
+
+.left_image {
+	float: left;
+	margin-right: 10px;
+	border: 0;
+}
+
+/* @end */
+
+.fakevideo {
+	padding: 1px;
+}
+
+.vert_spacing {
+	margin: 15px 0;
+}
+
+.hide {
+	display: none;
+}
+
+form {
+	border: 0;
+	margin: 0;
+	padding: 0;
+}
+
+table.blog span.article_seperator {
+	display: block;
+	height: 20px;
+}
+
+table.pollstableborder td {
+	text-align: left;
+	padding: 2px 0;
+}
+
+input#mod_search_searchword {
+	width: 120px;
+}
+
+a:link.nounder,
+a:visited.nounder,
+a:hover.nounder {
+	text-decoration: none;
+}
+
+.highlight {
+  background-color: #ffc;
+}
+
+#rocket {
+	float: left;
+	width: 115px;
+	height: 31px;
+	margin-left: 8px;
+}
+
+.css_button {
+	/* see body style css */
+	float: right;
+	width: 81px;
+	height: 16px;
+	border: 0;
+	margin: 7px 5px;
+	vertical-align: middle;
+}
+
+.xhtml_button {
+	/* see body style css */
+	float: right;
+	width: 97px;
+	height: 16px;
+	border: 0;
+	margin: 7px 5px;
+	vertical-align: middle;
+}
+
+/* @end */
+
+/* @end */
+
+/* @group Joomla Core */
+
+/* @group content */
+
+.contentheading {
+	padding: 10px 0;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	line-height:100%;
+}
+
+td.buttonheading {
+ 	vertical-align: middle;
+}
+
+td.buttonheading img {
+	margin-right: 5px;
+}
+
+table.contentpaneopen, table.contentpane {
+  border-collapse: collapse;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+}
+
+div.contentpane, div.contentpaneopen {
+  width: 100%;
+}
+
+
+.clr {
+	clear: both;
+}
+
+div.mosimage {
+  margin: 5px;
+}
+
+a.readon {
+	/* see primary style css */
+	float: right;
+	display: block;
+	height: 20px;
+	line-height: 20px;
+	padding: 0px 8px;
+	text-align: center;
+	cursor: pointer;
+	font-weight: bold;
+}
+
+.modifydate {
+	/* see primary style css */
+	height: 20px;
+	vertical-align: bottom;
+}
+
+.createdate {
+	/* see primary style css */
+	height: 20px;
+	vertical-align: top;
+	vertical-align: top;
+	padding-bottom: 5px;
+	padding-top: 0px;
+}
+
+table.contenttoc {
+  margin: 5px;
+  padding: 5px;
+}
+
+table.contenttoc td {
+  padding: 0 5px;
+}
+
+/* @end */
+
+/* @group pathway */
+
+span.pathway {
+	display: block;
+	height: 16px;
+	line-height: 16px;
+	vertical-align: middle;
+	margin-top: 5px;
+	margin-bottom: 20px;
+	font-weight: bold;
+}
+
+span.pathway img {
+	margin: 0px 10px;
+	vertical-align: middle;
+}
+
+div#pathway {
+	margin-bottom: 10px;
+	padding-left: 8px;
+}
+
+/* @end */
+
+/* @group sections */
+
+td.sectiontableheader {
+	/* see body style css */
+  font-weight: bold;
+  padding: 4px;
+  line-height: 20px;
+}
+
+tr.sectiontableentry1 td, 
+tr.sectiontableentry2 td {
+	/* see body style css */
+  padding: 4px;
+}
+
+td.sectiontableentry1, 
+td.sectiontableentry2 {
+	/* see body style css */
+  padding: 4px;
+}
+
+/* @end */
+
+/* @group mainmenu */
+
+a.mainlevel:link,
+a.mainlevel:visited {
+	text-decoration: none;
+}
+
+a.mainlevel {
+	display: block;
+	padding: 4px 0 2px 0;
+	border-bottom: 1px solid #efefef;
+	margin-bottom: 3px;
+}
+
+a.sublevel:link,
+a.sublevel:visited {
+	text-decoration: none;
+}
+
+a.mainlevel:hover {
+
+}
+
+a.sublevel:hover {
+	text-decoration: none;
+}
+
+a#active:link,
+a#active:visited {
+	color: #333;
+}
+
+li.active a:link,
+li.active a:visited {
+  color: #333;
+}
+
+/* @end */
+
+/* @group misc */
+
+table.adminform textarea {
+  width: auto;
+  color: #666;
+}
+
+a img {
+    border: 0;
+}
+
+/* @end */

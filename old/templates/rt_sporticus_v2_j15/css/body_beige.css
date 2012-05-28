@@ -1,0 +1,127 @@
+body {
+		color: #333;
+}
+
+div.mainbg {
+	background: #e7e7d5;
+	border-left: 1px solid #dcdbcc;
+	border-right: 1px solid #dcdbcc;
+	border-bottom: 1px solid #dcdbcc;
+}
+
+table.mainbg {
+	border-bottom: 1px solid #d8d8c9;
+}
+
+td.main {
+	background: #e7e7d5;
+}
+
+td.middle {
+	border-left: 1px solid #d8d8d8;
+	border-right: 1px solid #dcdbcc;
+	background: #fff;
+}
+
+div.hilight {
+	border-bottom: 1px solid #d8d8c8;
+}
+
+div.mainbody {
+	background: #F9F8E7;
+	border-top: 1px solid #fff;
+}
+
+div.surround {
+	border-top: 1px solid #d8d8c8;
+}
+
+div.block.bottom {
+	border-top: 1px solid #fff;
+}
+
+div.block {
+	border-top: 1px solid #fff;
+}
+
+div.block.dark {
+	background: #333;
+}
+
+div.block.normal {
+	border-bottom: 1px solid #d8d8c8;
+}
+
+div.block .moduletable {
+	border: 1px solid #dcdbcc;	
+}
+
+div.block .moduletable h3 {
+	background:  #dcdbcc url(../images/body/beige/bullet1.png) 5px 50% no-repeat;	
+}
+
+div.dark .moduletable,
+div.dark .moduletable-flush {
+	border: 1px solid #434343;	
+	color: #ccc;
+}
+
+div.dark .moduletable h3,
+div.dark .moduletable-flush h3 {
+	background:  #434343 url(../images/bullet1.png) 5px 50% no-repeat;
+	color: #ccc;
+}
+
+div.light .moduletable,
+div.light .moduletable-flush {
+	border: 1px solid #f0f0f0;	
+}
+
+div.light .moduletable h3,
+div.light .moduletable-flush h3 {
+	background:  #f0f0f0 url(../images/bullet3.png) 5px 50% no-repeat;
+}
+
+div.dark ul.menu li {
+	border-bottom: 1px solid #444;
+}
+
+div.dark ul.menu li a {
+	color: #ddd;
+}
+
+div.dark ul.menu a:hover {
+ color: #fff;
+}
+
+td.sectiontableheader {
+  background: #e7e7d5;
+  border-bottom: 1px solid #cacabc;
+}
+
+tr.sectiontableentry1 td, 
+tr.sectiontableentry2 td {
+  border-bottom: 1px solid #e7e7d5;
+}
+
+td.sectiontableentry1, 
+td.sectiontableentry2{
+  border-bottom: 1px solid #e7e7d5;
+}
+
+div#footer {
+	border: 1px solid #e7e7d5;
+	background: #cacabc;
+}
+
+#rocket {
+	background: url();
+}
+
+.css_button {
+	background: url();
+}
+
+.xhtml_button {
+	background: url();
+}

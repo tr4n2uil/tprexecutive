@@ -45,9 +45,10 @@ class StudentAddWorkflow implements Service {
 		$memory['public'] = 1;
 		
 		$parts = explode('@', $memory['email']);
-		$memory['username'] = $parts[0];
-		$parts = explode('.', $parts[0]);
-		$memory['name'] = ucfirst($parts[0]).' '.ucfirst($parts[1]);
+		$bparts = explode('.', $memory['btname']);
+		$uparts = explode('.', $parts[0]);
+		$memory['username'] = $parts[1] == 'itbhu.ac.in' && isset($uparts[2]) ? $parts[0] : $parts[0].'.'.$bparts[1];
+		$memory['name'] = ucfirst($uparts[0]).' '.(isset($uparts[1]) ? ucfirst($uparts[1]) : '');
 		
 		$workflow = array(
 		array(
@@ -108,8 +109,10 @@ class StudentAddWorkflow implements Service {
 		
 		if($memory['valid'])
 			$memory['msg'] = 'Student created successfully. Verification sent successfully.';
-		else
+		else {
 			$memory['msg'] = 'Student created successfully. Error sending verification mail.';
+			$memory['valid'] = true;
+		}
 		
 		$workflow = array(
 		array(

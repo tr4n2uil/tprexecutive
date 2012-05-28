@@ -94,7 +94,7 @@ class VisitCreateWorkflow implements Service {
 		if(!$memory['valid'])
 			return $memory;
 		
-		echo json_encode($memory['students']);exit;
+		//echo json_encode($memory['students']);exit;
 			
 		foreach($memory['students'] as $stds){
 			$memory = Snowblozm::run(array(

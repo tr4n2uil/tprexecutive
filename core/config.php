@@ -49,6 +49,7 @@
 	define('STUDENT_PORTAL_ID', 16);
 	define('COMPANY_PORTAL_ID', 17);
 	define('MANAGER_ID', 18);
+	define('TPO_KEY', 5);
 	define('FORM_ID', 32);
 	define('FORUM_ID', 33);
 	define('FORUM_MAIL_SUBJECT_PREFIX', '[TPO Portal Discussion Alerts]');

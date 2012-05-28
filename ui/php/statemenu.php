@@ -13,7 +13,7 @@
 	/**
 	 *	@launch Read response
 	**/
-	if($memory['message']['valid']){
+	if($memory['valid'] && $memory['message']['valid']){
 		$student = $memory['message'];
 		$stdid = $student['stdid'];
 		
@@ -29,19 +29,25 @@
 			</script>';
 		
 		$memory['person'] = $student;
+		$info = '';
+		if($student['student']['ustatus'] == '0'){
+			$info = '<li><a href="#" class="navigate">Account Suspended</a></li>';
+		}
 		
 		$STATEMENU .=
 		'<ul class="hover-menu vertical">
 			<li>
 				<a href="student/'.$student['person']['username'].'/" class="ui" >'.$memory['user'].'<img src="storage/public/thumbnails/person/'.$memory['person']['person']['username'].'.png" alt="USER_THUMBNAIL" class="thumbhead" style="margin: -8px 0;"></a>
 				<ul class="menu-item">
+					'.$info.'
+					<li><a href="student/'.$student['person']['username'].'/" class="ui" >Profile</a></li>
 					<li><a href="identities/" class="ui">Identities</a></li>
 					<li><a href="#/read/~/data/service=session&enc=get/ln/#login" class="launch">Sign Out</a></li>
 				</ul>
 			</li>
 		</ul>';
 		
-		if($student['person']['username'] != 'tpo.iitbhu')
+		if($student['person']['username'] != 'tpo.itbhu')
 			$STATEMENU .=
 			'<ul class="hover-menu vertical">
 				<li>
@@ -63,6 +69,16 @@
 					</ul>
 				</li>
 			</ul>';
+		else
+			$STATEMENU .= '
+			<ul class="hover-menu vertical">
+				<li>
+					<a href="#" class="navigate" >T&P</a>
+					<ul class="menu-item">
+						<li><a href="docs/TPR Executive User Manual.pdf" target="_blank" >Portal User Manual</a></li>
+					</ul>
+				</li>
+			</ul>';
 		
 		$TPR = $memory['message']['btadmin'];
 		$PORTAL = 'student';
@@ -81,7 +97,7 @@
 		/**
 		 *	@launch Read response
 		**/
-		if($memory['message']['valid']){
+		if($memory['valid'] && $memory['message']['valid']){
 			$company = $memory['message'];
 			$comid = $company['comid'];
 		
@@ -102,12 +118,47 @@
 				<li>
 					<a href="company/'.$company['person']['username'].'/" class="ui" >'.$memory['user'].'<img src="storage/public/thumbnails/person/'.$memory['person']['person']['username'].'.png" alt="USER_THUMBNAIL" class="thumbhead" style="margin: -8px 0;"></a>
 					<ul class="menu-item">
+						<li><a href="company/'.$company['person']['username'].'/" class="ui" >Profile</a></li>
+						<li><a href="identities/" class="ui">Identities</a></li>
 						<li><a href="#/read/~/data/service=session&enc=get/ln/#login" class="launch">Sign Out</a></li>
+					</ul>
+				</li>
+			</ul>
+			<ul class="hover-menu vertical">
+				<li>
+					<a href="#" class="navigate" >T&P</a>
+					<ul class="menu-item">
+						<li><a href="calendar/'.$company['person']['username'].'/" class="ui">Campus Visits</a></li>
+						<li><a href="docs/TPR Executive User Manual.pdf" target="_blank" >Portal User Manual</a></li>
 					</ul>
 				</li>
 			</ul>';
 			
 			$PORTAL = 'company';
+		}
+		else {
+			$STATEMENU .=
+			'<ul class="hover-menu vertical">
+				<li>
+					<a href="#" class="navigate" >'.$memory['user'].'<img src="storage/public/thumbnails/person.png" alt="USER_THUMBNAIL" class="thumbhead" style="margin: -8px 0;"></a>
+					<ul class="menu-item">
+						<li><a href="#/view/#register/" class="navigate">Register</a></li>
+						<li><a href="#/view/#verify/" class="navigate">Verify</a></li>
+						<li><a href="#/read/~/data/service=session&enc=get/ln/#login" class="launch">Sign Out</a></li>
+					</ul>
+				</li>
+			</ul>
+			<ul class="hover-menu vertical">
+				<li>
+					<a href="#" class="navigate" >T&P</a>
+					<ul class="menu-item">
+						<li><a href="docs/TPR Executive User Manual.pdf" target="_blank" >Portal User Manual</a></li>
+					</ul>
+				</li>
+			</ul>';
+			
+			$SHTML.= file_get_contents('ui/html/login.html');
+			$PORTAL = 'register';
 		}
 	}
 	

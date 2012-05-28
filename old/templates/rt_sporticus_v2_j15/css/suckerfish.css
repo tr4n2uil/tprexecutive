@@ -1,0 +1,151 @@
+/*****************************
+ ****       suckerfish    ****
+ *****************************/
+
+#safari {
+	height: 28px;
+	position: relative;
+}
+
+#nav_suckerfish {
+	position: absolute;
+	top: 0;
+	height: 28px;
+	width: 100%;
+	background: url(../images/topmenu_bg.png) repeat-x
+}
+
+#nav_suckerfish a:link,
+#nav_suckerfish a:visited {
+	display: block;
+	float: left;
+	height: 28px;
+	line-height: 28px;
+	padding: 0 16px 0 14px;
+	text-decoration: none;
+	cursor: pointer;
+	background: url(../images/topmenu_sep.png) 100% 0 no-repeat;
+	font-weight: normal;
+	font-family: Arial Narrow, Helvetica, sans-serif;
+	font-size: 95%;
+	font-weight: bold;
+	color: #555;
+}
+
+#nav_suckerfish li a {
+	background: url(../images/topmenu_sep.png) 100% 0 no-repeat;
+}
+
+#nav_suckerfish a.topdaddy,
+#nav_suckerfish li.active a.topdaddy {
+	padding-right: 25px;
+	background: url(../images/topmenu_sep.png) 100% 0 no-repeat;
+}
+
+#nav_suckerfish li li a:link,
+#nav_suckerfish li li a:visited{
+	background: none;
+	font-weight: normal;
+	padding: 0;
+	text-indent: 15px;
+}
+
+
+#nav_suckerfish li li {
+	padding: 0;
+	background: none;
+	float: left;
+	padding: 0;
+    width: 170px;
+	border-bottom: 1px solid #CCC;
+	border-top: 1px solid #F8F8F8;
+}
+
+#nav_suckerfish ul ul a:link,
+#nav_suckerfish ul ul a:visited {
+	display: block;
+	text-decoration: none;
+	width: 167px;
+	text-transform: none;
+	background: none;
+}
+
+#nav_suckerfish li {
+	float: left;
+	padding: 0;
+  background: none;
+  height: 28px;
+}
+
+#nav_suckerfish ul li {
+	position: relative;
+}
+
+#nav_suckerfish li ul {
+	top: 28px;
+	position: absolute;
+	left: -999em;
+	height: auto;
+	width: 170px;
+	font-weight: normal;
+	border-width: 0;
+	margin: 0;
+	padding: 0;
+	border-right: 1px solid #CCC;
+	border-left: 1px solid #F8F8F8;;
+	border-bottom: 1px solid #CCC;
+}
+	
+#nav_suckerfish ul {
+	float: left;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+/* margin for pullouts */
+#nav_suckerfish li ul ul {
+	margin: -29px 0 0 170px;
+}
+
+#nav_suckerfish li:hover ul ul, 
+#nav_suckerfish li:hover ul ul ul,
+#nav_suckerfish li:hover ul ul ul ul,  
+#nav_suckerfish li.sfhover ul ul, 
+#nav_suckerfish li.sfhover ul ul ul, 
+#nav_suckerfish li.sfhover ul ul ul ul {
+	left: -999em;
+}
+
+#nav_suckerfish li:hover ul, 
+#nav_suckerfish li li:hover ul, 
+#nav_suckerfish li li li:hover ul, 
+#nav_suckerfish li li li li:hover ul,
+#nav_suckerfish li.sfhover ul, 
+#nav_suckerfish li li.sfhover ul, 
+#nav_suckerfish li li li.sfhover ul,
+#nav_suckerfish li li li li.sfhover ul {
+	z-index: 100;
+	left: 0;
+	background: #E1E1E1;
+}
+
+#nav_suckerfish li:hover, #nav_suckerfish li.sfhover {
+      left: 0;
+}
+
+#nav_suckerfish li li.active {
+	background: none;
+}
+
+#nav_suckerfish ul li a:hover,
+#nav_suckerfish ul li ul li a:hover,
+#nav_suckerfish ul li ul li ul li a:hover {
+	background: #F8F8F8;
+}
+
+#nav_suckerfish ul li.active,
+#nav_suckerfish ul li ul li.active,
+#nav_suckerfish ul li ul li ul li.active {
+	background: #F7F7F7;
+}

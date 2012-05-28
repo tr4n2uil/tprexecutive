@@ -42,7 +42,58 @@
 			</form>
 		</div>
 	</div>
-
+	
+	<div id="register" class="tile-content">
+		<p class="head">Register for TPO Portal Account</p>
+		<p class="subhead">Accounts registered with non @itbhu.ac.in emails shall require approval from TPR and will be suspended initially for security reasons.</p>
+		<div id="register-panel" class="panel">
+			<form action="register.php" method="post" id="_write:sel._register-panel">
+				<table class="formtable"><tbody>
+					<!--<tr><td>Name</td>
+					<td><input type="text" name="btname" class="required"  />
+					<span class="error hidden">Invalid Name</span></td></tr>-->
+					<tr><td>Roll No</td>
+					<td><input type="text" name="rollno" class="required" />
+					<span class="error hidden">Invalid Roll No</span></td></tr>
+					<tr><td>Passing Year</td>
+					<td><input type="text" name="year" class="required" />
+					<span class="error hidden">Invalid Year</span></td></tr>
+					<tr><td>Course</td>
+					<td><input type="radio" name="course" checked="checked" value="btech" /> B. Tech.
+					<input type="radio" name="course" value="idd" /> IDD
+					<input type="radio" name="course" value="imd" /> IMD
+					<input type="radio" name="course" value="mtech" /> M. Tech.
+					</td></tr>
+					<tr><td>Department</td>
+					<td><select name="dept">
+						<option value="cer" >Ceramic Engineering</option>
+						<option value="che" >Chemical Engineering</option>
+						<option value="civ" >Civil Engineering</option>
+						<option value="cse" >Computer Engineering</option>
+						<option value="eee" >Electrical Engineering</option>
+						<option value="ece" >Electronics Engineering</option>
+						<option value="mec" >Mechanical Engineering</option>
+						<option value="met" >Metallurgical Engineering</option>
+						<option value="min" >Mining Engineering</option>
+						<option value="phe" >Pharmaceuticals Engineering</option>
+						<option value="apc" >Applied Chemistry</option>
+						<option value="apm" >Applied Mathematics</option>
+						<option value="app" >Applied Physics</option>
+						<option value="bce" >Bio-Chemical Engineering</option>
+						<option value="bme" >Bio-Medical Engineering</option>
+						<option value="mst" >Material Science &amp; Technology</option>
+					</select></td></tr>
+					<tr><td></td><td>
+						<input name="submit" type="submit" value="Register" class="button"/>
+						<input type="hidden" name="navigator" value="{{if message.navigator}}${message.navigator}{{else}}${navigator}{{/if}}" />
+						<input type="reset" value="Reset" class="button"/>
+						<span class="status"></span>
+					</td></tr>
+				</tbody></table>
+			</form>
+		</div>
+	</div>
+	
 	<div id="apply-com" class="tile-content">
 		<p class="head">Apply for an IT BHU Training &amp; Placement Account</p>
 		<div id="signup-panel" class="panel">
@@ -199,7 +250,7 @@
 		
 		<p class="head">Verify your T&amp;P Profile Registration</p>
 		<div id="verify-panel" class="panel">
-			<form action="run.php" method="post" class="navigate" id="_write:sel._verify-panel">
+			<form action="run.php" method="post" class="navigate" id="_write:sel._verify-panel:ln._refresh">
 				<input type="hidden" name="service" value="verify" />
 				<table class="formtable"><tbody>
 				

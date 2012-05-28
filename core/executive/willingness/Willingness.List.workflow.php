@@ -59,12 +59,54 @@ class WillingnessListWorkflow implements Service {
 		}
 		else
 			$qry = "w.`visitid`=\${visitid} and w.`batch`='\${btname}'";
+			
+		$batchauth = array(
+			array(
+				'service' => 'transpera.relation.unique.workflow',
+				'args' => array('keyid'),
+				'conn' => 'exconn',
+				'relation' => '`students`',
+				'sqlprj' => '`stdid`',
+				'sqlcnd' => "where `owner`=\${keyid} and `ustatus`<>'0'",
+				'errormsg' => 'Unable to Authorize',
+				'successmsg' => 'Student information given successfully'
+			),
+			array(
+				'service' => 'cbcore.data.select.service',
+				'args' => array('result'),
+				'params' => array('result.0.stdid' => 'stdid')
+			),
+			array(
+				'service' => 'transpera.relation.unique.workflow',
+				'args' => array('stdid'),
+				'conn' => 'cbconn',
+				'relation' => '`chains`',
+				'sqlprj' => '`parent`',
+				'sqlcnd' => "where `type`='person' and `chainid`=\${stdid}",
+				'errormsg' => 'Unable to Authorize',
+				'successmsg' => 'Parent information given successfully'
+			),
+			array(
+				'service' => 'cbcore.data.select.service',
+				'args' => array('result'),
+				'params' => array('result.0.parent' => 'parent')
+			),
+			array(
+				'service' => 'transpera.relation.unique.workflow',
+				'args' => array('chainid', 'parent'),
+				'conn' => 'exconn',
+				'relation' => '`batches`',
+				'sqlcnd' => "where `batchid`=\${chainid} and `dept`=(select `dept` from `batches` where `batchid`=\${parent})",
+				'errormsg' => 'Unable to Authorize',
+				'successmsg' => 'Batch information given successfully'
+			),
+		);
 		
 		if($memory['me']){
 			$rel = '`willingnesses` w, `students` s, `visits` v';
 			$prj = 'w.`wlgsid`, w.`visitid`, w.`resume`, w.`status`, w.`approval`, w.`name`, w.`batch`, s.`stdid`, s.`username`, v.`comuser`, v.`comid`, v.`vtype`, v.`year`, v.`visitdate`, v.`package`';
 			$cnd = "where s.`stdid`=\${visitid} and w.`owner`=s.`owner` and v.`visitid`=w.`visitid` order by w.`wlgsid` desc";
-			$authcustom = false;
+			$authcustom = $batchauth;
 		}
 		elseif($memory['export']){
 			$rel = '`willingnesses` w, `students` s, `grades` g, `persons` p, `batches` b';
@@ -84,47 +126,7 @@ class WillingnessListWorkflow implements Service {
 			$rel = '`willingnesses` w, `students` s, `grades` g';
 			$prj = 'w.`wlgsid`, w.`visitid`, w.`resume`, w.`status`, w.`approval`, w.`name` as `wname`, w.`batch`, s.`stdid`, s.`username`, s.`name`, s.`email`, s.`rollno`, g.`cgpa`, g.`sscx`, g.`hscxii`';
 			$cnd = "where $qry and w.`owner`=s.`owner` and s.`grade`=g.`gradeid`";
-			$authcustom = array(
-				array(
-					'service' => 'transpera.relation.unique.workflow',
-					'args' => array('keyid'),
-					'conn' => 'exconn',
-					'relation' => '`students`',
-					'sqlprj' => '`stdid`',
-					'sqlcnd' => "where `owner`=\${keyid}",
-					'errormsg' => 'Unable to Authorize',
-					'successmsg' => 'Student information given successfully'
-				),
-				array(
-					'service' => 'cbcore.data.select.service',
-					'args' => array('result'),
-					'params' => array('result.0.stdid' => 'stdid')
-				),
-				array(
-					'service' => 'transpera.relation.unique.workflow',
-					'args' => array('stdid'),
-					'conn' => 'cbconn',
-					'relation' => '`chains`',
-					'sqlprj' => '`parent`',
-					'sqlcnd' => "where `type`='person' and `chainid`=\${stdid}",
-					'errormsg' => 'Unable to Authorize',
-					'successmsg' => 'Parent information given successfully'
-				),
-				array(
-					'service' => 'cbcore.data.select.service',
-					'args' => array('result'),
-					'params' => array('result.0.parent' => 'parent')
-				),
-				array(
-					'service' => 'transpera.relation.unique.workflow',
-					'args' => array('chainid', 'parent'),
-					'conn' => 'exconn',
-					'relation' => '`batches`',
-					'sqlcnd' => "where `batchid`=\${chainid} and `dept`=(select `dept` from `batches` where `batchid`=\${parent})",
-					'errormsg' => 'Unable to Authorize',
-					'successmsg' => 'Batch information given successfully'
-				),
-			);
+			$authcustom = $batchauth;
 		}
 		
 		$workflow = array(

@@ -48,6 +48,7 @@ class VisitListWorkflow implements Service {
 	public function run($memory){
 		$memory['portalid'] = $memory['portalid'] ? $memory['portalid'] : $memory['id'];
 		$memory['plname'] = $memory['plname'] ? $memory['plname'] : $memory['name'];
+		$authcustom = false;
 		
 		$args = $esc = array();
 		if($memory['filter']){
@@ -67,6 +68,7 @@ class VisitListWorkflow implements Service {
 					$qry .= "and `comuser`='\${comuser}'";
 					array_push($args, 'comuser');
 					array_push($esc, 'comuser');
+					$authcustom = true;
 				}
 			}
 			elseif(is_numeric($memory['filter'])){
@@ -88,6 +90,7 @@ class VisitListWorkflow implements Service {
 					$qry .= "and `comuser`='\${comuser}'";
 					array_push($args, 'comuser');
 					array_push($esc, 'comuser');
+					$authcustom = true;
 				}
 			}
 			else {
@@ -96,11 +99,24 @@ class VisitListWorkflow implements Service {
 				$qry = "and `comuser`='\${comuser}'";
 				array_push($args, 'comuser');
 				array_push($esc, 'comuser');
+				$authcustom = true;
 			}
 		}
 		else {
 			$memory['vtype'] = false;
 		}
+		
+		$comauth = array(
+		array(
+			'service' => 'transpera.relation.unique.workflow',
+			'args' => array('keyid'),
+			'conn' => 'exconn',
+			'relation' => '`companies`',
+			'sqlprj' => '`comid`',
+			'sqlcnd' => "where `owner`=\${keyid} and `username`='".$memory['comuser']."'",
+			'errormsg' => 'Unable to Authorize',
+			'successmsg' => 'Company information given successfully'
+		));
 		
 		$service = array(
 			'service' => 'transpera.entity.list.workflow',
@@ -109,7 +125,7 @@ class VisitListWorkflow implements Service {
 			'conn' => 'exconn',
 			'relation' => '`visits`',
 			'type' => 'visit',
-			'sqlprj' => '`visitid`, `vstname`, `files`, `shortlist`, `vtype`, `year`, `comid`, `comuser`, `package`, `visitdate`, UNIX_TIMESTAMP(`deadline`)*1000 as `deadline_ts`, `deadline`, (select c.`name` from `companies` c where c.`comid`=`comid`) as `comname`, `cer`, `che`, `civ`, `cse`, `eee`, `ece`, `mec`, `met`, `min`, `phe`, `apc`, `apm`, `app`, `bce`, `bme`, `mst`',
+			'sqlprj' => '`visitid`, `vstname`, `files`, `shortlist`, `vtype`, `year`, `comid`, `comuser`, `package`, `visitdate`, UNIX_TIMESTAMP(`deadline`)*1000 as `deadline_ts`, `deadline`, (select c.`name` from `companies` c where c.`comid`=`visits`.`comid`) as `comname`, `cer`, `che`, `civ`, `cse`, `eee`, `ece`, `mec`, `met`, `min`, `phe`, `apc`, `apm`, `app`, `bce`, `bme`, `mst`',
 			'sqlcnd' => "where `visitid` in \${list} $qry order by `visitdate` desc, `vtype` desc, `visitid` desc",
 			'escparam' => $esc,
 			'successmsg' => 'Visits information given successfully',
@@ -117,7 +133,8 @@ class VisitListWorkflow implements Service {
 			'output' => array('entities' => 'visits'),
 			'mapkey' => 'visitid',
 			'mapname' => 'visit',
-			'saction' => 'add'
+			'saction' => 'add',
+			'authcustom' => $authcustom ? $comauth : false
 		);
 		
 		$memory = Snowblozm::run($service, $memory);

@@ -38,6 +38,9 @@ class StudentRemoveWorkflow implements Service {
 			'service' => 'executive.student.info.workflow'
 		),
 		array(
+			'service' => 'executive.student.approve.workflow'
+		),
+		array(
 			'service' => 'people.person.remove.workflow',
 			'input' => array('pnid' => 'stdid', 'peopleid' => 'batchid')
 		),

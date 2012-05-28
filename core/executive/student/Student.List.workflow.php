@@ -59,6 +59,7 @@ class StudentListWorkflow implements Service {
 			'type' => 'person',
 			'successmsg' => 'Students information given successfully',
 			'output' => array('entities' => 'students'),
+			'istate' => false, 
 			'mapkey' => 'stdid',
 			'mapname' => 'student'
 		);

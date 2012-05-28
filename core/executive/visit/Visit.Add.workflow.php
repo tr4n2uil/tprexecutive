@@ -92,6 +92,7 @@ class VisitAddWorkflow implements Service {
 			'conn' => 'exconn',
 			'relation' => '`visits`',
 			'type' => 'visit',
+			'authorize' => 'edit:add:remove:',
 			'sqlcnd' => "(`visitid`, `owner`, `comid`, `comuser`, `vstname`, `year`, `vtype`, `package`, `visitdate`, `deadline`, `files`, `shortlist`, `cer`, `che`, `civ`, `cse`, `eee`, `ece`, `mec`, `met`, `min`, `phe`, `apc`, `apm`, `app`, `bce`, `bme`, `mst`) values (\${id}, \${owner}, \${comid}, '\${comuser}', '\${vstname}', '\${year}', '\${vtype}', '\${package}', '\${visitdate}', '\${deadline}', \${files}, \${shortlist}, '\${cer}', '\${che}', '\${civ}', '\${cse}', '\${eee}', '\${ece}', '\${mec}', '\${met}', '\${min}', '\${phe}', '\${apc}', '\${apm}', '\${app}', '\${bce}', '\${bme}', '\${mst}')",
 			'escparam' => array('vstname', 'year', 'vtype', 'package', 'visitdate', 'deadline', 'comuser', 'cer', 'che', 'civ', 'cse', 'eee', 'ece', 'mec', 'met', 'min', 'phe', 'apc', 'apm', 'app', 'bce', 'bme', 'mst'),
 			'successmsg' => 'Visit added successfully',
@@ -101,11 +102,17 @@ class VisitAddWorkflow implements Service {
 					'name' => $memory['year'].'-'.$memory['vtype'].'-'.$memory['visitdate'],
 					'path' => 'storage/private/folders/'.$memory['comuser'].'/'.$memory['year'].'-'.$memory['vtype'].'-'.$memory['visitdate'].'/',
 					'input' => array('stgid' => 'comid', 'owner' => 'comowner'),
+					'authorize' => 'add:remove:edit:grlist',
+					'grlevel' => -2,
+					'grroot' => STUDENT_PORTAL_ID,
 					'output' => array('dirid' => 'files')
 				),
 				array(
 					'service' => 'transpera.reference.add.workflow',
 					'type' => 'shortlist',
+					'authorize' => 'add:remove:edit:grlist',
+					'grlevel' => -2,
+					'grroot' => STUDENT_PORTAL_ID,
 					'input' => array('owner' => 'comowner'),
 					'output' => array('id' => 'shortlist')
 				)

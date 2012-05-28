@@ -25,7 +25,7 @@
 				<tr class="mainstrip">
 					<td rowspan="3" class="itbhu-logo"><img src="ui/img/executive/itbhu.png" /></td>
 					<td class="mainbar">
-						<p class="iitbhu fleft">Indian Institute of Technology BHU Varanasi</p>
+						<p class="iitbhu fleft">Institute of Technology BHU Varanasi</p>
 						<div class="statemenu fright">
 							<?php echo $STATEMENU; ?>
 						</div>
@@ -49,7 +49,7 @@
 								<a href="">Home</a>
 							</li>
 							<li>
-								<a href="info/why-at-itbhu/" class="ui">Why @ IT BHU ?</a>
+								<a href="info/why-at-itbhu/" class="ui">Why Recruit @ IT BHU ?</a>
 								<ul class="menu-item">
 									<li><a href="info/why-at-itbhu/#!/view/#adv-itbhu/" class="ui">IT BHU Advantage</a></li>
 									<li><a href="info/why-at-itbhu/#!/view/#adv-alumni/" class="ui">Alumni</a></li>
@@ -65,12 +65,12 @@
 								</ul>
 							</li>
 							<li>
-								<a href="info/companies/" class="ui">Companies</a>
+								<a href="info/placements/" class="ui">Placements</a>
 								<ul class="menu-item">
-									<li><a href="info/companies/#!/view/#com-procedure/" class="ui">Procedure</a></li>
-									<li><a href="info/companies/#!/view/#com-facilities/" class="ui">Facilities</a></li>
-									<li><a href="info/companies/#!/view/#com-recruiters/" class="ui">Past Recruiters</a></li>
-									<li><a href="info/companies/#!/view/#com-policy/" class="ui">Training &amp; Placement Policy</a></li>
+									<li><a href="info/placements/#!/view/#tnp-procedure/" class="ui">Procedure</a></li>
+									<li><a href="info/placements/#!/view/#tnp-facilities/" class="ui">Facilities</a></li>
+									<li><a href="info/placements/#!/view/#tnp-recruiters/" class="ui">Past Recruiters</a></li>
+									<li><a href="info/placements/#!/view/#tnp-policy/" class="ui">Training &amp; Placement Policy</a></li>
 									<li><a href="info/forms/#!/view/#response-sheet/" class="ui">Company Response Sheet</a></li>
 									<li><a href="storage/public/downloads/IT-BHU_Placement_Brochure_2010-11.pdf" class="" target="_blank">IT BHU Placement Brochure</a></li>
 								</ul>

@@ -46,6 +46,7 @@ class StudentUpdateWorkflow implements Service {
 		array(
 			'service' => 'transpera.reference.authorize.workflow',
 			'input' => array('id' => 'stdid'),
+			'aistate' => false,
 			'init' => false
 		),
 		array(

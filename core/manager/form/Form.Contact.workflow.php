@@ -45,28 +45,19 @@ class FormContactWorkflow implements Service {
 		$memory['mailto'] = $mailto['contact'].','.$memory['cntemail'];
 		//}
 		
-		$memory['body'] = '<h2>Contact Us Message</h2>
-		<style type="text/css">
-		ul { margin: 0; padding: 0; }
-		table td { vertical-align: top; padding: 5px; }
-		</style>
-		<table class="formtable thovered"><tbody>
-			<tr><td>Name</td><td>'.$memory['name'].'</td></tr>
-			<tr><td>Email</td><td>'.$memory['cntemail'].'</td></tr>
-			<tr><td>Phone</td><td>'.$memory['cntphone'].'</td></tr>
-			
-			<tr><td colspan="2" class="section">
-			<h3>Message</h3>
-			<td></tr>
-			<tr><td></td><td>'.$memory['body'].'</td></tr>
-	
-			</tbody></table>
-		<br />
-		<br />
-		--<br />
-		TPO Portal Online Forms<br />
-		IT BHU Training &amp; Placement Cell
-		';
+		$memory['body'] = 'Contact Us Message
+
+Name		'.$memory['name'].'
+Email		'.$memory['cntemail'].'
+Phone		'.$memory['cntphone'].'
+
+Message
+
+'.$memory['body'].'
+		
+--
+TPO Portal Online Forms
+IT BHU Training and Placement Cell';
 		
 		$workflow = array(
 		array(

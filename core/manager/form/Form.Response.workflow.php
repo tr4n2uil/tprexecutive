@@ -60,87 +60,53 @@ class FormResponseWorkflow implements Service {
 		$memory['mailto'] = $mailto['response'].','.$memory['compsnemail'];
 		//}
 		
-		$memory['body'] = '<h2>Company Response Sheet Submission</h2>
-		<style type="text/css">
-		ul { margin: 0; padding: 0; }
-		table td { vertical-align: top; padding: 5px; }
-		</style>
-		<table class="formtable thovered"><tbody>
-			<tr><td colspan="2" class="section">
-			<h3>Basic Information</h3>
-			<td></tr>
-			<tr><td>Name of the Company</td><td>'.$memory['name'].'</td></tr>
-			<tr><td>Type</td><td>'.$memory['regtype'].'</td></tr>
-			<tr><td>Industry Sector(s)</td><td><ul>';
-		
-		foreach($memory['indsector'] as $data)	$memory['body'] .= "<li>$data</li>";
+		$memory['body'] = 'Company Response Sheet Submission
+
+Basic Information
+	
+	Name of the Company : '.$memory['name'].'
+	Type : '.$memory['regtype'].'
+	Industry Sector(s) : '.implode(', ', $memory['indsector']).'
+	Requirement(s) in terms of Functional Areas : '.implode(', ', $memory['funreq']).'
+	Vision and Interests : '.$memory['motto'].'
+			
+Contact Person from Organization
+
+	Name : '.$memory['compsnname'].'
+	Designation : '.$memory['compsnpost'].'
+	Email : '.$memory['compsnemail'].'
+	Phone : '.$memory['compsnphone'].'
+			
+Shortlisting Cliteria
+	
+	CGPA (on 10 point scale) : '.$memory['sccgpa'].'
+	Age Limits (if any) : '.$memory['scagelimit'].'
+			
+Selection Process
+	
+	Test(s) : '.implode(', ', $memory['seltest']).'
+	Group Discussion : '.$memory['selgd'].'
+	Personal Interview(s) : '.implode(', ', $memory['selinterview']).'
+	Service Agreement (if any) : '.$memory['selagrmnt'].'
+	Training Period (if any) : '.$memory['seltrprd'].'
+			
+Students\' Profile and Your Tentative Requirement (expected, not necessarily committed)
+	
+';
+		foreach($memory['reqmnt'] as $data)	$memory['body'] .= "\t\t$data\n";
 			
 		$memory['body'] .= '
-			</ul></td></tr>
-			<tr><td>Requirement(s) in terms of Functional Areas</td><td><ol>';
-		
-		foreach($memory['funreq'] as $data)	$memory['body'] .= "<li>$data</li>";
-		
-		$memory['body'] .= '
-			</ol></td></tr>
-			<tr><td>Vision &amp; Interests</td><td>'.$memory['motto'].'</td></tr>
+Total Emoluments
 			
-			<tr><td colspan="2" class="section">
-			<h3>Contact Person from Organization</h3>
-			<td></tr>
-			<tr><td>Name</td><td>'.$memory['compsnname'].'</td></tr>
-			<tr><td>Designation</td><td>'.$memory['compsnpost'].'</td></tr>
-			<tr><td>Email</td><td>'.$memory['compsnemail'].'</td></tr>
-			<tr><td>Phone</td><td>'.$memory['compsnphone'].'</td></tr>
-			
-			<tr><td colspan="2" class="section">
-			<h3>Shortlisting Cliteria</h3>
-			<td></tr>
-			<tr><td>CGPA (on 10 point scale)</td><td>'.$memory['sccgpa'].'</td></tr>
-			<tr><td>Age Limits (if any)</td><td>'.$memory['scagelimit'].'</td></tr>			
-			
-			<tr><td colspan="2" class="section">
-			<h3>Selection Process</h3>
-			<td></tr>
-			<tr><td>Test(s)</td><td><ul>';
-			
-		foreach($memory['seltest'] as $data)	$memory['body'] .= "<li>$data</li>";
-		
-		$memory['body'] .= '
-			</ul></td></tr>
-			<tr><td>Group Discussion</td><td>'.$memory['selgd'].'</td></tr>
-			<tr><td>Personal Interview(s)</td><td><ul>';
-			
-		foreach($memory['selinterview'] as $data)	$memory['body'] .= "<li>$data</li>";
-		
-		$memory['body'] .= '
-			</ul></td></tr>
-			<tr><td>Service Agreement (if any)</td><td>'.$memory['selagrmnt'].'</td></tr>
-			<tr><td>Training Period (if any)</td><td>'.$memory['seltrprd'].'</td></tr>
-			
-			<tr><td colspan="2" class="section">
-			<h3>Students\' Profile and Your Tentative Requirement</h3><p class="desc">(expected, not necessarily committed)</p>
-			<td></tr>
-			<tr><td>Selections</td><td><ul>';
-			
-		foreach($memory['reqmnt'] as $data)	$memory['body'] .= "<li>$data</li>";
-			
-		$memory['body'] .= '
-			</ul></td></tr>
-			
-			<tr><td colspan="2" class="section">
-			<h3>Total Emoluments</h3>
-			<td></tr>
-			<tr><td>CTC</td><td>'.$memory['tectc'].'</td></tr>
-			<tr><td>In Hand</td><td>'.$memory['teinhand'].'</td></tr>
-			
-			</tbody></table>
-		<br />
-		<br />
-		--<br />
-		TPO Portal Online Forms<br />
-		IT BHU Training &amp; Placement Cell
-		';
+	CTC : '.$memory['tectc'].'
+	In Hand : '.$memory['teinhand'].'
+
+(End of Response Sheet)
+
+--
+TPO Portal Online Forms
+IT BHU Training and Placement Cell
+';
 		
 		$workflow = array(
 		array(

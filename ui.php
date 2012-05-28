@@ -22,7 +22,7 @@
 	/**
 	 *	@invoke Read response
 	**/
-	$message = $memory['response']['message'];
+	$message = $memory['valid'] ? $memory['response']['message'] : array();
 	if($memory['valid'] && $message['service'] == 'invoke.interface.console.workflow'){
 		$TILES_0 .= $message['tiles'];
 		$HTML .= $message['html'];
@@ -63,7 +63,7 @@
 		 *	@role Administrator
 		**/
 		if(in_array($memory['user'], array(
-			'tpo.iitbhu', 
+			'tpo.itbhu', 
 			'web.tpo', 
 			'vibhaj'
 		))){

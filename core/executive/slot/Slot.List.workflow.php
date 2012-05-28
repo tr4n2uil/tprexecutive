@@ -68,7 +68,7 @@ class SlotListWorkflow implements Service {
 					'conn' => 'exconn',
 					'relation' => '`students`',
 					'sqlprj' => '`stdid`',
-					'sqlcnd' => "where `owner`=\${keyid}",
+					'sqlcnd' => "where `owner`=\${keyid} and `ustatus`<>'0'",
 					'errormsg' => 'Unable to Authorize',
 					'successmsg' => 'Student information given successfully'
 				),

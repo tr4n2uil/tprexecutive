@@ -8,6 +8,7 @@
 	/**
 	 *	@mail People.person.send
 	**/
+	define('PERSON_SEND_ADMIN_EMAIL', ', tpo@itbhu.ac.in, vibhaj.itbhu@gmail.com');
 	define('PERSON_SEND_MAIL_BODY', 'Hi,
 	<br />
 	<p>Your Training and Placement Registration was successful.</p>
@@ -53,6 +54,7 @@
 	/**
 	 *	@sms People.person.send
 	**/
+	define('PERSON_SEND_ADMIN_PHONE', ', 9235312784');
 	define('PERSON_SEND_SMS_BODY', '');
 	define('PERSON_SEND_SMS_FROM', 'TPO');
 

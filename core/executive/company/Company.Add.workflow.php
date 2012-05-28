@@ -66,14 +66,17 @@ class CompanyAddWorkflow implements Service {
 			'name' => 'storage/private/folders/'.$memory['username'].'/',
 			'path' => 'storage/private/folders/'.$memory['username'].'/',
 			'input' => array('stgid' => 'portalid', 'user' => 'username'),
+			'authorize' => 'add:remove:edit:grlist',
+			'grlevel' => -2,
+			'grroot' => STUDENT_PORTAL_ID,
 			'output' => array('dirid' => 'folder')
 		),
 		array(
 			'service' => 'transpera.relation.insert.workflow',
-			'args' => array('pnid', 'owner', 'username', 'name', 'email', 'folder', 'notes'),
+			'args' => array('pnid', 'owner', 'username', 'name', 'folder', 'notes'),
 			'conn' => 'exconn',
 			'relation' => '`companies`',
-			'sqlcnd' => "(`comid`,`owner`, `username`, `name`, `email`, `folder`, `notes`) values (\${pnid}, \${owner}, '\${username}', '\${name}', '\${email}', \${folder}, \${notes})",
+			'sqlcnd' => "(`comid`,`owner`, `username`, `name`,  `folder`, `notes`) values (\${pnid}, \${owner}, '\${username}', '\${name}', \${folder}, \${notes})",
 			'escparam' => array('username', 'name', 'email'),
 			'output' => array('id' => 'comid')
 		));

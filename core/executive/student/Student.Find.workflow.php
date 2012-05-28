@@ -58,7 +58,7 @@ class StudentFindWorkflow implements Service {
 			'args' => array('pnid'),
 			'conn' => 'exconn',
 			'relation' => '`students`',
-			'sqlprj' => '`stdid`, `owner`, `username`, `name`, `rollno`, `interests`, `resume`, `home`, `grade`',
+			'sqlprj' => '`stdid`, `owner`, `username`, `name`, `rollno`, `interests`, `resume`, `home`, `grade`, `ustatus`',
 			'sqlcnd' => "where `stdid`=\${pnid}",
 			'errormsg' => 'Invalid Student',
 			'successmsg' => 'Student information given successfully'

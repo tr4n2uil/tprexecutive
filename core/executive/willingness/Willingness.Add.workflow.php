@@ -34,7 +34,7 @@ class WillingnessAddWorkflow implements Service {
 	public function input(){
 		return array(
 			'required' => array('keyid', 'user', 'username', 'name', 'visitid', 'btname'),
-			'optional' => array('batchid' => 0, 'btname' => '', 'level' => false, 'owner' => false)
+			'optional' => array('batchid' => 0, 'btname' => '', 'level' => 2, 'owner' => false)
 		);
 	}
 	
