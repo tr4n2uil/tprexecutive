@@ -1,6 +1,8 @@
 @echo off
 type styles\*.css > ..\ui\css\executive-ui.css
-type ..\ui\js\jquery-1.6.1.min.js ..\ui\js\jquery.tmpl.min.js ..\ui\js\jquery.cookie.js ..\ui\js\json2.js ..\ui\js\jquery.expander.js ..\..\services\snowblozm\js\Snowblozm.class.js ..\..\services\firespark\jquery\dev\jquery-firespark.js init.js helpers\*.js workflows\*.js > ..\ui\js\executive-ui.js
+type ..\..\services\firespark\jquery\dev\jquery-firespark.js > ..\ui\js\jquery-firespark.js
+type ..\..\services\firespark\jquery\dev\jquery-firespark.min.js > ..\ui\js\jquery-firespark.min.js
+type init.js helpers\*.js workflows\*.js > ..\ui\js\executive-ui.js
 type ..\..\services\cirrusbolt\php\swiftblaze\invoke\interface\console.html > ..\ui\tpl\interface\console.tpl.html
 type ..\..\services\cirrusbolt\php\thundersky\display\post\menu.html > ..\ui\tpl\display\menu.tpl.html
 type ..\..\services\cirrusbolt\php\thundersky\display\post\pagination.html > ..\ui\tpl\display\pagination.tpl.html

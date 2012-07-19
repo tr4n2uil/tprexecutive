@@ -54,6 +54,7 @@
 	define('FORUM_ID', 33);
 	define('FORUM_MAIL_SUBJECT_PREFIX', '[TPO Portal Discussion Alerts]');
 	define('FORUM_MAIL_BODY_SIGNATURE', 'TPO Portal Alerts<br />http://itbhu.org.in/tpo/');
+	define('CURRENT_YEAR', 2013);
 	
 	date_default_timezone_set('Asia/Kolkata');
 	

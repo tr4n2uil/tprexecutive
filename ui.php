@@ -60,6 +60,16 @@
 	if($memory['user'] && !$EMERGENCY){
 	
 		/**
+		 *	@state Menu & Profile
+		**/
+		require_once('ui/php/statemenu.php');	
+		
+		$TILES_0 .= file_get_contents('ui/html/info/portal-'.$PORTAL.'.tile.html');
+		//$HTML .= file_get_contents('ui/html/info/portal.html');
+		
+		$TILES_0 .= file_get_contents('ui/html/downloads.tile.html');
+		
+		/**
 		 *	@role Administrator
 		**/
 		if(in_array($memory['user'], array(
@@ -71,24 +81,15 @@
 			//$STATEMENU .= file_get_contents('ui/html/admin.tile.html');
 		}
 		
-		/**
-		 *	@state Menu & Profile
-		**/
-		require_once('ui/php/statemenu.php');	
-		
 		if($TPR){
 			$TILES_0 .= file_get_contents('ui/html/info/tpr.tile.html');
 		}
-		
-		$TILES_0 .= file_get_contents('ui/html/info/portal-'.$PORTAL.'.tile.html');
-		//$HTML .= file_get_contents('ui/html/info/portal.html');
 	}
 	else {
+		$TILES_0 .= file_get_contents('ui/html/downloads.tile.html');
 		$STATEMENU .= file_get_contents('ui/html/login.tile.html');
 		$SHTML.= file_get_contents('ui/html/login.html');
 	}
-
-	$TILES_0 .= file_get_contents('ui/html/downloads.tile.html');
 		
 	//$TILES_1 .= file_get_contents('ui/html/portal.tile.html');
 	

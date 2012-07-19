@@ -24,8 +24,8 @@
 		),
 		'eee' => array(
 			'btech' => array(25, 25, 25, 25, 26, 26, 25, 25),
-			'idd' => array(),
-			'mtech' => array()
+			'idd' => array(25, 25, 25, 26, 26, 24, 25, 28, 24, 16)
+			'mtech' => array(17, 18, 10, 15)
 		),
 		'ece' => array(
 			'btech' => array(25, 25, 26, 24, 24, 24, 23, 24),

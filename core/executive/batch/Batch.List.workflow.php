@@ -37,8 +37,8 @@ class BatchListWorkflow implements Service {
 	public function input(){
 		return array(
 			'required' => array('keyid'),
-			'optional' => array('user' => '', 'portalid' => false, 'id' => STUDENT_PORTAL_ID, 'plname' => false, 'name' => 'IT BHU', 'pgsz' => false, 'pgno' => 0, 'total' => false, 'padmin' => true, 'filter' => false, 'year' => false),
-			'set' => array('filter', 'year', 'id', 'name')
+			'optional' => array('user' => '', 'portalid' => false, 'id' => STUDENT_PORTAL_ID, 'plname' => false, 'name' => 'IIT (BHU) Varanasi', 'pgsz' => false, 'pgno' => 0, 'total' => false, 'padmin' => true, 'filter' => false, 'year' => false, 'course' => false, 'export' => false, 'archive' => false),
+			'set' => array('filter', 'year', 'course', 'id', 'name')
 		);
 	}
 	
@@ -48,58 +48,147 @@ class BatchListWorkflow implements Service {
 	public function run($memory){
 		$memory['portalid'] = $memory['portalid'] ? $memory['portalid'] : $memory['id'];
 		$memory['plname'] = $memory['plname'] ? $memory['plname'] : $memory['name'];
+		$memory['dept'] = false;
 		
 		$args = $esc = array();
 		$qry = '';
 		if($memory['filter']){
 			if(is_numeric($memory['filter'])){
-				$memory['year'] = $memory['filter'];
 				$memory['dept'] = false;
-				$qry = "and `year`=\${year}";
+				if(in_array($memory['year'], array('cer', 'che', 'civ', 'cse', 'eee', 'ece', 'mec', 'met', 'min', 'phe', 'apc', 'apm', 'app', 'bce', 'bme', 'mst'))){
+					$memory['dept'] = $memory['year'];
+					$qry .= "and b.`dept`='\${dept}' ";
+					array_push($args, 'dept');
+					array_push($esc, 'dept');
+				}
+				elseif(in_array($memory['year'], array('btech', 'idd', 'mtech'))){
+					$memory['course'] = $memory['year'];
+					$qry .= "and b.`course`='\${course}' ";
+					array_push($args, 'course');
+					array_push($esc, 'course');
+				}
+				
+				$memory['year'] = $memory['filter'];
+				$qry .= "and b.`year`=\${year} ";
 				array_push($args, 'year');
+				
+				if(in_array($memory['course'], array('btech', 'idd', 'mtech'))){
+					$memory['course'] = $memory['course'];
+					$qry .= "and b.`course`='\${course}' ";
+					array_push($args, 'course');
+					array_push($esc, 'course');
+				}
 			}
 			elseif(in_array($memory['filter'], array('cer', 'che', 'civ', 'cse', 'eee', 'ece', 'mec', 'met', 'min', 'phe', 'apc', 'apm', 'app', 'bce', 'bme', 'mst'))){
 				$memory['dept'] = $memory['filter'];
-				$qry = "and `dept`='\${dept}'";
+				$qry = "and b.`dept`='\${dept}' ";
 				array_push($args, 'dept');
 				array_push($esc, 'dept');
 				
-				if($memory['year']){
-					$qry .= " and `year`=\${year}";
+				if(in_array($memory['year'], array('btech', 'idd', 'mtech'))){
+					$memory['course'] = $memory['year'];
+					$memory['year'] = false;
+					$qry .= "and b.`course`='\${course}' ";
+					array_push($args, 'course');
+					array_push($esc, 'course');
+				}
+				elseif(is_numeric($memory['year'])){
+					$qry .= " and b.`year`=\${year} ";
 					array_push($args, 'year');
 				}
 			}
+			elseif(in_array($memory['filter'], array('btech', 'idd', 'mtech'))){
+				$memory['course'] = $memory['filter'];
+				$qry .= "and b.`course`='\${course}' ";
+				array_push($args, 'course');
+				array_push($esc, 'course');
+			}
 		}
 		else {
-			$memory['dept'] = false;
+			$qry .= " and false";
 		}
 		
-		$service = array(
+		$name = 'Students-'.$memory['year'].'-'.$memory['dept'].'-'.$memory['course'].'.'.$memory['user'];
+		
+		if($memory['export']){
+			$rel = '`students` s, `grades` g, `slots` t, `persons` p, `batches` b';
+			$prj = "s.`name`, s.`rollno`, 
+			(case b.`course` when 'btech' then 'B Tech' when 'idd' then 'IDD / IMD' when 'mtech' then 'M Tech' else '' end) as `course`, 
+			(case b.`dept` when 'cer' then 'Ceramic Engineering' when 'che' then 'Chemical Engineering' when 'civ' then 'Civil Engineering' when 'cse' then 'Computer Engineering' when 'eee' then 'Electrical Engineering' when 'ece' then 'Electronics Engineering' when 'mec' then 'Mechanical Engineering' when 'met' then 'Metallurgical Engineering' when 'min' then 'Mining Engineering' when 'phe' then 'Pharmaceutical Engineering' when 'apc' then 'Applied Chemistry' when 'apm' then 'Applied Mathematics' when 'app' then 'Applied Physics' when 'bce' then 'Bio-Chemical Engineering' when 'bme' then 'Bio-Medical Engineering' when 'mst' then 'Material Science & Technology' else '' end) as `dept`, b.`year`, s.`email`, p.`phone`, p.`address`, s.`resphone`, s.`resaddress`, p.`dateofbirth`, p.`gender`, s.`category`, s.`language`, s.`father`, s.`foccupation`, s.`mother`, s.`moccupation`, g.`cgpa`, g.`sscx`, g.`sscyear`, g.`hscxii`, g.`hscyear`, g.`jee`, g.`gate`, s.`graddetails`, g.`sgpa1`, g.`sgpa2`, g.`sgpa3`, g.`sgpa4`, g.`sgpa5`, g.`sgpa6`, g.`sgpa7`, g.`sgpa8`, g.`sgpa9`, g.`sgpa10`, g.`ygpa1`, g.`ygpa2`, g.`ygpa3`, g.`ygpa4`, g.`ygpa5`, t.`mr`, t.`ordinary`, t.`dream`, t.`super`";
+			$cnd = "where b.`batchid` in \${list} $qry and s.`batchid`=b.`batchid` and s.`grade`=g.`gradeid` and s.`slot`=t.`slotid` and p.`pnid`=s.`stdid` order by b.`year` desc, b.`dept` asc, b.`course` asc, s.`ustatus` asc, s.`rollno` asc";
+		}
+		elseif($memory['archive']){
+			$rel = '`students` s, `batches` b, `directories` d, `files` f';
+			$prj = "concat(s.`name`, ' [', s.`rollno`, '].pdf') as `asname`, d.`path` as `filepath`, f.`filename`, s.`resume` as `fresume`";
+			$cnd = "where b.`batchid` in \${list} $qry and s.`batchid`=b.`batchid` and f.`fileid`=s.`resume` and d.`dirid`=b.`resumes`";
+		}
+		else {
+			$rel = '`batches` b';
+			$prj = "b.`batchid`, b.`btname`, b.`resumes`, b.`notes`, b.`dept`, b.`course`,b.`year`";
+			$cnd = "where b.`batchid` in \${list} $qry order by b.`year` desc, b.`dept` asc, b.`course` asc";
+		}
+		
+		$workflow = array(
+		array(
 			'service' => 'transpera.entity.list.workflow',
 			'input' => array('id' => 'portalid', 'pname' => 'plname'),
 			'args' => $args,
 			'conn' => 'exconn',
-			'relation' => '`batches`',
+			'relation' => $rel,
 			'type' => 'batch',
-			'sqlprj' => "`batchid`, `btname`, `resumes`, `notes`, `dept`, `course`,`year`",
-			'sqlcnd' => "where `batchid` in \${list} $qry order by `year` desc, `dept` asc, `course` asc",
+			'sqlprj' => $prj,
+			'sqlcnd' => $cnd,
 			'escparam' => $esc,
 			'successmsg' => 'Batches information given successfully',
 			//'lsttrack' => true,
 			'output' => array('entities' => 'batches'),
+			'ismap' => !$memory['export'] && !$memory['archive'],
+			'action' => $memory['export'] || $memory['archive'] ? 'add' : 'list',
 			'mapkey' => 'batchid',
 			'mapname' => 'batch',
 			'saction' => 'add'
-		);
+		));
 		
-		return Snowblozm::run($service, $memory);
+		if($memory['export']){
+			array_push($workflow, array(
+				'service' => 'cbcore.data.export.service',
+				'input' => array('data' => 'batches'),
+				'type' => 'csv',
+				'default' => "Student Name,Roll No,Course,Department,Year of Passing,Email,Phone,Address (Current),Phone (Residential),Address (Permanent),Date of Birth,Gender,Category,Mother Tongue,Father's Name,Occupation,Mother's Name,Occupation,CGPA,X %,X Year of Passing,XII %,XII Year of Passing,JEE AIR, GATE AIR,Graduation Details,SGPA I,SGPA II,SGPA III,SGPA IV,SGPA V,SGPA VI,SGPA VII,SGPA VIII,SGPA IX,SGPA X,YGPA I,YGPA II,YGPA III,YGPA IV,YGPA V,MR Slot,Ordinary Slot,Dream Slot,Super Dream Slot\r\n",
+				'filename' => $name.'.csv',
+				'output' => array('result' => 'csv')
+			),
+			array(
+				'service' => 'storage.file.download.service',
+				'filepath' => 'storage/private/exports/',
+				'filename' => $name.'.csv',
+				'mime' => 'application/vnd.ms-excel'
+			));
+		}
+		
+		if($memory['archive']){
+			array_push($workflow, array(
+				'service' => 'storage.file.archive.service',
+				'input' => array('filelist' => 'batches'),
+				'directory' => 'storage/private/exports/',
+				'filename' => $name.'.zip',
+			),
+			array(
+				'service' => 'storage.file.download.service',
+				'filepath' => 'storage/private/exports/',
+				'filename' => $name.'.zip',
+				'mime' => 'application/zip'
+			));
+		}
+		
+		return Snowblozm::execute($workflow, $memory);
 	}
 	
 	/**
 	 *	@interface Service
 	**/
 	public function output(){
-		return array('batches', 'id', 'portalid', 'plname', 'admin', 'padmin', 'pchain', 'total', 'pgno', 'pgsz', 'dept', 'year');
+		return array('batches', 'id', 'portalid', 'plname', 'admin', 'padmin', 'pchain', 'total', 'pgno', 'pgsz', 'dept', 'year', 'course');
 	}
 	
 }

@@ -11,6 +11,10 @@ require_once(EXGPACONF);
  *	@param password string Key password [memory]
  *	@param sscx float Xth Percentage [memory] optional default 0.0
  *	@param hscxii float XIIth Percentage [memory] optional default 0.0
+ *	@param sscyear integer SSC Passing Year [memory] optional default 0
+ *	@param hscyear integer HSC Passing Year [memory] optional default 0
+ *	@param jee float JEE AIR [memory] optional default 0
+ *	@param gate float GATE AIR [memory] optional default 0
  *
  *	@param sgpa1 float SGPA I [memory] optional default 0.0
  *	@param sgpa2 float SGPA II [memory] optional default 0.0
@@ -48,7 +52,7 @@ class GradeUpdateWorkflow implements Service {
 	public function input(){
 		return array(
 			'required' => array('keyid', 'user', 'gradeid', 'username', 'password'),
-			'optional' => array('batchid' => 0, 'btname' => '', 'sscx' => 0.0, 'hscxii' => 0.0, 'sgpa1' => 0.0, 'sgpa2' => 0.0, 'sgpa3' => 0.0, 'sgpa4' => 0.0, 'sgpa5' => 0.0, 'sgpa6' => 0.0, 'sgpa7' => 0.0, 'sgpa8' => 0.0, 'sgpa9' => 0.0, 'sgpa10' => 0.0)
+			'optional' => array('batchid' => 0, 'btname' => '', 'sscx' => 0.0, 'hscxii' => 0.0, 'sscyear' => 0, 'hscyear' => 0, 'jee' => 0, 'gate' => 0, 'gatescore' => 0, 'gatepercentile' => 0, 'sgpa1' => 0.0, 'sgpa2' => 0.0, 'sgpa3' => 0.0, 'sgpa4' => 0.0, 'sgpa5' => 0.0, 'sgpa6' => 0.0, 'sgpa7' => 0.0, 'sgpa8' => 0.0, 'sgpa9' => 0.0, 'sgpa10' => 0.0)
 		);
 	}
 	
@@ -59,6 +63,10 @@ class GradeUpdateWorkflow implements Service {
 		$memory['public'] = 1;
 		$memory['cgpa'] = $memory['ygpa1'] = $memory['ygpa2'] = $memory['ygpa3'] = $memory['ygpa4'] = $memory['ygpa5'] = 0.0;
 		$i = $total = 0;
+		if($memory['gate'] == '') $memory['gate'] = 0;
+		if($memory['gatescore'] == '') $memory['gatescore'] = 0;
+		if($memory['gatepercentile'] == '') $memory['gatepercentile'] = 0;
+		if($memory['jee'] == '') $memory['jee'] = 0;
 		
 		$memory = Snowblozm::run(array(
 			'service' => 'executive.batch.info.workflow'
@@ -158,12 +166,12 @@ class GradeUpdateWorkflow implements Service {
 		),
 		array(
 			'service' => 'transpera.entity.edit.workflow',
-			'args' => array('sscx', 'hscxii', 'cgpa', 'sgpa1', 'sgpa2', 'sgpa3', 'sgpa4', 'sgpa5', 'sgpa6', 'sgpa7', 'sgpa8', 'sgpa9', 'sgpa10', 'ygpa1', 'ygpa2', 'ygpa3', 'ygpa4', 'ygpa5'),
+			'args' => array('sscx', 'hscxii', 'sscyear', 'hscyear', 'jee', 'gate', 'gatescore', 'gatepercentile', 'cgpa', 'sgpa1', 'sgpa2', 'sgpa3', 'sgpa4', 'sgpa5', 'sgpa6', 'sgpa7', 'sgpa8', 'sgpa9', 'sgpa10', 'ygpa1', 'ygpa2', 'ygpa3', 'ygpa4', 'ygpa5'),
 			'input' => array('id' => 'gradeid', 'cname' => 'username', 'parent' => 'batchid', 'pname' => 'btname'),
 			'conn' => 'exconn',
 			'relation' => '`grades`',
 			'type' => 'grade',
-			'sqlcnd' => "set `sscx`=\${sscx}, `hscxii`=\${hscxii}, `cgpa`=\${cgpa}, `sgpa1`=\${sgpa1}, `sgpa2`=\${sgpa2}, `sgpa3`=\${sgpa3}, `sgpa4`=\${sgpa4}, `sgpa5`=\${sgpa5}, `sgpa6`=\${sgpa6}, `sgpa7`=\${sgpa7}, `sgpa8`=\${sgpa8}, `sgpa9`=\${sgpa9}, `sgpa10`=\${sgpa10}, `ygpa1`=\${ygpa1}, `ygpa2`=\${ygpa2}, `ygpa3`=\${ygpa3}, `ygpa4`=\${ygpa4}, `ygpa5`=\${ygpa5} where `gradeid`=\${id}",
+			'sqlcnd' => "set `sscx`=\${sscx}, `hscxii`=\${hscxii}, `sscyear`=\${sscyear}, `hscyear`=\${hscyear}, `jee`= \${jee}, `gate`=\${gate}, `gatescore`=\${gatescore}, `gatepercentile`=\${gatepercentile}, `cgpa`=\${cgpa}, `sgpa1`=\${sgpa1}, `sgpa2`=\${sgpa2}, `sgpa3`=\${sgpa3}, `sgpa4`=\${sgpa4}, `sgpa5`=\${sgpa5}, `sgpa6`=\${sgpa6}, `sgpa7`=\${sgpa7}, `sgpa8`=\${sgpa8}, `sgpa9`=\${sgpa9}, `sgpa10`=\${sgpa10}, `ygpa1`=\${ygpa1}, `ygpa2`=\${ygpa2}, `ygpa3`=\${ygpa3}, `ygpa4`=\${ygpa4}, `ygpa5`=\${ygpa5} where `gradeid`=\${id}",
 			'check' => false,
 			'successmsg' => 'Grade edited successfully'
 		),
@@ -197,21 +205,24 @@ class GradeUpdateWorkflow implements Service {
 				'service' => 'people.person.alert.workflow',
 				'input' => array('chainid' => 'batchid', 'queid' => 'gradeid'),
 				'subject' => '[TPO Portal Alerts] '.$memory['btname'].' Grades Updated : '.$memory['username'],
-				'body' => 'User '.$memory['username'].' updated Grades. The new grades are as follows :<br />
-				<table><tbody><tr><td>Roll No</td><td>'.$grade['rollno'].'</td></tr>
-				<tr><td>Username</td><td>'.$grade['username'].'</td></tr>
-				<tr><td>X %</td><td>'.$grade['sscx'].'</td></tr>
-				<tr><td>XII %</td><td>'.$grade['hscxii'].'</td></tr>
-				<tr><td>CGPA</td><td>'.$grade['cgpa'].'</td></tr>
-				<tr><td>Details</td><td>
-					<table><thead><tr><th>Part</th><th>SGPA Odd</th><th>SGPA Even</th><th>YGPA</th></tr></thead><tbody>
-					<tr><td>1</td><td>'.$grade['sgpa1'].'</td><td>'.$grade['sgpa2'].'</td><td>'.$grade['ygpa1'].'</td></tr>
-					<tr><td>2</td><td>'.$grade['sgpa3'].'</td><td>'.$grade['sgpa4'].'</td><td>'.$grade['ygpa2'].'</td></tr>
-					<tr><td>3</td><td>'.$grade['sgpa5'].'</td><td>'.$grade['sgpa6'].'</td><td>'.$grade['ygpa3'].'</td></tr>
-					<tr><td>4</td><td>'.$grade['sgpa7'].'</td><td>'.$grade['sgpa8'].'</td><td>'.$grade['ygpa4'].'</td></tr>
-					<tr><td>5</td><td>'.$grade['sgpa9'].'</td><td>'.$grade['sgpa10'].'</td><td>'.$grade['ygpa5'].'</td></tr>
-					</tbody></table>
-				</td></tr></tbody></table>'
+				'body' => 'User '.$memory['username'].' updated Grades. The new grades are as follows :
+	Roll No : '.$grade['rollno'].'
+	Username : '.$grade['username'].'
+	X % : '.$grade['sscx'].'
+	XII % : '.$grade['hscxii'].'
+	CGPA : '.$grade['cgpa'].'
+	Details : 
+	
+		Part	SGPA Odd	SGPA Even	YGPA
+			1	'.$grade['sgpa1'].'	'.$grade['sgpa2'].'	'.$grade['ygpa1'].'
+			2	'.$grade['sgpa3'].'	'.$grade['sgpa4'].'	'.$grade['ygpa2'].'
+			3	'.$grade['sgpa5'].'	'.$grade['sgpa6'].'	'.$grade['ygpa3'].'
+			4	'.$grade['sgpa7'].'	'.$grade['sgpa8'].'	'.$grade['ygpa4'].'
+			5	'.$grade['sgpa9'].'	'.$grade['sgpa10'].'	'.$grade['ygpa5'].'
+
+--
+TPO Portal Alerts
+Training and Placement Cell, IT BHU'
 			), $memory);
 		}
 		

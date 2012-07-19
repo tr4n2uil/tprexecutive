@@ -7,7 +7,9 @@ require_once(SBSERVICE);
  *
  *	@param year string Academic Session Year [memory] 
  *	@param type string Type [memory] ('placement', 'internship', 'ppo')
- *	@param package float Package [memory]
+ *	@param bpackage float B. Tech. Package [memory] optional default 0
+ *	@param ipackage float IDD/IMD Package [memory] optional default 0
+ *	@param mpackage float M. Tech. Package [memory] optional default 0
  *	@param comuser string Company username [memory]
  *	@param visitdate string Date of visit [memory] (Format YYYY-MM-DD)
  *	@param deadline string Deadline [memory] (Format YYYY-MM-DD)
@@ -54,8 +56,8 @@ class VisitAddWorkflow implements Service {
 	**/
 	public function input(){
 		return array(
-			'required' => array('keyid', 'user', 'year', 'vtype', 'package', 'comuser', 'visitdate', 'deadline'),
-			'optional' => array('portalid' => COMPANY_PORTAL_ID, 'plname' => '', 'level' => false, 'owner' => false, 'cer' => '', 'che' => '', 'civ' => '', 'cse' => '', 'eee' => '', 'ece' => '', 'mec' => '', 'met' => '', 'min' => '', 'phe' => '', 'apc' => '', 'apm' => '', 'app' => '', 'bce' => '', 'bme' => '', 'mst' => '')
+			'required' => array('keyid', 'user', 'year', 'vtype', 'comuser', 'visitdate', 'deadline'),
+			'optional' => array('portalid' => COMPANY_PORTAL_ID, 'plname' => '', 'level' => false, 'owner' => false, 'bpackage' => 0, 'ipackage' => 0, 'mpackage' => 0, 'cer' => '', 'che' => '', 'civ' => '', 'cse' => '', 'eee' => '', 'ece' => '', 'mec' => '', 'met' => '', 'min' => '', 'phe' => '', 'apc' => '', 'apm' => '', 'app' => '', 'bce' => '', 'bme' => '', 'mst' => '')
 		);
 	}
 	
@@ -87,14 +89,14 @@ class VisitAddWorkflow implements Service {
 		),
 		array(
 			'service' => 'transpera.entity.add.workflow',
-			'args' => array('vstname', 'year', 'vtype', 'package', 'comid', 'comuser', 'visitdate', 'deadline', 'comowner', 'cer', 'che', 'civ', 'cse', 'eee', 'ece', 'mec', 'met', 'min', 'phe', 'apc', 'apm', 'app', 'bce', 'bme', 'mst'),
+			'args' => array('vstname', 'year', 'vtype', 'bpackage', 'ipackage', 'mpackage', 'comid', 'comuser', 'visitdate', 'deadline', 'comowner', 'cer', 'che', 'civ', 'cse', 'eee', 'ece', 'mec', 'met', 'min', 'phe', 'apc', 'apm', 'app', 'bce', 'bme', 'mst'),
 			'input' => array('parent' => 'portalid', 'cname' => 'vstname', 'pname' => 'plname'),
 			'conn' => 'exconn',
 			'relation' => '`visits`',
 			'type' => 'visit',
 			'authorize' => 'edit:add:remove:',
-			'sqlcnd' => "(`visitid`, `owner`, `comid`, `comuser`, `vstname`, `year`, `vtype`, `package`, `visitdate`, `deadline`, `files`, `shortlist`, `cer`, `che`, `civ`, `cse`, `eee`, `ece`, `mec`, `met`, `min`, `phe`, `apc`, `apm`, `app`, `bce`, `bme`, `mst`) values (\${id}, \${owner}, \${comid}, '\${comuser}', '\${vstname}', '\${year}', '\${vtype}', '\${package}', '\${visitdate}', '\${deadline}', \${files}, \${shortlist}, '\${cer}', '\${che}', '\${civ}', '\${cse}', '\${eee}', '\${ece}', '\${mec}', '\${met}', '\${min}', '\${phe}', '\${apc}', '\${apm}', '\${app}', '\${bce}', '\${bme}', '\${mst}')",
-			'escparam' => array('vstname', 'year', 'vtype', 'package', 'visitdate', 'deadline', 'comuser', 'cer', 'che', 'civ', 'cse', 'eee', 'ece', 'mec', 'met', 'min', 'phe', 'apc', 'apm', 'app', 'bce', 'bme', 'mst'),
+			'sqlcnd' => "(`visitid`, `owner`, `comid`, `comuser`, `vstname`, `year`, `vtype`, `bpackage`, `ipackage`, `mpackage`, `visitdate`, `deadline`, `files`, `shortlist`, `cer`, `che`, `civ`, `cse`, `eee`, `ece`, `mec`, `met`, `min`, `phe`, `apc`, `apm`, `app`, `bce`, `bme`, `mst`) values (\${id}, \${owner}, \${comid}, '\${comuser}', '\${vstname}', '\${year}', '\${vtype}', \${bpackage}, \${ipackage}, \${mpackage}, '\${visitdate}', '\${deadline}', \${files}, \${shortlist}, '\${cer}', '\${che}', '\${civ}', '\${cse}', '\${eee}', '\${ece}', '\${mec}', '\${met}', '\${min}', '\${phe}', '\${apc}', '\${apm}', '\${app}', '\${bce}', '\${bme}', '\${mst}')",
+			'escparam' => array('vstname', 'year', 'vtype', 'visitdate', 'deadline', 'comuser', 'cer', 'che', 'civ', 'cse', 'eee', 'ece', 'mec', 'met', 'min', 'phe', 'apc', 'apm', 'app', 'bce', 'bme', 'mst'),
 			'successmsg' => 'Visit added successfully',
 			'construct' => array(
 				array(

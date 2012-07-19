@@ -11,6 +11,10 @@ require_once(EXGPACONF);
  *	@param rollno string Roll No [memory]
  *	@param sscx float Xth Percentage [memory] optional default 0.0
  *	@param hscxii float XIIth Percentage [memory] optional default 0.0
+ *	@param sscyear integer SSC Passing Year [memory] optional default 0
+ *	@param hscyear integer HSC Passing Year [memory] optional default 0
+ *	@param jee float JEE AIR [memory] optional default 0
+ *	@param gate float GATE AIR [memory] optional default 0
  *
  *	@param sgpa1 float SGPA I [memory] optional default 0.0
  *	@param sgpa2 float SGPA II [memory] optional default 0.0
@@ -48,7 +52,7 @@ class GradeEditWorkflow implements Service {
 	public function input(){
 		return array(
 			'required' => array('keyid', 'user', 'gradeid', 'username', 'rollno'),
-			'optional' => array('batchid' => 0, 'btname' => '', 'sscx' => 0.0, 'hscxii' => 0.0, 'sgpa1' => 0.0, 'sgpa2' => 0.0, 'sgpa3' => 0.0, 'sgpa4' => 0.0, 'sgpa5' => 0.0, 'sgpa6' => 0.0, 'sgpa7' => 0.0, 'sgpa8' => 0.0, 'sgpa9' => 0.0, 'sgpa10' => 0.0)
+			'optional' => array('batchid' => 0, 'btname' => '', 'sscx' => 0.0, 'hscxii' => 0.0, 'sscyear' => 0, 'hscyear' => 0, 'jee' => 0, 'gate' => 0, 'gatescore' => 0, 'gatepercentile' => 0, 'sgpa1' => 0.0, 'sgpa2' => 0.0, 'sgpa3' => 0.0, 'sgpa4' => 0.0, 'sgpa5' => 0.0, 'sgpa6' => 0.0, 'sgpa7' => 0.0, 'sgpa8' => 0.0, 'sgpa9' => 0.0, 'sgpa10' => 0.0)
 		);
 	}
 	
@@ -59,6 +63,10 @@ class GradeEditWorkflow implements Service {
 		$memory['public'] = 1;
 		$memory['cgpa'] = $memory['ygpa1'] = $memory['ygpa2'] = $memory['ygpa3'] = $memory['ygpa4'] = $memory['ygpa5'] = 0.0;
 		$i = $total = 0;
+		if($memory['gate'] == '') $memory['gate'] = 0;
+		if($memory['gatescore'] == '') $memory['gatescore'] = 0;
+		if($memory['gatepercentile'] == '') $memory['gatepercentile'] = 0;
+		if($memory['jee'] == '') $memory['jee'] = 0;
 		
 		$memory = Snowblozm::run(array(
 			'service' => 'executive.batch.info.workflow'
@@ -154,12 +162,12 @@ class GradeEditWorkflow implements Service {
 		$workflow = array(
 		array(
 			'service' => 'transpera.entity.edit.workflow',
-			'args' => array('username', 'rollno', 'sscx', 'hscxii', 'cgpa', 'sgpa1', 'sgpa2', 'sgpa3', 'sgpa4', 'sgpa5', 'sgpa6', 'sgpa7', 'sgpa8', 'sgpa9', 'sgpa10', 'ygpa1', 'ygpa2', 'ygpa3', 'ygpa4', 'ygpa5'),
+			'args' => array('username', 'rollno', 'sscx', 'hscxii', 'sscyear', 'hscyear', 'jee', 'gate', 'gatescore', 'gatepercentile', 'cgpa', 'sgpa1', 'sgpa2', 'sgpa3', 'sgpa4', 'sgpa5', 'sgpa6', 'sgpa7', 'sgpa8', 'sgpa9', 'sgpa10', 'ygpa1', 'ygpa2', 'ygpa3', 'ygpa4', 'ygpa5'),
 			'input' => array('id' => 'gradeid', 'cname' => 'username', 'parent' => 'batchid', 'pname' => 'btname'),
 			'conn' => 'exconn',
 			'relation' => '`grades`',
 			'type' => 'grade',
-			'sqlcnd' => "set `username`='\${username}', `rollno`='\${rollno}', `sscx`=\${sscx}, `hscxii`=\${hscxii}, `cgpa`=\${cgpa}, `sgpa1`=\${sgpa1}, `sgpa2`=\${sgpa2}, `sgpa3`=\${sgpa3}, `sgpa4`=\${sgpa4}, `sgpa5`=\${sgpa5}, `sgpa6`=\${sgpa6}, `sgpa7`=\${sgpa7}, `sgpa8`=\${sgpa8}, `sgpa9`=\${sgpa9}, `sgpa10`=\${sgpa10}, `ygpa1`=\${ygpa1}, `ygpa2`=\${ygpa2}, `ygpa3`=\${ygpa3}, `ygpa4`=\${ygpa4}, `ygpa5`=\${ygpa5} where `gradeid`=\${id}",
+			'sqlcnd' => "set `username`='\${username}', `rollno`='\${rollno}', `sscx`=\${sscx}, `hscxii`=\${hscxii}, `sscyear`=\${sscyear}, `hscyear`=\${hscyear}, `jee`= \${jee}, `gate`=\${gate}, `gatescore`=\${gatescore}, `gatepercentile`=\${gatepercentile}, `cgpa`=\${cgpa}, `sgpa1`=\${sgpa1}, `sgpa2`=\${sgpa2}, `sgpa3`=\${sgpa3}, `sgpa4`=\${sgpa4}, `sgpa5`=\${sgpa5}, `sgpa6`=\${sgpa6}, `sgpa7`=\${sgpa7}, `sgpa8`=\${sgpa8}, `sgpa9`=\${sgpa9}, `sgpa10`=\${sgpa10}, `ygpa1`=\${ygpa1}, `ygpa2`=\${ygpa2}, `ygpa3`=\${ygpa3}, `ygpa4`=\${ygpa4}, `ygpa5`=\${ygpa5} where `gradeid`=\${id}",
 			'escparam' => array('username', 'rollno'),
 			'check' => false,
 			'init' => false,

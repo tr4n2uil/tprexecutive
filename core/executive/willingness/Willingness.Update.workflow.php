@@ -63,7 +63,7 @@ class WillingnessUpdateWorkflow implements Service {
 			'input' => array('id' => 'wlgsid', 'parent' => 'batchid', 'cname' => 'name', 'btname' => 'btname'),
 			'conn' => 'exconn',
 			'relation' => '`willingnesses` w, `students` s, `grades` g,`visits` v',
-			'sqlprj' => 'w.`wlgsid`, w.`visitid`, w.`resume`, w.`status`, w.`approval`, w.`name` as `wname`, w.`batch`, s.`stdid`, s.`username`, s.`name`, s.`email`, s.`rollno`, g.`cgpa`, g.`sscx`, g.`hscxii`, v.`comuser`, v.`comid`, v.`vtype`, v.`year`, v.`visitdate`, v.`package`',
+			'sqlprj' => "w.`wlgsid`, w.`visitid`, w.`resume`, w.`status`, w.`approval`, w.`name` as `wname`, w.`batch`, s.`stdid`, s.`username`, s.`name`, s.`email`, s.`rollno`, g.`cgpa`, g.`sscx`, g.`hscxii`, v.`comuser`, v.`comid`, v.`vtype`, v.`year`, v.`visitdate`,  (case (select `course` from `batches` where `btname`=w.`batch`) when 'btech' then v.`bpackage` when 'idd' then v.`ipackage` when 'mtech' then v.`mpackage` else '' end) as `package`",
 			'sqlcnd' => "where `wlgsid`=\${id} and w.`owner`=s.`owner` and s.`grade`=g.`gradeid` and v.`visitid`=w.`visitid`",
 			'errormsg' => 'Invalid Willingness ID',
 			'type' => 'willingness',

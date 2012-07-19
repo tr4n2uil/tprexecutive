@@ -9,7 +9,9 @@ require_once(SBSERVICE);
  *	@param vstname string Visit name [memory]
  *	@param year string Academic Session Year [memory] 
  *	@param vtype string Type [memory] ('placement', 'internship', 'ppo')
- *	@param package float Package [memory]
+ *	@param bpackage float B. Tech. Package [memory] optional default 0
+ *	@param ipackage float IDD/IMD Package [memory] optional default 0
+ *	@param mpackage float M. Tech. Package [memory] optional default 0
  *	@param visitdate string Date of visit [memory] (Format YYYY-MM-DD)
  *	@param deadline string Deadline [memory] (Format YYYY-MM-DD)
  *	@param cer string Requirement [memory] ('mr', 'ordinary', 'dream', 'super')
@@ -53,8 +55,8 @@ class VisitEditWorkflow implements Service {
 	**/
 	public function input(){
 		return array(
-			'required' => array('keyid', 'user', 'visitid', 'vstname', 'year', 'vtype', 'package', 'visitdate', 'deadline', 'portalid', 'plname'),
-			'optional' => array('cer' => '', 'che' => '', 'civ' => '', 'cse' => '', 'eee' => '', 'ece' => '', 'mec' => '', 'met' => '', 'min' => '', 'phe' => '', 'apc' => '', 'apm' => '', 'app' => '', 'bce' => '', 'bme' => '', 'mst' => '')
+			'required' => array('keyid', 'user', 'visitid', 'vstname', 'year', 'vtype', 'visitdate', 'deadline', 'portalid', 'plname'),
+			'optional' => array('bpackage' => 0, 'ipackage' => 0, 'mpackage' => 0, 'cer' => '', 'che' => '', 'civ' => '', 'cse' => '', 'eee' => '', 'ece' => '', 'mec' => '', 'met' => '', 'min' => '', 'phe' => '', 'apc' => '', 'apm' => '', 'app' => '', 'bce' => '', 'bme' => '', 'mst' => '')
 		);
 	}
 	
@@ -67,13 +69,13 @@ class VisitEditWorkflow implements Service {
 		$workflow = array(
 		array(
 			'service' => 'transpera.entity.edit.workflow',
-			'args' => array('vstname', 'year', 'vtype', 'package', 'visitdate', 'deadline', 'cer', 'che', 'civ', 'cse', 'eee', 'ece', 'mec', 'met', 'min', 'phe', 'apc', 'apm', 'app', 'bce', 'bme', 'mst'),
+			'args' => array('vstname', 'year', 'vtype', 'bpackage', 'ipackage', 'mpackage', 'visitdate', 'deadline', 'cer', 'che', 'civ', 'cse', 'eee', 'ece', 'mec', 'met', 'min', 'phe', 'apc', 'apm', 'app', 'bce', 'bme', 'mst'),
 			'input' => array('id' => 'visitid', 'cname' => 'vstname', 'parent' => 'portalid', 'pname' => 'plname'),
 			'conn' => 'exconn',
 			'relation' => '`visits`',
 			'type' => 'visit',
-			'sqlcnd' => "set `vstname`='\${vstname}', `year`='\${year}', `vtype`='\${vtype}', `package`='\${package}', `visitdate`='\${visitdate}', `deadline`='\${deadline}', `cer`='\${cer}', `che`='\${che}', `civ`='\${civ}', `cse`='\${cse}', `eee`='\${eee}', `ece`='\${ece}', `mec`='\${mec}', `met`='\${met}', `min`='\${min}', `phe`='\${phe}', `apc`='\${apc}', `apm`='\${apm}', `app`='\${app}', `bce`='\${bce}', `bme`='\${bme}', `mst`='\${mst}' where `visitid`=\${id}",
-			'escparam' => array('vstname', 'year', 'vtype', 'package', 'visitdate', 'deadline', 'cer', 'che', 'civ', 'cse', 'eee', 'ece', 'mec', 'met', 'min', 'phe', 'apc', 'apm', 'app', 'bce', 'bme', 'mst'),
+			'sqlcnd' => "set `vstname`='\${vstname}', `year`='\${year}', `vtype`='\${vtype}', `bpackage`=\${bpackage}, `ipackage`=\${ipackage}, `mpackage`=\${mpackage}, `visitdate`='\${visitdate}', `deadline`='\${deadline}', `cer`='\${cer}', `che`='\${che}', `civ`='\${civ}', `cse`='\${cse}', `eee`='\${eee}', `ece`='\${ece}', `mec`='\${mec}', `met`='\${met}', `min`='\${min}', `phe`='\${phe}', `apc`='\${apc}', `apm`='\${apm}', `app`='\${app}', `bce`='\${bce}', `bme`='\${bme}', `mst`='\${mst}' where `visitid`=\${id}",
+			'escparam' => array('vstname', 'year', 'vtype', 'visitdate', 'deadline', 'cer', 'che', 'civ', 'cse', 'eee', 'ece', 'mec', 'met', 'min', 'phe', 'apc', 'apm', 'app', 'bce', 'bme', 'mst'),
 			'check' => false,
 			'successmsg' => 'Visit edited successfully'
 		),

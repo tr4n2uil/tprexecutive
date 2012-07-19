@@ -5,11 +5,17 @@
 		<base href="<?php echo ROOTPATH ?>/"  />
 		<link rel='shortcut icon' href="ui/img/executive/itbhu.png"/>
 		<!--<link rel="stylesheet" type="text/css" href="ui/css/jquery.jtweetsanywhere-1.3.1.css" />-->
-		<title>Training &amp; Placement Cell, IT BHU</title>
+		<title>Training &amp; Placement Cell, IIT (BHU) Varanasi</title>
 		<link rel="stylesheet" type="text/css" href="ui/css/datatable/jquery.dataTables.css" />
 		<link rel="stylesheet" type="text/css" href="ui/css/executive-ui.css" />
-		<script charset="utf-8" type="text/javascript" src="ui/js/executive-ui.js"></script>
-		<script type="text/javascript" src="ui/js/jquery.dataTables.js"></script>
+		<script charset="utf-8" type="text/javascript" src="ui/js/jquery-1.6.1.min.js"></script>
+		<script charset="utf-8" type="text/javascript" src="ui/js/jquery.tmpl.min.js"></script>
+		<script charset="utf-8" type="text/javascript" src="ui/js/jquery.cookie.min.js"></script>
+		<script charset="utf-8" type="text/javascript" src="ui/js/json2.min.js"></script>
+		<script charset="utf-8" type="text/javascript" src="ui/js/jquery.expander.min.js"></script>
+		<script charset="utf-8" type="text/javascript" src="ui/js/jquery-firespark.min.js"></script>
+		<script charset="utf-8" type="text/javascript" src="ui/js/executive-ui.min.js"></script>
+		<script type="text/javascript" src="ui/js/jquery.dataTables.min.js"></script>
 		<script type="text/javascript">
 			Executive.root = '<?php echo ROOTPATH; ?>';
 			Executive.year = '?/<?php echo $YEAR; ?>/';
@@ -25,7 +31,7 @@
 				<tr class="mainstrip">
 					<td rowspan="3" class="itbhu-logo"><img src="ui/img/executive/itbhu.png" /></td>
 					<td class="mainbar">
-						<p class="iitbhu fleft">Institute of Technology BHU Varanasi</p>
+						<p class="iitbhu fleft">Indian Institute of Technology (BHU) Varanasi</p>
 						<div class="statemenu fright">
 							<?php echo $STATEMENU; ?>
 						</div>
@@ -49,11 +55,11 @@
 								<a href="">Home</a>
 							</li>
 							<li>
-								<a href="info/why-at-itbhu/" class="ui">Why Recruit @ IT BHU ?</a>
+								<a href="info/why-at-iit-bhu-varanasi/" class="ui">Why Recruit @ IIT (BHU) Varanasi ?</a>
 								<ul class="menu-item">
-									<li><a href="info/why-at-itbhu/#!/view/#adv-itbhu/" class="ui">IT BHU Advantage</a></li>
-									<li><a href="info/why-at-itbhu/#!/view/#adv-alumni/" class="ui">Alumni</a></li>
-									<li><a href="info/why-at-itbhu/#!/view/#adv-facilities/" class="ui">Facilities</a></li>
+									<li><a href="info/why-at-iit-bhu-varanasi/#!/view/#adv-iit-bhu-varanasi/" class="ui">IIT (BHU) Varanasi Advantage</a></li>
+									<li><a href="info/why-at-iit-bhu-varanasi/#!/view/#adv-alumni/" class="ui">Alumni</a></li>
+									<li><a href="info/why-at-iit-bhu-varanasi/#!/view/#adv-facilities/" class="ui">Facilities</a></li>
 								</ul>
 							</li>
 							<li>
@@ -70,9 +76,10 @@
 									<li><a href="info/placements/#!/view/#tnp-procedure/" class="ui">Procedure</a></li>
 									<li><a href="info/placements/#!/view/#tnp-facilities/" class="ui">Facilities</a></li>
 									<li><a href="info/placements/#!/view/#tnp-recruiters/" class="ui">Past Recruiters</a></li>
+									<li><a href="info/placements/#!/view/#tnp-position/" class="ui">Placement Position</a></li>
 									<li><a href="info/placements/#!/view/#tnp-policy/" class="ui">Training &amp; Placement Policy</a></li>
 									<li><a href="info/forms/#!/view/#response-sheet/" class="ui">Company Response Sheet</a></li>
-									<li><a href="storage/public/downloads/IT-BHU_Placement_Brochure_2010-11.pdf" class="" target="_blank">IT BHU Placement Brochure</a></li>
+									<li><a href="storage/public/downloads/IIT-BHU-Varanasi_Placement_Brochure_2013.pdf" class="" target="_blank">IIT (BHU) Varanasi Placement Brochure</a></li>
 								</ul>
 							</li>
 							<li>

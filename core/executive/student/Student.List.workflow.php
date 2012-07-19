@@ -36,8 +36,8 @@ class StudentListWorkflow implements Service {
 	**/
 	public function input(){
 		return array(
-			'required' => array('keyid'),
-			'optional' => array('batchid' => false, 'id' => STUDENT_PORTAL_ID, 'btname' => false, 'name' => '', 'pgsz' => false, 'pgno' => 0, 'total' => false, 'padmin' => true),
+			'required' => array('keyid', 'user'),
+			'optional' => array('batchid' => false, 'id' => STUDENT_PORTAL_ID, 'btname' => false, 'name' => '', 'pgsz' => false, 'pgno' => 0, 'total' => false, 'padmin' => true, 'export' => false, 'archive' => false),
 			'set' => array('id', 'name')
 		);
 	}
@@ -49,22 +49,78 @@ class StudentListWorkflow implements Service {
 		$memory['batchid'] = $memory['batchid'] ? $memory['batchid'] : $memory['id'];
 		$memory['btname'] = $memory['btname'] ? $memory['btname'] : $memory['name'];
 		
-		$service = array(
+		$name = 'Students-'.$memory['btname'].'.'.$memory['user'];
+		
+		if($memory['export']){
+			$rel = '`students` s, `grades` g, `slots` t, `persons` p, `batches` b';
+			$prj = "s.`name`, s.`rollno`, 
+			(case b.`course` when 'btech' then 'B Tech' when 'idd' then 'IDD / IMD' when 'mtech' then 'M Tech' else '' end) as `course`, 
+			(case b.`dept` when 'cer' then 'Ceramic Engineering' when 'che' then 'Chemical Engineering' when 'civ' then 'Civil Engineering' when 'cse' then 'Computer Engineering' when 'eee' then 'Electrical Engineering' when 'ece' then 'Electronics Engineering' when 'mec' then 'Mechanical Engineering' when 'met' then 'Metallurgical Engineering' when 'min' then 'Mining Engineering' when 'phe' then 'Pharmaceutical Engineering' when 'apc' then 'Applied Chemistry' when 'apm' then 'Applied Mathematics' when 'app' then 'Applied Physics' when 'bce' then 'Bio-Chemical Engineering' when 'bme' then 'Bio-Medical Engineering' when 'mst' then 'Material Science & Technology' else '' end) as `dept`, b.`year`, s.`email`, p.`phone`, p.`address`, s.`resphone`, s.`resaddress`, p.`dateofbirth`, p.`gender`, s.`category`, s.`language`, s.`father`, s.`foccupation`, s.`mother`, s.`moccupation`, g.`cgpa`, g.`sscx`, g.`sscyear`, g.`hscxii`, g.`hscyear`, g.`jee`, g.`gate`, s.`graddetails`, g.`sgpa1`, g.`sgpa2`, g.`sgpa3`, g.`sgpa4`, g.`sgpa5`, g.`sgpa6`, g.`sgpa7`, g.`sgpa8`, g.`sgpa9`, g.`sgpa10`, g.`ygpa1`, g.`ygpa2`, g.`ygpa3`, g.`ygpa4`, g.`ygpa5`, t.`mr`, t.`ordinary`, t.`dream`, t.`super`";
+			$cnd = "where s.`stdid` in \${list} $qry and s.`batchid`=b.`batchid` and s.`grade`=g.`gradeid` and s.`slot`=t.`slotid` and p.`pnid`=s.`stdid` order by b.`year` desc, b.`dept` asc, b.`course` asc, s.`ustatus` asc, s.`rollno` asc";
+		}
+		elseif($memory['archive']){
+			$rel = '`students` s, `batches` b, `directories` d, `files` f';
+			$prj = "concat(s.`name`, ' [', s.`rollno`, '].pdf') as `asname`, d.`path` as `filepath`, f.`filename`, s.`resume` as `fresume`";
+			$cnd = "where s.`stdid` in \${list} $qry and s.`batchid`=b.`batchid` and f.`fileid`=s.`resume` and d.`dirid`=b.`resumes`";
+		}
+		else {
+			$rel = '`students` s';
+			$prj =  's.`stdid`, s.`username`, s.`name`, s.`email`, s.`rollno`, s.`category`, s.`resphone`, s.`resaddress`, s.`resume`, s.`home`, s.`interests`, s.`graddetails`, s.`ustatus`';
+			$cnd = "where s.`stdid` in \${list} order by s.`ustatus`, s.`rollno`";
+		}
+		
+		$workflow = array(
+		array(
 			'service' => 'transpera.entity.list.workflow',
 			'input' => array('id' => 'batchid', 'pname' => 'btname'),
 			'conn' => 'exconn',
-			'relation' => '`students`',
-			'sqlprj' => '`stdid`, `username`, `name`, `email`, `rollno`, `resume`, `home`, `interests`, `ustatus`',
-			'sqlcnd' => "where `stdid` in \${list} order by `ustatus`, `rollno`",
+			'relation' => $rel,
+			'sqlprj' => $prj,
+			'sqlcnd' => $cnd,
 			'type' => 'person',
 			'successmsg' => 'Students information given successfully',
 			'output' => array('entities' => 'students'),
 			'istate' => false, 
+			'ismap' => !$memory['export'] && !$memory['archive'],
+			'action' => $memory['export'] || $memory['archive'] ? 'add' : 'list',
 			'mapkey' => 'stdid',
 			'mapname' => 'student'
-		);
+		));
 		
-		return Snowblozm::run($service, $memory);
+		if($memory['export']){
+			array_push($workflow, array(
+				'service' => 'cbcore.data.export.service',
+				'input' => array('data' => 'students'),
+				'type' => 'csv',
+				'default' => "Student Name,Roll No,Course,Department,Year of Passing,Email,Phone,Address (Current),Phone (Residential),Address (Permanent),Date of Birth,Gender,Category, Mother Tongue,Father's Name,Occupation,Mother's Name,Occupation,CGPA,X %,X Year of Passing,XII %,XII Year of Passing,JEE AIR, GATE AIR,Graduation Details,SGPA I,SGPA II,SGPA III,SGPA IV,SGPA V,SGPA VI,SGPA VII,SGPA VIII,SGPA IX,SGPA X,YGPA I,YGPA II,YGPA III,YGPA IV,YGPA V,MR Slot,Ordinary Slot,Dream Slot,Super Dream Slot\r\n",
+				'filename' => $name.'.csv',
+				'output' => array('result' => 'csv')
+			),
+			array(
+				'service' => 'storage.file.download.service',
+				'filepath' => 'storage/private/exports/',
+				'filename' => $name.'.csv',
+				'mime' => 'application/vnd.ms-excel'
+			));
+		}
+		
+		if($memory['archive']){
+			array_push($workflow, array(
+				'service' => 'storage.file.archive.service',
+				'input' => array('filelist' => 'students'),
+				'directory' => 'storage/private/exports/',
+				'filename' => $name.'.zip',
+			),
+			array(
+				'service' => 'storage.file.download.service',
+				'filepath' => 'storage/private/exports/',
+				'filename' => $name.'.zip',
+				'mime' => 'application/zip'
+			));
+		}
+		
+		
+		return Snowblozm::execute($workflow, $memory);
 	}
 	
 	/**

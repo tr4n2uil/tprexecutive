@@ -45,7 +45,7 @@ class VisitFindWorkflow implements Service {
 			'conn' => 'exconn',
 			'idkey' => 'visitid',
 			'relation' => '`visits`',
-			'sqlprj' => '`visitid`, `vstname`, `files`, `shortlist`, `vtype`, `year`, `comid`, `comuser`, `package`, `visitdate`, UNIX_TIMESTAMP(`deadline`)*1000 as `deadline_ts`, `deadline`, (select c.`name` from `companies` c where c.`comid`=`comid`) as `comname`',
+			'sqlprj' => '`visitid`, `vstname`, `files`, `shortlist`, `vtype`, `year`, `comid`, `comuser`, `bpackage`, `ipackage`, `mpackage`, `visitdate`, UNIX_TIMESTAMP(`deadline`)*1000 as `deadline_ts`, `deadline`, (select c.`name` from `companies` c where c.`comid`=`comid`) as `comname`',
 			'sqlcnd' => "where `vstname`='\${vstname}'",
 			'errormsg' => 'Invalid Visit Name',
 			'escparam' => array('vstname'),

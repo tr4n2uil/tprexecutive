@@ -26,7 +26,7 @@ class BatchFindWorkflow implements Service {
 	**/
 	public function input(){
 		return array(
-			'optional' => array('keyid' => false, 'btname' => false, 'user' => '', 'plname' => false, 'name' => '', 'portalid' => STUDENT_PORTAL_ID),
+			'optional' => array('keyid' => false, 'btname' => false, 'user' => '', 'plname' => false, 'name' => '', 'portalid' => STUDENT_PORTAL_ID, 'export' => false, 'archive' => false),
 			'set' => array('name')
 		); 
 	}

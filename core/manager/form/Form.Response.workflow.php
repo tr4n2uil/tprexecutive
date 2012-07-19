@@ -41,7 +41,7 @@ class FormResponseWorkflow implements Service {
 	public function input(){
 		return array(
 			'required' => array('keyid', 'user', 'name', 'compsnname', 'compsnpost', 'compsnemail', 'compsnphone', 'tectc'),
-			'optional' => array('regtype' => '', 'indsector' => array(), 'funreq' => array(), 'motto' => '', 'sccgpa' => '', 'scagelimit' => '', 'seltest' => array(), 'selgd' => '', 'selinterview' => array(), 'selagrmnt' => '', 'seltrprd' => '', 'reqmnt' => array(), 'teinhand' => '', 'mailto' => false)
+			'optional' => array('address' => '', 'regtype' => '', 'indsector' => array(), 'funreq' => array(), 'motto' => '', 'sccgpa' => '', 'scxiip' => '', 'scxp' => '', 'scspl' => '', 'scagelimit' => '', 'seltest' => array(), 'selgd' => '', 'selinterview' => array(), 'selagrmnt' => '', 'seltrprd' => '', 'reqmnt' => array(), 'teinhand' => '', 'mailto' => false)
 		);
 	}
 	
@@ -53,7 +53,7 @@ class FormResponseWorkflow implements Service {
 		$memory['join'] = 'on';
 		$memory['public'] = 1;
 		$memory['queid'] = FORM_ID;
-		$memory['msg'] = 'Response Submitted Successfully';
+		$memory['msg'] = 'Response Submitted Successfully. Please check your mailbox <'.$memory['compsnemail'].'> for corfirming that its sent correctly. <br />(It may take few minutes for sending the mail)';
 		
 		//if(!$memory['mailto']){
 		$mailto = Snowblozm::get('form_mailto');
@@ -65,6 +65,7 @@ class FormResponseWorkflow implements Service {
 Basic Information
 	
 	Name of the Company : '.$memory['name'].'
+	Address : '.$memory['address'].'
 	Type : '.$memory['regtype'].'
 	Industry Sector(s) : '.implode(', ', $memory['indsector']).'
 	Requirement(s) in terms of Functional Areas : '.implode(', ', $memory['funreq']).'
@@ -77,9 +78,12 @@ Contact Person from Organization
 	Email : '.$memory['compsnemail'].'
 	Phone : '.$memory['compsnphone'].'
 			
-Shortlisting Cliteria
+Shortlisting Criteria
 	
 	CGPA (on 10 point scale) : '.$memory['sccgpa'].'
+	XII Percentage : '.$memory['scxiip'].'
+	X Percentage : '.$memory['scxp'].'
+	Specialization (for post graduate students) : '.$memory['scspl'].'
 	Age Limits (if any) : '.$memory['scagelimit'].'
 			
 Selection Process

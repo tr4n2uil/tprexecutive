@@ -50,6 +50,14 @@ class StudentRegisterWorkflow implements Service {
 			return $memory;
 		}
 		
+		if(strpos($memory['user'], '@') === false){
+			$memory['valid'] = true;
+			$memory['msg'] = 'Please relogin with your Google Account.';
+			$memory['status'] = 500;
+			$memory['details'] = 'Invalid user @student.register';
+			return $memory;
+		}
+		
 		$memory['email'] = $memory['user'];
 		$parts = explode('@', $memory['email']);
 		$uparts = explode('.', $parts[0]);

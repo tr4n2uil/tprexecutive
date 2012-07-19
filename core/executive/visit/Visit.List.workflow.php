@@ -37,7 +37,7 @@ class VisitListWorkflow implements Service {
 	public function input(){
 		return array(
 			'required' => array('keyid'),
-			'optional' => array('user' => '', 'portalid' => false, 'id' => COMPANY_PORTAL_ID, 'plname' => false, 'name' => 'IT BHU', 'pgsz' => 25, 'pgno' => 0, 'total' => false, 'padmin' => true, 'filter' => false, 'year' => false, 'comuser' => false),
+			'optional' => array('user' => '', 'portalid' => false, 'id' => COMPANY_PORTAL_ID, 'plname' => false, 'name' => 'IIT (BHU) Varanasi', 'pgsz' => 25, 'pgno' => 0, 'total' => false, 'padmin' => true, 'filter' => CURRENT_YEAR, 'year' => false, 'comuser' => false),
 			'set' => array('filter', 'year', 'comuser', 'id', 'name')
 		);
 	}
@@ -51,15 +51,16 @@ class VisitListWorkflow implements Service {
 		$authcustom = false;
 		
 		$args = $esc = array();
+		$qry = '';
 		if($memory['filter']){
 			if(in_array($memory['filter'], array('placement', 'internship', 'ppo'))){
 				$memory['vtype'] = $memory['filter'];
-				$qry = "and `vtype`='\${vtype}'";
+				$qry .= "and `vtype`='\${vtype}'";
 				array_push($args, 'vtype');
 				array_push($esc, 'vtype');
 				
 				if($memory['year']){
-					$qry .= "and YEAR(`visitdate`)='\${year}'";
+					$qry .= "and `year`='\${year}'";
 					array_push($args, 'year');
 					array_push($esc, 'year');
 				}
@@ -75,7 +76,7 @@ class VisitListWorkflow implements Service {
 				$memory['vtype'] = false;
 				$memory['tmp'] = $memory['year'];
 				$memory['year'] = $memory['filter'];
-				$qry = "and YEAR(`visitdate`)='\${year}'";
+				$qry = "and `year`='\${year}'";
 				array_push($args, 'year');
 				array_push($esc, 'year');
 				
@@ -125,7 +126,7 @@ class VisitListWorkflow implements Service {
 			'conn' => 'exconn',
 			'relation' => '`visits`',
 			'type' => 'visit',
-			'sqlprj' => '`visitid`, `vstname`, `files`, `shortlist`, `vtype`, `year`, `comid`, `comuser`, `package`, `visitdate`, UNIX_TIMESTAMP(`deadline`)*1000 as `deadline_ts`, `deadline`, (select c.`name` from `companies` c where c.`comid`=`visits`.`comid`) as `comname`, `cer`, `che`, `civ`, `cse`, `eee`, `ece`, `mec`, `met`, `min`, `phe`, `apc`, `apm`, `app`, `bce`, `bme`, `mst`',
+			'sqlprj' => '`visitid`, `vstname`, `files`, `shortlist`, `vtype`, `year`, `comid`, `comuser`, `bpackage`, `ipackage`, `mpackage`, `visitdate`, UNIX_TIMESTAMP(`deadline`)*1000 as `deadline_ts`, `deadline`, (select c.`name` from `companies` c where c.`comid`=`visits`.`comid`) as `comname`, `cer`, `che`, `civ`, `cse`, `eee`, `ece`, `mec`, `met`, `min`, `phe`, `apc`, `apm`, `app`, `bce`, `bme`, `mst`',
 			'sqlcnd' => "where `visitid` in \${list} $qry order by `visitdate` desc, `vtype` desc, `visitid` desc",
 			'escparam' => $esc,
 			'successmsg' => 'Visits information given successfully',

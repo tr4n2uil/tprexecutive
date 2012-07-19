@@ -31,7 +31,7 @@ class StudentEditWorkflow implements Service {
 	public function input(){
 		return array(
 			'required' => array('keyid', 'user', 'stdid', 'name', 'phone', 'address', 'interests'),
-			'optional' => array('location' => 0, 'title' => '', 'dateofbirth' => '', 'gender' => 'N')
+			'optional' => array('location' => 0, 'title' => '', 'dateofbirth' => '', 'gender' => 'N', 'category' => 'General', 'resphone' => '', 'resaddress' => '', 'graddetails' => '', 'language' => '', 'passport' => '', 'father' => '', 'foccupation' => '', 'mother' => '', 'moccupation' => '')
 		);
 	}
 	
@@ -53,13 +53,13 @@ class StudentEditWorkflow implements Service {
 		),
 		array(
 			'service' => 'transpera.relation.update.workflow',
-			'args' => array('stdid', 'name', 'interests'),
+			'args' => array('stdid', 'name', 'interests', 'category', 'resphone', 'resaddress', 'graddetails', 'language', 'passport', 'father', 'foccupation', 'mother', 'moccupation'),
 			'conn' => 'exconn',
 			'relation' => '`students`',
-			'sqlcnd' => "set `name`='\${name}', `interests`='\${interests}' where `stdid`=\${stdid}",
+			'sqlcnd' => "set `name`='\${name}', `interests`='\${interests}', `category`='\${category}', `resphone`='\${resphone}', `resaddress`='\${resaddress}', `graddetails`='\${graddetails}', `language`='\${language}', `passport`='\${passport}', `father`='\${father}', `foccupation`='\${foccupation}', `mother`='\${mother}', `moccupation`='\${moccupation}' where `stdid`=\${stdid}",
 			'successmsg' => 'Student edited successfully',
 			'check' => false,
-			'escparam' => array('name', 'interests'),
+			'escparam' => array('name', 'interests', 'category', 'resphone', 'resaddress', 'graddetails', 'language', 'passport', 'father', 'foccupation', 'mother', 'moccupation'),
 			'errormsg' => 'No Change / Invalid Student ID'
 		));
 		

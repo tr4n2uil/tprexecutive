@@ -104,7 +104,7 @@ class WillingnessListWorkflow implements Service {
 		
 		if($memory['me']){
 			$rel = '`willingnesses` w, `students` s, `visits` v';
-			$prj = 'w.`wlgsid`, w.`visitid`, w.`resume`, w.`status`, w.`approval`, w.`name`, w.`batch`, s.`stdid`, s.`username`, v.`comuser`, v.`comid`, v.`vtype`, v.`year`, v.`visitdate`, v.`package`';
+			$prj = "w.`wlgsid`, w.`visitid`, w.`resume`, w.`status`, w.`approval`, w.`name`, w.`batch`, s.`stdid`, s.`username`, v.`comuser`, v.`comid`, v.`vtype`, v.`year`, v.`visitdate`, (case (select `course` from `batches` where `btname`=w.`batch`) when 'btech' then v.`bpackage` when 'idd' then v.`ipackage` when 'mtech' then v.`mpackage` else '' end) as `package`";
 			$cnd = "where s.`stdid`=\${visitid} and w.`owner`=s.`owner` and v.`visitid`=w.`visitid` order by w.`wlgsid` desc";
 			$authcustom = $batchauth;
 		}
@@ -112,13 +112,13 @@ class WillingnessListWorkflow implements Service {
 			$rel = '`willingnesses` w, `students` s, `grades` g, `persons` p, `batches` b';
 			$prj = "s.`name`, s.`rollno`, 
 			(case b.`course` when 'btech' then 'B Tech' when 'idd' then 'IDD / IMD' when 'mtech' then 'M Tech' else '' end) as `course`, 
-			(case b.`dept` when 'cer' then 'Ceramic Engineering' when 'che' then 'Chemical Engineering' when 'civ' then 'Civil Engineering' when 'cse' then 'Computer Engineering' when 'eee' then 'Electrical Engineering' when 'ece' then 'Electronics Engineering' when 'mec' then 'Mechanical Engineering' when 'met' then 'Metallurgical Engineering' when 'min' then 'Mining Engineering' when 'phe' then 'Pharmaceutical Engineering' when 'apc' then 'Applied Chemistry' when 'apm' then 'Applied Mathematics' when 'app' then 'Applied Physics' when 'bce' then 'Bio-Chemical Engineering' when 'bme' then 'Bio-Medical Engineering' when 'mst' then 'Material Science & Technology' else '' end) as `dept`, b.`year`, s.`email`, p.`phone`, p.`dateofbirth`, p.`gender`, g.`cgpa`, g.`sscx`, g.`hscxii`, g.`sgpa1`, g.`sgpa2`, g.`sgpa3`, g.`sgpa4`, g.`sgpa5`, g.`sgpa6`, g.`sgpa7`, g.`sgpa8`, g.`sgpa9`, g.`sgpa10`, g.`ygpa1`, g.`ygpa2`, g.`ygpa3`, g.`ygpa4`, g.`ygpa5`";
+			(case b.`dept` when 'cer' then 'Ceramic Engineering' when 'che' then 'Chemical Engineering' when 'civ' then 'Civil Engineering' when 'cse' then 'Computer Engineering' when 'eee' then 'Electrical Engineering' when 'ece' then 'Electronics Engineering' when 'mec' then 'Mechanical Engineering' when 'met' then 'Metallurgical Engineering' when 'min' then 'Mining Engineering' when 'phe' then 'Pharmaceutical Engineering' when 'apc' then 'Applied Chemistry' when 'apm' then 'Applied Mathematics' when 'app' then 'Applied Physics' when 'bce' then 'Bio-Chemical Engineering' when 'bme' then 'Bio-Medical Engineering' when 'mst' then 'Material Science & Technology' else '' end) as `dept`, b.`year`, s.`email`, p.`phone`, p.`address`, s.`resphone`, s.`resaddress`, p.`dateofbirth`, p.`gender`, s.`category`, s.`language`, s.`father`, s.`foccupation`, s.`mother`, s.`moccupation`, g.`cgpa`, g.`sscx`, g.`sscyear`, g.`hscxii`, g.`hscyear`, g.`jee`, g.`gate`, s.`graddetails`, g.`sgpa1`, g.`sgpa2`, g.`sgpa3`, g.`sgpa4`, g.`sgpa5`, g.`sgpa6`, g.`sgpa7`, g.`sgpa8`, g.`sgpa9`, g.`sgpa10`, g.`ygpa1`, g.`ygpa2`, g.`ygpa3`, g.`ygpa4`, g.`ygpa5`";
 			$cnd = "where $qry and w.`owner`=s.`owner` and s.`grade`=g.`gradeid` and p.`pnid`=s.`stdid` and b.`batchid`=w.`batchid`";
 			$authcustom = false;
 		}
 		elseif($memory['archive']){
 			$rel = '`willingnesses` w, `students` s, `directories` d, `files` f';
-			$prj = "concat(s.`name`, '[', s.`rollno`, '].pdf') as `asname`, d.`path` as `filepath`, f.`filename`, (case w.`resume` when 0 then s.`resume` else w.`resume` end) as `fresume`";
+			$prj = "concat(s.`name`, ' [', s.`rollno`, '].pdf') as `asname`, d.`path` as `filepath`, f.`filename`, (case w.`resume` when 0 then s.`resume` else w.`resume` end) as `fresume`";
 			$cnd = "where $qry and w.`owner`=s.`owner` and f.`fileid`=(case w.`resume` when 0 then s.`resume` else w.`resume` end) and d.`dirid`=w.`resdir`";
 			$authcustom = false;
 		}
@@ -162,7 +162,7 @@ class WillingnessListWorkflow implements Service {
 				'service' => 'cbcore.data.export.service',
 				'input' => array('data' => 'willingnesses'),
 				'type' => 'csv',
-				'default' => "Student Name,Roll No,Course,Department,Year,Email,Phone,Date of Birth,Gender,CGPA,X %,XII %,SGPA I,SGPA II,SGPA III,SGPA IV,SGPA V,SGPA VI,SGPA VII,SGPA VIII,SGPA IX,SGPA X,YGPA I,YGPA II,YGPA III,YGPA IV,YGPA V\r\n",
+				'default' => "Student Name,Roll No,Course,Department,Year of Passing,Email,Phone,Address (Current),Phone (Residential),Address (Permanent),Date of Birth,Gender,Category,Mother Tongue,Father's Name,Occupation,Mother's Name,Occupation,CGPA,X %,X Year of Passing,XII %,XII Year of Passing,JEE AIR, GATE AIR,Graduation Details,SGPA I,SGPA II,SGPA III,SGPA IV,SGPA V,SGPA VI,SGPA VII,SGPA VIII,SGPA IX,SGPA X,YGPA I,YGPA II,YGPA III,YGPA IV,YGPA V\r\n",
 				'filename' => $name.'.csv',
 				'output' => array('result' => 'csv')
 			),
