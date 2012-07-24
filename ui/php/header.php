@@ -13,7 +13,7 @@
 		<script charset="utf-8" type="text/javascript" src="ui/js/jquery.cookie.min.js"></script>
 		<script charset="utf-8" type="text/javascript" src="ui/js/json2.min.js"></script>
 		<script charset="utf-8" type="text/javascript" src="ui/js/jquery.expander.min.js"></script>
-		<script charset="utf-8" type="text/javascript" src="ui/js/jquery-firespark.min.js"></script>
+		<script charset="utf-8" type="text/javascript" src="ui/js/jquery-firespark.js"></script>
 		<script charset="utf-8" type="text/javascript" src="ui/js/executive-ui.min.js"></script>
 		<script type="text/javascript" src="ui/js/jquery.dataTables.min.js"></script>
 		<script type="text/javascript">

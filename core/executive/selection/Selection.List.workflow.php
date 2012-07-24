@@ -38,7 +38,7 @@ class SelectionListWorkflow implements Service {
 	public function input(){
 		return array(
 			'required' => array('keyid'),
-			'optional' => array('user' => '', 'shlstid' => false, 'id' => 0, 'shlstname' => false, 'name' => '', 'pgsz' => 15, 'pgno' => 0, 'total' => false, 'padmin' => true, 'export' => false, 'archive' => false, 'me' => false),
+			'optional' => array('user' => '', 'shlstid' => false, 'id' => 0, 'shlstname' => false, 'name' => '', 'pgsz' => false, 'pgno' => 0, 'total' => false, 'padmin' => true, 'export' => false, 'archive' => false, 'me' => false),
 			'set' => array('id', 'name', 'me')
 		);
 	}

@@ -171,7 +171,8 @@ class GradeUpdateWorkflow implements Service {
 			'conn' => 'exconn',
 			'relation' => '`grades`',
 			'type' => 'grade',
-			'sqlcnd' => "set `sscx`=\${sscx}, `hscxii`=\${hscxii}, `sscyear`=\${sscyear}, `hscyear`=\${hscyear}, `jee`= \${jee}, `gate`=\${gate}, `gatescore`=\${gatescore}, `gatepercentile`=\${gatepercentile}, `cgpa`=\${cgpa}, `sgpa1`=\${sgpa1}, `sgpa2`=\${sgpa2}, `sgpa3`=\${sgpa3}, `sgpa4`=\${sgpa4}, `sgpa5`=\${sgpa5}, `sgpa6`=\${sgpa6}, `sgpa7`=\${sgpa7}, `sgpa8`=\${sgpa8}, `sgpa9`=\${sgpa9}, `sgpa10`=\${sgpa10}, `ygpa1`=\${ygpa1}, `ygpa2`=\${ygpa2}, `ygpa3`=\${ygpa3}, `ygpa4`=\${ygpa4}, `ygpa5`=\${ygpa5} where `gradeid`=\${id}",
+			'sqlcnd' => "set `sscx`=\${sscx}, `hscxii`=\${hscxii}, `sscyear`=\${sscyear}, `hscyear`=\${hscyear}, `jee`= '\${jee}', `gate`=\${gate}, `gatescore`=\${gatescore}, `gatepercentile`=\${gatepercentile}, `cgpa`=\${cgpa}, `sgpa1`=\${sgpa1}, `sgpa2`=\${sgpa2}, `sgpa3`=\${sgpa3}, `sgpa4`=\${sgpa4}, `sgpa5`=\${sgpa5}, `sgpa6`=\${sgpa6}, `sgpa7`=\${sgpa7}, `sgpa8`=\${sgpa8}, `sgpa9`=\${sgpa9}, `sgpa10`=\${sgpa10}, `ygpa1`=\${ygpa1}, `ygpa2`=\${ygpa2}, `ygpa3`=\${ygpa3}, `ygpa4`=\${ygpa4}, `ygpa5`=\${ygpa5} where `gradeid`=\${id}",
+			'escparam' => array('jee'),
 			'check' => false,
 			'successmsg' => 'Grade edited successfully'
 		),
