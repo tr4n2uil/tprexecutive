@@ -54,7 +54,11 @@ class VisitCreateWorkflow implements Service {
 		if(!$memory['valid'])
 			return $memory;
 		
-		$qry = "`year`=".$memory['visit']['year'].' and (0 ';
+		if($memory['visit']['vtype'] == 'placement')
+			$qry = "`year`=".$memory['visit']['year'].' and (0 ';
+		else
+			$qry = '((`year`='.$memory['visit']['year'].') or (`year`='.((int)$memory['visit']['year'] + 1).' and `course`=\'idd\')) and (0 ';
+	
 		if(count($memory['cutoffs']) == 0){
 			$qry .= 'or 1';
 		}
@@ -95,7 +99,7 @@ class VisitCreateWorkflow implements Service {
 			return $memory;
 		
 		//echo json_encode($memory['students']);exit;
-			
+		
 		foreach($memory['students'] as $stds){
 			$memory = Snowblozm::run(array(
 				'service' => 'executive.willingness.add.workflow',

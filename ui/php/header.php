@@ -29,7 +29,7 @@
 			<div class="page">
 			<table><tbody>
 				<tr class="mainstrip">
-					<td rowspan="3" class="itbhu-logo"><img src="ui/img/executive/itbhu.png" /></td>
+					<td rowspan="3" class="itbhu-logo"><img src="ui/img/executive/iitbhu.png" /></td>
 					<td class="mainbar">
 						<p class="iitbhu fleft">Indian Institute of Technology (BHU) Varanasi</p>
 						<div class="statemenu fright">
@@ -71,7 +71,7 @@
 								</ul>
 							</li>
 							<li>
-								<a href="info/placements/" class="ui">Placements</a>
+								<a href="info/placements/" class="ui">Companies</a>
 								<ul class="menu-item">
 									<li><a href="info/placements/#!/view/#tnp-procedure/" class="ui">Procedure</a></li>
 									<li><a href="info/placements/#!/view/#tnp-facilities/" class="ui">Facilities</a></li>
@@ -86,8 +86,8 @@
 								<a href="info/contact-us/" class="ui">Contact Us</a>
 								<ul class="menu-item">
 									<li><a href="info/contact-us/#!/view/#cnt-office/" class="ui">Office</a></li>
-									<li><a href="info/forms/#!/view/#contact/" class="ui">Contact Online</a></li>
-									<!--<li><a href="info/contact-us/#!/view/#cnt-coordinators/" class="ui">Student Coordinators</a></li>-->
+									<li><a href="info/forms/#!/view/#contact/" class="ui">Leave Message</a></li>
+									<li><a href="info/contact-us/#!/view/#cnt-coordinators/" class="ui">Student Coordinators</a></li>
 									<li><a href="info/contact-us/#!/view/#cnt-varanasi/" class="ui">Varanasi</a></li>
 								</ul>
 							</li>

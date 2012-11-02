@@ -52,7 +52,7 @@ class GradeUpdateWorkflow implements Service {
 	public function input(){
 		return array(
 			'required' => array('keyid', 'user', 'gradeid', 'username', 'password'),
-			'optional' => array('batchid' => 0, 'btname' => '', 'sscx' => 0.0, 'hscxii' => 0.0, 'sscyear' => 0, 'hscyear' => 0, 'jee' => 0, 'gate' => 0, 'gatescore' => 0, 'gatepercentile' => 0, 'sgpa1' => 0.0, 'sgpa2' => 0.0, 'sgpa3' => 0.0, 'sgpa4' => 0.0, 'sgpa5' => 0.0, 'sgpa6' => 0.0, 'sgpa7' => 0.0, 'sgpa8' => 0.0, 'sgpa9' => 0.0, 'sgpa10' => 0.0)
+			'optional' => array('batchid' => 0, 'btname' => '', 'sscx' => 0.0, 'hscxii' => 0.0, 'gradcent' => 0.0, 'sscyear' => 0, 'hscyear' => 0, 'gradyear' => 0, 'jee' => 0, 'gate' => 0, 'gatescore' => 0, 'gatepercentile' => 0, 'sgpa1' => 0.0, 'sgpa2' => 0.0, 'sgpa3' => 0.0, 'sgpa4' => 0.0, 'sgpa5' => 0.0, 'sgpa6' => 0.0, 'sgpa7' => 0.0, 'sgpa8' => 0.0, 'sgpa9' => 0.0, 'sgpa10' => 0.0)
 		);
 	}
 	
@@ -166,12 +166,12 @@ class GradeUpdateWorkflow implements Service {
 		),
 		array(
 			'service' => 'transpera.entity.edit.workflow',
-			'args' => array('sscx', 'hscxii', 'sscyear', 'hscyear', 'jee', 'gate', 'gatescore', 'gatepercentile', 'cgpa', 'sgpa1', 'sgpa2', 'sgpa3', 'sgpa4', 'sgpa5', 'sgpa6', 'sgpa7', 'sgpa8', 'sgpa9', 'sgpa10', 'ygpa1', 'ygpa2', 'ygpa3', 'ygpa4', 'ygpa5'),
+			'args' => array('sscx', 'hscxii', 'gradcent', 'sscyear', 'hscyear', 'gradyear', 'jee', 'gate', 'gatescore', 'gatepercentile', 'cgpa', 'sgpa1', 'sgpa2', 'sgpa3', 'sgpa4', 'sgpa5', 'sgpa6', 'sgpa7', 'sgpa8', 'sgpa9', 'sgpa10', 'ygpa1', 'ygpa2', 'ygpa3', 'ygpa4', 'ygpa5'),
 			'input' => array('id' => 'gradeid', 'cname' => 'username', 'parent' => 'batchid', 'pname' => 'btname'),
 			'conn' => 'exconn',
 			'relation' => '`grades`',
 			'type' => 'grade',
-			'sqlcnd' => "set `sscx`=\${sscx}, `hscxii`=\${hscxii}, `sscyear`=\${sscyear}, `hscyear`=\${hscyear}, `jee`= '\${jee}', `gate`=\${gate}, `gatescore`=\${gatescore}, `gatepercentile`=\${gatepercentile}, `cgpa`=\${cgpa}, `sgpa1`=\${sgpa1}, `sgpa2`=\${sgpa2}, `sgpa3`=\${sgpa3}, `sgpa4`=\${sgpa4}, `sgpa5`=\${sgpa5}, `sgpa6`=\${sgpa6}, `sgpa7`=\${sgpa7}, `sgpa8`=\${sgpa8}, `sgpa9`=\${sgpa9}, `sgpa10`=\${sgpa10}, `ygpa1`=\${ygpa1}, `ygpa2`=\${ygpa2}, `ygpa3`=\${ygpa3}, `ygpa4`=\${ygpa4}, `ygpa5`=\${ygpa5} where `gradeid`=\${id}",
+			'sqlcnd' => "set `sscx`=\${sscx}, `hscxii`=\${hscxii}, `gradcent`=\${gradcent}, `sscyear`=\${sscyear}, `hscyear`=\${hscyear}, `gradyear`=\${gradyear}, `jee`= '\${jee}', `gate`=\${gate}, `gatescore`=\${gatescore}, `gatepercentile`=\${gatepercentile}, `cgpa`=\${cgpa}, `sgpa1`=\${sgpa1}, `sgpa2`=\${sgpa2}, `sgpa3`=\${sgpa3}, `sgpa4`=\${sgpa4}, `sgpa5`=\${sgpa5}, `sgpa6`=\${sgpa6}, `sgpa7`=\${sgpa7}, `sgpa8`=\${sgpa8}, `sgpa9`=\${sgpa9}, `sgpa10`=\${sgpa10}, `ygpa1`=\${ygpa1}, `ygpa2`=\${ygpa2}, `ygpa3`=\${ygpa3}, `ygpa4`=\${ygpa4}, `ygpa5`=\${ygpa5} where `gradeid`=\${id}",
 			'escparam' => array('jee'),
 			'check' => false,
 			'successmsg' => 'Grade edited successfully'
@@ -211,6 +211,7 @@ class GradeUpdateWorkflow implements Service {
 	Username : '.$grade['username'].'
 	X % : '.$grade['sscx'].'
 	XII % : '.$grade['hscxii'].'
+	Graduation  % : '.$grade['gradcent'].'
 	CGPA : '.$grade['cgpa'].'
 	Details : 
 	

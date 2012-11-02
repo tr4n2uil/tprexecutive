@@ -37,7 +37,7 @@ class VisitListWorkflow implements Service {
 	public function input(){
 		return array(
 			'required' => array('keyid'),
-			'optional' => array('user' => '', 'portalid' => false, 'id' => COMPANY_PORTAL_ID, 'plname' => false, 'name' => 'IIT (BHU) Varanasi', 'pgsz' => 25, 'pgno' => 0, 'total' => false, 'padmin' => true, 'filter' => CURRENT_YEAR, 'year' => false, 'comuser' => false),
+			'optional' => array('user' => '', 'portalid' => false, 'id' => COMPANY_PORTAL_ID, 'plname' => false, 'name' => 'Campus Visit', 'pgsz' => false, 'pgno' => 0, 'total' => false, 'padmin' => true, 'filter' => CURRENT_YEAR, 'year' => false, 'comuser' => false),
 			'set' => array('filter', 'year', 'comuser', 'id', 'name')
 		);
 	}
@@ -87,7 +87,7 @@ class VisitListWorkflow implements Service {
 					$memory['vtype'] = $memory['tmp'];
 				}
 				
-				if($memory['comuser']){
+				if($memory['comuser'] && $memory['comuser'] != 'Schedule'){
 					$qry .= "and `comuser`='\${comuser}'";
 					array_push($args, 'comuser');
 					array_push($esc, 'comuser');
@@ -126,7 +126,7 @@ class VisitListWorkflow implements Service {
 			'conn' => 'exconn',
 			'relation' => '`visits`',
 			'type' => 'visit',
-			'sqlprj' => '`visitid`, `vstname`, `files`, `shortlist`, `vtype`, `year`, `comid`, `comuser`, `bpackage`, `ipackage`, `mpackage`, `visitdate`, UNIX_TIMESTAMP(`deadline`)*1000 as `deadline_ts`, `deadline`, (select c.`name` from `companies` c where c.`comid`=`visits`.`comid`) as `comname`, `cer`, `che`, `civ`, `cse`, `eee`, `ece`, `mec`, `met`, `min`, `phe`, `apc`, `apm`, `app`, `bce`, `bme`, `mst`',
+			'sqlprj' => '`visitid`, `vstname`, `files`, `shortlist`, `vtype`, `year`, `comid`, `comuser`, `remarks`, `vstatus`, `bpackage`, `ipackage`, `mpackage`, `visitdate`, UNIX_TIMESTAMP(`deadline`)*1000 as `deadline_ts`, `deadline`, UNIX_TIMESTAMP(`issuedl`)*1000 as `issuedl_ts`, `issuedl`, (select c.`name` from `companies` c where c.`comid`=`visits`.`comid`) as `comname`, `cer`, `che`, `civ`, `cse`, `eee`, `ece`, `mec`, `met`, `min`, `phe`, `apc`, `apm`, `app`, `bce`, `bme`, `mst`',
 			'sqlcnd' => "where `visitid` in \${list} $qry order by `visitdate` desc, `vtype` desc, `visitid` desc",
 			'escparam' => $esc,
 			'successmsg' => 'Visits information given successfully',

@@ -54,7 +54,8 @@ class WillingnessUpdateWorkflow implements Service {
 			'conn' => 'exconn',
 			'relation' => '`willingnesses`',
 			'type' => 'willingness',
-			'sqlcnd' => "set $qry `status`=\${wstatus} where `wlgsid`=\${id} and `approval`=0",
+			'sqlcnd' => "set $qry `status`=(case `approval` when 0 then \${wstatus} else `status` end) where `wlgsid`=\${id}",
+			'check' => false,
 			'errormsg' => 'Willingness Not Editable / No Change',
 			'successmsg' => 'Willingness edited successfully'
 		),

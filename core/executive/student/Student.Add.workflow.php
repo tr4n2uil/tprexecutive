@@ -55,6 +55,17 @@ class StudentAddWorkflow implements Service {
 			'service' => 'executive.batch.info.workflow'
 		),
 		array(
+			'service' => 'transpera.relation.unique.workflow',
+			'args' => array('rollno'),
+			'conn' => 'exconn',
+			'relation' => '`students`',
+			'sqlprj' => '`stdid`',
+			'sqlcnd' => "where `rollno`='\${rollno}'",
+			'escparam' => array('rollno'),
+			'not' => false,
+			'errormsg' => 'User already added'
+		),
+		array(
 			'service' => 'people.person.add.workflow',
 			'input' => array('peopleid' => 'batchid', 'cname' => 'username'),
 			'country' => 'India',

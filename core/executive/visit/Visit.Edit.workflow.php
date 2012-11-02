@@ -55,8 +55,8 @@ class VisitEditWorkflow implements Service {
 	**/
 	public function input(){
 		return array(
-			'required' => array('keyid', 'user', 'visitid', 'vstname', 'year', 'vtype', 'visitdate', 'deadline', 'portalid', 'plname'),
-			'optional' => array('bpackage' => 0, 'ipackage' => 0, 'mpackage' => 0, 'cer' => '', 'che' => '', 'civ' => '', 'cse' => '', 'eee' => '', 'ece' => '', 'mec' => '', 'met' => '', 'min' => '', 'phe' => '', 'apc' => '', 'apm' => '', 'app' => '', 'bce' => '', 'bme' => '', 'mst' => '')
+			'required' => array('keyid', 'user', 'visitid', 'vstname', 'year', 'vtype', 'visitdate', 'deadline', 'issuedl', 'portalid', 'plname'),
+			'optional' => array('remarks' => '', 'vstatus' => 'Open for Willingness', 'bpackage' => 0, 'ipackage' => 0, 'mpackage' => 0, 'cer' => '', 'che' => '', 'civ' => '', 'cse' => '', 'eee' => '', 'ece' => '', 'mec' => '', 'met' => '', 'min' => '', 'phe' => '', 'apc' => '', 'apm' => '', 'app' => '', 'bce' => '', 'bme' => '', 'mst' => '')
 		);
 	}
 	
@@ -69,13 +69,13 @@ class VisitEditWorkflow implements Service {
 		$workflow = array(
 		array(
 			'service' => 'transpera.entity.edit.workflow',
-			'args' => array('vstname', 'year', 'vtype', 'bpackage', 'ipackage', 'mpackage', 'visitdate', 'deadline', 'cer', 'che', 'civ', 'cse', 'eee', 'ece', 'mec', 'met', 'min', 'phe', 'apc', 'apm', 'app', 'bce', 'bme', 'mst'),
+			'args' => array('vstname', 'year', 'vtype', 'remarks', 'vstatus', 'bpackage', 'ipackage', 'mpackage', 'visitdate', 'deadline', 'issuedl', 'cer', 'che', 'civ', 'cse', 'eee', 'ece', 'mec', 'met', 'min', 'phe', 'apc', 'apm', 'app', 'bce', 'bme', 'mst'),
 			'input' => array('id' => 'visitid', 'cname' => 'vstname', 'parent' => 'portalid', 'pname' => 'plname'),
 			'conn' => 'exconn',
 			'relation' => '`visits`',
 			'type' => 'visit',
-			'sqlcnd' => "set `vstname`='\${vstname}', `year`='\${year}', `vtype`='\${vtype}', `bpackage`=\${bpackage}, `ipackage`=\${ipackage}, `mpackage`=\${mpackage}, `visitdate`='\${visitdate}', `deadline`='\${deadline}', `cer`='\${cer}', `che`='\${che}', `civ`='\${civ}', `cse`='\${cse}', `eee`='\${eee}', `ece`='\${ece}', `mec`='\${mec}', `met`='\${met}', `min`='\${min}', `phe`='\${phe}', `apc`='\${apc}', `apm`='\${apm}', `app`='\${app}', `bce`='\${bce}', `bme`='\${bme}', `mst`='\${mst}' where `visitid`=\${id}",
-			'escparam' => array('vstname', 'year', 'vtype', 'visitdate', 'deadline', 'cer', 'che', 'civ', 'cse', 'eee', 'ece', 'mec', 'met', 'min', 'phe', 'apc', 'apm', 'app', 'bce', 'bme', 'mst'),
+			'sqlcnd' => "set `vstname`='\${vstname}', `year`='\${year}', `vtype`='\${vtype}', `remarks`='\${remarks}', `vstatus`='\${vstatus}', `bpackage`=\${bpackage}, `ipackage`=\${ipackage}, `mpackage`=\${mpackage}, `visitdate`='\${visitdate}', `deadline`='\${deadline}', `issuedl`='\${issuedl}', `cer`='\${cer}', `che`='\${che}', `civ`='\${civ}', `cse`='\${cse}', `eee`='\${eee}', `ece`='\${ece}', `mec`='\${mec}', `met`='\${met}', `min`='\${min}', `phe`='\${phe}', `apc`='\${apc}', `apm`='\${apm}', `app`='\${app}', `bce`='\${bce}', `bme`='\${bme}', `mst`='\${mst}' where `visitid`=\${id}",
+			'escparam' => array('remarks', 'vstatus', 'vstname', 'year', 'vtype', 'visitdate', 'deadline', 'issuedl', 'cer', 'che', 'civ', 'cse', 'eee', 'ece', 'mec', 'met', 'min', 'phe', 'apc', 'apm', 'app', 'bce', 'bme', 'mst'),
 			'check' => false,
 			'successmsg' => 'Visit edited successfully'
 		),

@@ -48,7 +48,7 @@ class GradeAddWorkflow implements Service {
 	public function input(){
 		return array(
 			'required' => array('keyid', 'user', 'username', 'rollno'),
-			'optional' => array('batchid' => 0, 'btname' => '', 'level' => false, 'owner' => false, 'sscx' => 0.0, 'hscxii' => 0.0, 'sgpa1' => 0.0, 'sgpa2' => 0.0, 'sgpa3' => 0.0, 'sgpa4' => 0.0, 'sgpa5' => 0.0, 'sgpa6' => 0.0, 'sgpa7' => 0.0, 'sgpa8' => 0.0, 'sgpa9' => 0.0, 'sgpa10' => 0.0)
+			'optional' => array('batchid' => 0, 'btname' => '', 'level' => false, 'owner' => false, 'sscx' => 0.0, 'hscxii' => 0.0, 'gradcent' => 0.0, 'sgpa1' => 0.0, 'sgpa2' => 0.0, 'sgpa3' => 0.0, 'sgpa4' => 0.0, 'sgpa5' => 0.0, 'sgpa6' => 0.0, 'sgpa7' => 0.0, 'sgpa8' => 0.0, 'sgpa9' => 0.0, 'sgpa10' => 0.0)
 		);
 	}
 	
@@ -143,13 +143,13 @@ class GradeAddWorkflow implements Service {
 		$workflow = array(
 		array(
 			'service' => 'transpera.entity.add.workflow',
-			'args' => array('username', 'rollno', 'sscx', 'hscxii', 'cgpa', 'sgpa1', 'sgpa2', 'sgpa3', 'sgpa4', 'sgpa5', 'sgpa6', 'sgpa7', 'sgpa8', 'sgpa9', 'sgpa10', 'ygpa1', 'ygpa2', 'ygpa3', 'ygpa4', 'ygpa5'),
+			'args' => array('username', 'rollno', 'sscx', 'hscxii', 'gradcent', 'cgpa', 'sgpa1', 'sgpa2', 'sgpa3', 'sgpa4', 'sgpa5', 'sgpa6', 'sgpa7', 'sgpa8', 'sgpa9', 'sgpa10', 'ygpa1', 'ygpa2', 'ygpa3', 'ygpa4', 'ygpa5'),
 			'input' => array('parent' => 'batchid', 'cname' => 'btname', 'pname' => 'btname'),
 			'conn' => 'exconn',
 			'relation' => '`grades`',
 			'type' => 'grade',
 			'authorize' => 'info:add:edit:remove:list',
-			'sqlcnd' => "(`gradeid`, `owner`, `username`, `rollno`, `sscx`, `hscxii`, `cgpa`, `sgpa1`, `sgpa2`, `sgpa3`, `sgpa4`, `sgpa5`, `sgpa6`, `sgpa7`, `sgpa8`, `sgpa9`, `sgpa10`, `ygpa1`, `ygpa2`, `ygpa3`, `ygpa4`, `ygpa5`) values (\${id}, \${owner}, '\${username}', '\${rollno}', \${sscx}, \${hscxii}, \${cgpa}, \${sgpa1}, \${sgpa2}, \${sgpa3}, \${sgpa4}, \${sgpa5}, \${sgpa6}, \${sgpa7}, \${sgpa8}, \${sgpa9}, \${sgpa10}, \${ygpa1}, \${ygpa2}, \${ygpa3}, \${ygpa4}, \${ygpa5})",
+			'sqlcnd' => "(`gradeid`, `owner`, `username`, `rollno`, `sscx`, `hscxii`, `gradcent`, `cgpa`, `sgpa1`, `sgpa2`, `sgpa3`, `sgpa4`, `sgpa5`, `sgpa6`, `sgpa7`, `sgpa8`, `sgpa9`, `sgpa10`, `ygpa1`, `ygpa2`, `ygpa3`, `ygpa4`, `ygpa5`) values (\${id}, \${owner}, '\${username}', '\${rollno}', \${sscx}, \${hscxii}, \${gradcent}, \${cgpa}, \${sgpa1}, \${sgpa2}, \${sgpa3}, \${sgpa4}, \${sgpa5}, \${sgpa6}, \${sgpa7}, \${sgpa8}, \${sgpa9}, \${sgpa10}, \${ygpa1}, \${ygpa2}, \${ygpa3}, \${ygpa4}, \${ygpa5})",
 			'escparam' => array('username', 'rollno'),
 			'successmsg' => 'Grade added successfully',
 			'output' => array('id' => 'gradeid')

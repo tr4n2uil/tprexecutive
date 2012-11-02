@@ -34,7 +34,7 @@ class StudentUpdateWorkflow implements Service {
 	**/
 	public function input(){
 		return array(
-			'required' => array('keyid', 'user', 'stdid', 'rollno', 'interests', 'ustatus', 'batchid', 'btname')
+			'required' => array('keyid', 'user', 'stdid', 'rollno', 'interests', 'remarks', 'ustatus', 'batchid', 'btname')
 		);
 	}
 	
@@ -51,13 +51,13 @@ class StudentUpdateWorkflow implements Service {
 		),
 		array(
 			'service' => 'transpera.relation.update.workflow',
-			'args' => array('stdid', 'rollno', 'interests', 'ustatus'),
+			'args' => array('stdid', 'rollno', 'interests', 'remarks', 'ustatus'),
 			'conn' => 'exconn',
 			'relation' => '`students`',
-			'sqlcnd' => "set `rollno`='\${rollno}', `interests`='\${interests}', `ustatus`='\${ustatus}' where `stdid`=\${stdid}",
+			'sqlcnd' => "set `rollno`='\${rollno}', `interests`='\${interests}', `remarks`='\${remarks}', `ustatus`='\${ustatus}' where `stdid`=\${stdid}",
 			'successmsg' => 'Student updated successfully',
 			'check' => false,
-			'escparam' => array('rollno', 'interests', 'ustatus'),
+			'escparam' => array('rollno', 'interests', 'remarks', 'ustatus'),
 			'errormsg' => 'No Change / Invalid Student ID'
 		),
 		array(
@@ -65,7 +65,7 @@ class StudentUpdateWorkflow implements Service {
 			'input' => array('id' => 'stdid', 'parent' => 'batchid', 'cname' => 'name', 'pname' => 'btname'),
 			'conn' => 'exconn',
 			'relation' => '`students`',
-			'sqlprj' => '`stdid`, `username`, `name`, `email`, `rollno`, `resume`, `home`, `interests`, `ustatus`',
+			'sqlprj' => '`stdid`, `username`, `name`, `email`, `rollno`, `resume`, `home`, `interests`, `remarks`, `ustatus`',
 			'sqlcnd' => "where `stdid`=\${id}",
 			'errormsg' => 'Invalid Student ID',
 			'type' => 'person',
