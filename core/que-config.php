@@ -23,12 +23,13 @@
 	
 Regards,<br />
 --<br />
-TPO Web Administrator<br />
-	
-<p>Training and Placement Cell, IT BHU 
-<a href="http://itbhu.ac.in/tpo/">http://itbhu.ac.in/tpo/</a><br />
+T&P Portal Administrator<br />
+<br />
+Training and Placement Cell<br />
+IIT (BHU) Varanasi - 221005<br />
+http://iitbhu.ac.in/tpo/<br />
 ');
-	define('PERSON_SEND_MAIL_SUBJECT', 'Training and Placement Cell Registration Verification');
+	define('PERSON_SEND_MAIL_SUBJECT', '[T&P] Portal Registration Verification');
 	
 	/**
 	 *	@mail People.person.reset
@@ -46,12 +47,13 @@ TPO Web Administrator<br />
 	
 Regards,<br />
 --<br />
-TPO Web Administrator<br />
-
-<p>Training and Placement Cell, IT BHU 
-<a href="http://itbhu.ac.in/tpo/">http://itbhu.ac.in/tpo/</a><br />
+T&P Portal Administrator<br />
+<br />
+Training and Placement Cell<br />
+IIT (BHU) Varanasi - 221005<br />
+http://iitbhu.ac.in/tpo/<br />
 ');
-	define('PERSON_RESET_MAIL_SUBJECT', 'Training and Placement Cell Account Password Reset');
+	define('PERSON_RESET_MAIL_SUBJECT', '[T&P] Portal Account Password Reset');
 	
 	/**
 	 *	@sms People.person.send

@@ -37,7 +37,7 @@
 		if(isset($memory['data']))
 			$HTML .= '
 			<script type="text/javascript">
-				Snowblozm.Registry.save("ui-global-data", '.$memory['result'].');
+				"ui-global-data".save('.$memory['result'].');
 				Executive.data.launch.push("#/ui'.(strpos($memory['data'], '~') === false ? $memory['data'].'~/' : $memory['data']).'glb/true/");
 			</script>';
 		
@@ -65,6 +65,7 @@
 		require_once('ui/php/statemenu.php');	
 		
 		$TILES_0 .= file_get_contents('ui/html/info/portal-'.$PORTAL.'.tile.html');
+		$MAINMENU .= file_get_contents('ui/html/info/menu-'.$PORTAL.'.tile.html');
 		//$HTML .= file_get_contents('ui/html/info/portal.html');
 		
 		$TILES_0 .= file_get_contents('ui/html/downloads.tile.html');
@@ -87,6 +88,7 @@
 	}
 	else {
 		$TILES_0 .= file_get_contents('ui/html/downloads.tile.html');
+		$MAINMENU .= file_get_contents('ui/html/mainmenu.tile.html');
 		$STATEMENU .= file_get_contents('ui/html/login.tile.html');
 		$SHTML.= file_get_contents('ui/html/login.html');
 	}

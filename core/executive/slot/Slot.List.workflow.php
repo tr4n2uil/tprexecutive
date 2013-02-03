@@ -53,7 +53,7 @@ class SlotListWorkflow implements Service {
 			'conn' => 'exconn',
 			'relation' => '`slots`',
 			'type' => 'slot',
-			'sqlcnd' => "where `slotid` in \${list} order by `username`",
+			'sqlcnd' => "where `slotid` in \${list} order by `rollno`",
 			'successmsg' => 'Slots information given successfully',
 			//'lsttrack' => true,
 			'action' => 'add',

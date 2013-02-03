@@ -56,8 +56,8 @@ class VisitAddWorkflow implements Service {
 	**/
 	public function input(){
 		return array(
-			'required' => array('keyid', 'user', 'year', 'vtype', 'comuser', 'visitdate', 'deadline', 'issuedl'),
-			'optional' => array('portalid' => COMPANY_PORTAL_ID, 'plname' => '', 'level' => false, 'owner' => false, 'remarks' => '', 'vstatus' => 'Open for Willingness', 'bpackage' => 0, 'ipackage' => 0, 'mpackage' => 0, 'cer' => '', 'che' => '', 'civ' => '', 'cse' => '', 'eee' => '', 'ece' => '', 'mec' => '', 'met' => '', 'min' => '', 'phe' => '', 'apc' => '', 'apm' => '', 'app' => '', 'bce' => '', 'bme' => '', 'mst' => '')
+			'required' => array('keyid', 'user', 'year', 'vtype', 'comuser', 'deadline', 'issuedl'),
+			'optional' => array('portalid' => COMPANY_PORTAL_ID, 'visitdate' => '0000-00-00', 'plname' => '', 'level' => false, 'owner' => false, 'remarks' => '', 'issues' => '', 'profile' => '', 'vstatus' => 'Open for Willingness', 'bpackage' => 0, 'ipackage' => 0, 'mpackage' => 0, 'cer' => '', 'che' => '', 'civ' => '', 'cse' => '', 'eee' => '', 'ece' => '', 'mec' => '', 'met' => '', 'min' => '', 'phe' => '', 'apc' => '', 'apm' => '', 'app' => '', 'bce' => '', 'bme' => '', 'mst' => '')
 		);
 	}
 	
@@ -69,7 +69,12 @@ class VisitAddWorkflow implements Service {
 		$memory['join'] = 'on';
 		$memory['public'] = 1;
 		
-		$memory['vstname'] = $memory['comuser'].'.'.$memory['vtype'].'.'.$memory['year'];
+		$memory['year'] = $memory['vtype'] == 'internship' ? $memory['year'] + 1 : $memory['year'];
+		
+		$memory['vstname'] = $memory['comuser'].'.'.$memory['profile'].'.'.$memory['vtype'].'.'.$memory['year'];
+		$memory['bpackage'] = $memory['bpackage'] ? $memory['bpackage'] : 0;
+		$memory['ipackage'] = $memory['ipackage'] ? $memory['ipackage'] : 0;
+		$memory['mpackage'] = $memory['mpackage'] ? $memory['mpackage'] : 0;
 		
 		$workflow = array(
 		array(
@@ -89,14 +94,14 @@ class VisitAddWorkflow implements Service {
 		),
 		array(
 			'service' => 'transpera.entity.add.workflow',
-			'args' => array('vstname', 'year', 'vtype', 'remarks', 'vstatus', 'bpackage', 'ipackage', 'mpackage', 'comid', 'comuser', 'visitdate', 'deadline', 'issuedl', 'comowner', 'cer', 'che', 'civ', 'cse', 'eee', 'ece', 'mec', 'met', 'min', 'phe', 'apc', 'apm', 'app', 'bce', 'bme', 'mst'),
+			'args' => array('vstname', 'year', 'vtype', 'remarks', 'issues', 'profile', 'vstatus', 'bpackage', 'ipackage', 'mpackage', 'comid', 'comuser', 'visitdate', 'deadline', 'issuedl', 'comowner', 'cer', 'che', 'civ', 'cse', 'eee', 'ece', 'mec', 'met', 'min', 'phe', 'apc', 'apm', 'app', 'bce', 'bme', 'mst'),
 			'input' => array('parent' => 'portalid', 'cname' => 'vstname', 'pname' => 'plname'),
 			'conn' => 'exconn',
 			'relation' => '`visits`',
 			'type' => 'visit',
 			'authorize' => 'edit:add:remove:',
-			'sqlcnd' => "(`visitid`, `owner`, `comid`, `comuser`, `vstname`, `year`, `remarks`, `vstatus`, `vtype`, `bpackage`, `ipackage`, `mpackage`, `visitdate`, `deadline`, `issuedl`, `files`, `shortlist`, `cer`, `che`, `civ`, `cse`, `eee`, `ece`, `mec`, `met`, `min`, `phe`, `apc`, `apm`, `app`, `bce`, `bme`, `mst`) values (\${id}, \${owner}, \${comid}, '\${comuser}', '\${vstname}', '\${year}', '\${remarks}', '\${vstatus}', '\${vtype}', \${bpackage}, \${ipackage}, \${mpackage}, '\${visitdate}', '\${deadline}', '\${issuedl}', \${files}, \${shortlist}, '\${cer}', '\${che}', '\${civ}', '\${cse}', '\${eee}', '\${ece}', '\${mec}', '\${met}', '\${min}', '\${phe}', '\${apc}', '\${apm}', '\${app}', '\${bce}', '\${bme}', '\${mst}')",
-			'escparam' => array('vstname', 'year', 'remarks', 'vstatus', 'vtype', 'visitdate', 'deadline', 'issuedl', 'comuser', 'cer', 'che', 'civ', 'cse', 'eee', 'ece', 'mec', 'met', 'min', 'phe', 'apc', 'apm', 'app', 'bce', 'bme', 'mst'),
+			'sqlcnd' => "(`visitid`, `owner`, `comid`, `comuser`, `vstname`, `year`, `remarks`, `issues`, `profile`, `vstatus`, `vtype`, `bpackage`, `ipackage`, `mpackage`, `visitdate`, `deadline`, `issuedl`, `files`, `shortlist`, `cer`, `che`, `civ`, `cse`, `eee`, `ece`, `mec`, `met`, `min`, `phe`, `apc`, `apm`, `app`, `bce`, `bme`, `mst`) values (\${id}, \${owner}, \${comid}, '\${comuser}', '\${vstname}', '\${year}', '\${remarks}', '\${issues}', '\${profile}', '\${vstatus}', '\${vtype}', \${bpackage}, \${ipackage}, \${mpackage}, '\${visitdate}', '\${deadline}', '\${issuedl}', \${files}, \${shortlist}, '\${cer}', '\${che}', '\${civ}', '\${cse}', '\${eee}', '\${ece}', '\${mec}', '\${met}', '\${min}', '\${phe}', '\${apc}', '\${apm}', '\${app}', '\${bce}', '\${bme}', '\${mst}')",
+			'escparam' => array('vstname', 'year', 'remarks', 'issues', 'profile', 'vstatus', 'vtype', 'visitdate', 'deadline', 'issuedl', 'comuser', 'cer', 'che', 'civ', 'cse', 'eee', 'ece', 'mec', 'met', 'min', 'phe', 'apc', 'apm', 'app', 'bce', 'bme', 'mst'),
 			'successmsg' => 'Visit added successfully',
 			'construct' => array(
 				array(

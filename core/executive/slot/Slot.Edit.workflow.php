@@ -48,6 +48,19 @@ class SlotEditWorkflow implements Service {
 	public function run($memory){		
 		$memory['public'] = 1;
 		
+		if($memory['super']){
+			$memory['dream'] = $memory['dream'] ? $memory['dream'] : 'Not Eligible';
+			$memory['ordinary'] = $memory['ordinary'] ? $memory['ordinary'] : 'Not Eligible';
+			$memory['mr'] = $memory['mr'] ? $memory['mr'] : 'Not Eligible';
+		}
+		elseif($memory['dream']){
+			$memory['ordinary'] = $memory['ordinary'] ? $memory['ordinary'] : 'Not Eligible';
+			$memory['mr'] = $memory['mr'] ? $memory['mr'] : 'Not Eligible';
+		}
+		elseif($memory['ordinary']){
+			$memory['mr'] = $memory['mr'] ? $memory['mr'] : 'Not Eligible';
+		}
+		
 		$workflow = array(
 		array(
 			'service' => 'transpera.entity.edit.workflow',

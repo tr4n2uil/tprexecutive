@@ -55,7 +55,7 @@ class WillingnessVisitWorkflow implements Service {
 			'relation' => '`willingnesses`',
 			'type' => 'willingness',
 			'sqlprj' => 'distinct `visitid`, `name`',
-			'sqlcnd' => "where `batchid`=\${batchid}",
+			'sqlcnd' => "where `batchid`=\${batchid} order by visitid desc",
 			'successmsg' => 'Willinglists information given successfully',
 			'lsttrack' => true,
 			'output' => array('entities' => 'willinglists'),

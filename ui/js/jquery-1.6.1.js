@@ -6486,7 +6486,6 @@ jQuery(function() {
 if ( document.defaultView && document.defaultView.getComputedStyle ) {
 	getComputedStyle = function( elem, name ) {
 		var ret, defaultView, computedStyle;
-
 		name = name.replace( rupper, "-$1" ).toLowerCase();
 
 		if ( !(defaultView = elem.ownerDocument.defaultView) ) {

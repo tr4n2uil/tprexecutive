@@ -13,6 +13,9 @@ require_once(EXGPACONF);
  *	@param hscxii float XIIth Percentage [memory] optional default 0.0
  *	@param sscyear integer SSC Passing Year [memory] optional default 0
  *	@param hscyear integer HSC Passing Year [memory] optional default 0
+ *	@param sscboard string SSC Passing Board [memory] optional default ''
+ *	@param hscboard string HSC Passing Board [memory] optional default ''
+ *	@param gradboard string Graduation Passing Board [memory] optional default ''
  *	@param jee float JEE AIR [memory] optional default 0
  *	@param gate float GATE AIR [memory] optional default 0
  *
@@ -26,6 +29,7 @@ require_once(EXGPACONF);
  *	@param sgpa8 float SGPA VIII [memory] optional default 0.0
  *	@param sgpa9 float SGPA IX [memory] optional default 0.0
  *	@param sgpa10 float SGPA X [memory] optional default 0.0
+ *	@param backlogs integer Arrears [memory] optional default 0
  *
  *	@param keyid long int Usage Key ID [memory]
  *	@param user string Key User [memory]
@@ -52,7 +56,7 @@ class GradeEditWorkflow implements Service {
 	public function input(){
 		return array(
 			'required' => array('keyid', 'user', 'gradeid', 'username', 'rollno'),
-			'optional' => array('batchid' => 0, 'btname' => '', 'sscx' => 0.0, 'hscxii' => 0.0, 'gradcent' => 0.0, 'sscyear' => 0, 'hscyear' => 0, 'gradyear' => 0, 'jee' => 0, 'gate' => 0, 'gatescore' => 0, 'gatepercentile' => 0, 'sgpa1' => 0.0, 'sgpa2' => 0.0, 'sgpa3' => 0.0, 'sgpa4' => 0.0, 'sgpa5' => 0.0, 'sgpa6' => 0.0, 'sgpa7' => 0.0, 'sgpa8' => 0.0, 'sgpa9' => 0.0, 'sgpa10' => 0.0)
+			'optional' => array('batchid' => 0, 'btname' => '', 'sscx' => 0.0, 'hscxii' => 0.0, 'gradcent' => 0.0, 'sscyear' => 0, 'hscyear' => 0, 'gradyear' => 0, 'sscboard' =>'', 'hscboard' => '', 'gradboard' => '', 'backlogs' => 0, 'jee' => 0, 'gate' => 0, 'gatescore' => 0, 'gatepercentile' => 0, 'sgpa1' => 0.0, 'sgpa2' => 0.0, 'sgpa3' => 0.0, 'sgpa4' => 0.0, 'sgpa5' => 0.0, 'sgpa6' => 0.0, 'sgpa7' => 0.0, 'sgpa8' => 0.0, 'sgpa9' => 0.0, 'sgpa10' => 0.0)
 		);
 	}
 	
@@ -162,13 +166,13 @@ class GradeEditWorkflow implements Service {
 		$workflow = array(
 		array(
 			'service' => 'transpera.entity.edit.workflow',
-			'args' => array('username', 'rollno', 'sscx', 'hscxii', 'gradcent', 'sscyear', 'hscyear', 'gradyear', 'jee', 'gate', 'gatescore', 'gatepercentile', 'cgpa', 'sgpa1', 'sgpa2', 'sgpa3', 'sgpa4', 'sgpa5', 'sgpa6', 'sgpa7', 'sgpa8', 'sgpa9', 'sgpa10', 'ygpa1', 'ygpa2', 'ygpa3', 'ygpa4', 'ygpa5'),
+			'args' => array('username', 'rollno', 'sscx', 'hscxii', 'gradcent', 'sscyear', 'hscyear', 'gradyear', 'sscboard', 'hscboard', 'gradboard', 'backlogs', 'jee', 'gate', 'gatescore', 'gatepercentile', 'cgpa', 'sgpa1', 'sgpa2', 'sgpa3', 'sgpa4', 'sgpa5', 'sgpa6', 'sgpa7', 'sgpa8', 'sgpa9', 'sgpa10', 'ygpa1', 'ygpa2', 'ygpa3', 'ygpa4', 'ygpa5'),
 			'input' => array('id' => 'gradeid', 'cname' => 'username', 'parent' => 'batchid', 'pname' => 'btname'),
 			'conn' => 'exconn',
 			'relation' => '`grades`',
 			'type' => 'grade',
-			'sqlcnd' => "set `username`='\${username}', `rollno`='\${rollno}', `sscx`=\${sscx}, `hscxii`=\${hscxii}, `gradcent`=\${gradcent}, `sscyear`=\${sscyear}, `hscyear`=\${hscyear}, `gradyear`=\${gradyear}, `jee`= '\${jee}', `gate`=\${gate}, `gatescore`=\${gatescore}, `gatepercentile`=\${gatepercentile}, `cgpa`=\${cgpa}, `sgpa1`=\${sgpa1}, `sgpa2`=\${sgpa2}, `sgpa3`=\${sgpa3}, `sgpa4`=\${sgpa4}, `sgpa5`=\${sgpa5}, `sgpa6`=\${sgpa6}, `sgpa7`=\${sgpa7}, `sgpa8`=\${sgpa8}, `sgpa9`=\${sgpa9}, `sgpa10`=\${sgpa10}, `ygpa1`=\${ygpa1}, `ygpa2`=\${ygpa2}, `ygpa3`=\${ygpa3}, `ygpa4`=\${ygpa4}, `ygpa5`=\${ygpa5} where `gradeid`=\${id}",
-			'escparam' => array('username', 'rollno', 'jee'),
+			'sqlcnd' => "set `username`='\${username}', `rollno`='\${rollno}', `sscx`=\${sscx}, `hscxii`=\${hscxii}, `gradcent`=\${gradcent}, `sscyear`=\${sscyear}, `hscyear`=\${hscyear}, `gradyear`=\${gradyear}, `sscboard`= '\${sscboard}',`hscboard`= '\${hscboard}',`gradboard`= '\${gradboard}',`backlogs`= \${backlogs}, `jee`= '\${jee}', `gate`=\${gate}, `gatescore`=\${gatescore}, `gatepercentile`=\${gatepercentile}, `cgpa`=\${cgpa}, `sgpa1`=\${sgpa1}, `sgpa2`=\${sgpa2}, `sgpa3`=\${sgpa3}, `sgpa4`=\${sgpa4}, `sgpa5`=\${sgpa5}, `sgpa6`=\${sgpa6}, `sgpa7`=\${sgpa7}, `sgpa8`=\${sgpa8}, `sgpa9`=\${sgpa9}, `sgpa10`=\${sgpa10}, `ygpa1`=\${ygpa1}, `ygpa2`=\${ygpa2}, `ygpa3`=\${ygpa3}, `ygpa4`=\${ygpa4}, `ygpa5`=\${ygpa5} where `gradeid`=\${id}",
+			'escparam' => array('username', 'rollno', 'jee', 'sscboard', 'hscboard', 'gradboard'),
 			'check' => false,
 			'init' => false,
 			'self' => false,

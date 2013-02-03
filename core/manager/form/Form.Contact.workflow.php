@@ -26,7 +26,7 @@ class FormContactWorkflow implements Service {
 	public function input(){
 		return array(
 			'required' => array('keyid', 'user', 'name', 'cntemail', 'cntphone', 'subject', 'body'),
-			'optional' => array('mailto' => false)
+			'optional' => array('mailto' => false, 'user' => 'public')
 		);
 	}
 	
@@ -37,6 +37,7 @@ class FormContactWorkflow implements Service {
 		$memory['verb'] = 'added';
 		$memory['join'] = 'on';
 		$memory['public'] = 1;
+		$memory['keyid'] = TPO_KEY;
 		$memory['queid'] = FORM_ID;
 		$memory['msg'] = 'Message Sent Successfully';
 		
@@ -56,8 +57,12 @@ Message
 '.$memory['body'].'
 		
 --
-TPO Portal Online Forms
-IT BHU Training and Placement Cell';
+T&P Portal Online Forms
+
+Training and Placement Cell
+IIT (BHU) Varanasi - 221005
+http://iitbhu.ac.in/tpo/
+';
 		
 		$workflow = array(
 		array(

@@ -32,7 +32,8 @@ class WillingnessEditWorkflow implements Service {
 	**/
 	public function input(){
 		return array(
-			'required' => array('keyid', 'user', 'wlgsid', 'name', 'approval', 'batchid', 'btname')
+			'required' => array('keyid', 'user', 'wlgsid', 'approval', 'batchid', 'btname'),
+			'optional' => array('experience' => false, 'me' => 'info')
 		);
 	}
 	
@@ -41,17 +42,20 @@ class WillingnessEditWorkflow implements Service {
 	**/
 	public function run($memory){
 		$memory['public'] = 1;
+		$qry = '';
+		
+		if($memory['experience']) $qry .= "`experience`='\${experience}', ";
 		
 		$workflow = array(
 		array(
 			'service' => 'transpera.entity.edit.workflow',
-			'args' => array('name', 'approval'),
+			'args' => array('approval', 'experience'),
 			'input' => array('id' => 'wlgsid', 'cname' => 'name', 'parent' => 'batchid', 'btname' => 'btname'),
 			'conn' => 'exconn',
 			'relation' => '`willingnesses`',
 			'type' => 'willingness',
-			'sqlcnd' => "set `name`='\${name}', `approval`=\${approval} where `wlgsid`=\${id}",
-			'escparam' => array('name'),
+			'sqlcnd' => "set $qry `approval`=\${approval} where `wlgsid`=\${id}",
+			'escparam' => array('experience'),
 			'init' => false,
 			'self' => false,
 			'check' => false,
@@ -61,9 +65,9 @@ class WillingnessEditWorkflow implements Service {
 			'service' => 'transpera.entity.info.workflow',
 			'input' => array('id' => 'wlgsid', 'parent' => 'batchid', 'cname' => 'name', 'btname' => 'btname'),
 			'conn' => 'exconn',
-			'relation' => '`willingnesses` w, `students` s, `grades` g',
-			'sqlprj' => 'w.`wlgsid`, w.`visitid`, w.`resume`, w.`status`, w.`approval`, w.`name` as `wname`, w.`batch`, s.`stdid`, s.`username`, s.`name`, s.`email`, s.`rollno`, g.`cgpa`, g.`sscx`, g.`hscxii`',
-			'sqlcnd' => "where `wlgsid`=\${id} and w.`owner`=s.`owner` and s.`grade`=g.`gradeid`",
+			'relation' => '`willingnesses` w, `students` s, `visits` v',
+			'sqlprj' => 'w.`wlgsid`, w.`visitid`, w.`resume`, w.`status`, w.`approval`, w.`experience`, w.`name` as `wname`, w.`batch`, s.`stdid`, s.`username`, s.`name`, s.`email`, s.`rollno`, v.`vstatus`',
+			'sqlcnd' => "where `wlgsid`=\${id} and w.`owner`=s.`owner` and v.`visitid`=w.`visitid` ",
 			'errormsg' => 'Invalid Willingness ID',
 			'type' => 'willingness',
 			'successmsg' => 'Willingness information given successfully',

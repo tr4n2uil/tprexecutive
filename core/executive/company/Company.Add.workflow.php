@@ -26,8 +26,8 @@ class CompanyAddWorkflow implements Service {
 	**/
 	public function input(){
 		return array(
-			'required' => array('keyid', 'user', 'name', 'username', 'email'),
-			'optional' => array('portalid' => COMPANY_PORTAL_ID, 'level' => 2, 'plname' => ''),
+			'required' => array('keyid', 'user', 'name'),
+			'optional' => array('portalid' => COMPANY_PORTAL_ID, 'level' => 2, 'plname' => '', 'username' => '', 'email' => ''),
 			'set' => array('portalid', 'plname')
 		);
 	}
@@ -38,6 +38,10 @@ class CompanyAddWorkflow implements Service {
 	public function run($memory){
 		$memory['msg'] = 'Company created successfully. Registration verification pending.';
 		$memory['level'] = 2;
+		$memory['name'] = $memory['name'];
+		$name = implode('-', preg_split('/[\W]+/', strtolower($memory['name'])));
+		$memory[ 'username' ] = $name;
+		$memory[ 'email' ] = $name.'.tpo@iitbhu.ac.in';
 		
 		$memory['verb'] = 'registered';
 		$memory['join'] = 'on';
@@ -85,14 +89,14 @@ class CompanyAddWorkflow implements Service {
 		if(!$memory['valid'])
 			return $memory;
 		
-		$memory = Snowblozm::run(array(
+		/*$memory = Snowblozm::run(array(
 			'service' => 'people.person.send.workflow'
 		), $memory);
 		
-		if($memory['valid'])
+		if($memory['valid'])*/
 			$memory['msg'] = 'Company account created successfully. Verification sent successfully.';
-		else
-			$memory['msg'] = 'Company account created successfully. Error sending verification mail.';
+		/*else
+			$memory['msg'] = 'Company account created successfully. Error sending verification mail.';*/
 		
 		$workflow = array(
 		array(

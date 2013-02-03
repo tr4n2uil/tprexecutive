@@ -40,8 +40,8 @@ class FormResponseWorkflow implements Service {
 	**/
 	public function input(){
 		return array(
-			'required' => array('keyid', 'user', 'name', 'compsnname', 'compsnpost', 'compsnemail', 'compsnphone', 'tectc'),
-			'optional' => array('address' => '', 'regtype' => '', 'indsector' => array(), 'funreq' => array(), 'motto' => '', 'sccgpa' => '', 'scxiip' => '', 'scxp' => '', 'scspl' => '', 'scagelimit' => '', 'seltest' => array(), 'selgd' => '', 'selinterview' => array(), 'selagrmnt' => '', 'seltrprd' => '', 'reqmnt' => array(), 'teinhand' => '', 'mailto' => false)
+			'required' => array('keyid', 'name', 'compsnname', 'compsnpost', 'compsnemail', 'compsnphone', 'tectc'),
+			'optional' => array('address' => '', 'regtype' => '', 'indsector' => array(), 'funreq' => array(), 'motto' => '', 'sccgpa' => '', 'scxiip' => '', 'scxp' => '', 'scspl' => '', 'scagelimit' => '', 'seltest' => array(), 'selgd' => '', 'selinterview' => array(), 'selagrmnt' => '', 'seltrprd' => '', 'reqmnt' => array(), 'teinhand' => '', 'mailto' => false, 'user' => 'public')
 		);
 	}
 	
@@ -52,8 +52,9 @@ class FormResponseWorkflow implements Service {
 		$memory['verb'] = 'added';
 		$memory['join'] = 'on';
 		$memory['public'] = 1;
+		$memory['keyid'] = TPO_KEY;
 		$memory['queid'] = FORM_ID;
-		$memory['msg'] = 'Response Submitted Successfully. Please check your mailbox <'.$memory['compsnemail'].'> for corfirming that its sent correctly. <br />(It may take few minutes for sending the mail)';
+		$memory['msg'] = 'Response Submitted Successfully. Please check your mailbox <'.$memory['compsnemail'].'> for conrfirming that its sent correctly. <br />(It may take few minutes for sending the mail)';
 		
 		//if(!$memory['mailto']){
 		$mailto = Snowblozm::get('form_mailto');
@@ -108,8 +109,11 @@ Total Emoluments
 (End of Response Sheet)
 
 --
-TPO Portal Online Forms
-IT BHU Training and Placement Cell
+T&P Portal Online Forms
+
+Training and Placement Cell
+IIT (BHU) Varanasi - 221005
+http://iitbhu.ac.in/tpo/
 ';
 		
 		$workflow = array(

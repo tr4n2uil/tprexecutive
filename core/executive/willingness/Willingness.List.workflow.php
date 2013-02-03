@@ -40,7 +40,7 @@ class WillingnessListWorkflow implements Service {
 	public function input(){
 		return array(
 			'required' => array('keyid'),
-			'optional' => array('user' => '', 'visitid' => false, 'id' => 0, 'btname' => false, 'name' => '', 'pgsz' => false, 'pgno' => 0, 'total' => false, 'padmin' => true, 'export' => false, 'archive' => false, 'me' => false),
+			'optional' => array('user' => '', 'visitid' => false, 'id' => 0, 'btname' => false, 'name' => '', 'pgsz' => false, 'pgno' => 0, 'total' => false, 'padmin' => true, 'export' => false, 'exportall' => false, 'archive' => false, 'me' => false, 'company' => ''),
 			'set' => array('id', 'name', 'me')
 		);
 	}
@@ -52,84 +52,51 @@ class WillingnessListWorkflow implements Service {
 		$memory['visitid'] = $memory['visitid'] ? $memory['visitid'] : $memory['id'];
 		$memory['btname'] = $memory['btname'] ? $memory['btname'] : $memory['name'];
 		$memory['resumelist'] = '';
-		$name = $memory['btname'] != '' ? 'Willingness.'.$memory['btname'].'.'.$memory['user'] : 'Willing Candidates.'.$memory['user'];
 		$memory['batchid'] = $memory['visitid'];
+		
+		$parts = explode( '.', $memory['company'] );
+		$name = ucwords( implode( ' ', explode( '-', $parts[ 0 ] ) ) ).' - IIT (BHU) Varanasi'.(isset($parts[1]) ? ' - '.ucfirst($parts[1]) : '').(isset($parts[2]) ? ' - '.$parts[2] : '').($memory['btname'] != '' ? ' - '.$memory['btname'] : '');
 		
 		if($memory['btname'] == ''){
 			$qry = "w.`visitid`=\${visitid} and (w.`status`=1 and w.`approval`>-1)";
 		}
-		elseif($memory['export'] || $memory['archive'])
+		elseif($memory['export'] || $memory['exportall'] || $memory['archive'])
 			$qry = "w.`visitid`=\${visitid} and w.`batch`='\${btname}' and (w.`status`=1 and w.`approval`>-1)";
 		else
 			$qry = "w.`visitid`=\${visitid} and w.`batch`='\${btname}'";
-			
-		$batchauth = array(
-			array(
-				'service' => 'transpera.relation.unique.workflow',
-				'args' => array('keyid'),
-				'conn' => 'exconn',
-				'relation' => '`students`',
-				'sqlprj' => '`stdid`',
-				'sqlcnd' => "where `owner`=\${keyid} and `ustatus`<>'0'",
-				'errormsg' => 'Unable to Authorize',
-				'successmsg' => 'Student information given successfully'
-			),
-			array(
-				'service' => 'cbcore.data.select.service',
-				'args' => array('result'),
-				'params' => array('result.0.stdid' => 'stdid')
-			),
-			array(
-				'service' => 'transpera.relation.unique.workflow',
-				'args' => array('stdid'),
-				'conn' => 'cbconn',
-				'relation' => '`chains`',
-				'sqlprj' => '`parent`',
-				'sqlcnd' => "where `type`='person' and `chainid`=\${stdid}",
-				'errormsg' => 'Unable to Authorize',
-				'successmsg' => 'Parent information given successfully'
-			),
-			array(
-				'service' => 'cbcore.data.select.service',
-				'args' => array('result'),
-				'params' => array('result.0.parent' => 'parent')
-			),
-			array(
-				'service' => 'transpera.relation.unique.workflow',
-				'args' => array('chainid', 'parent'),
-				'conn' => 'exconn',
-				'relation' => '`batches`',
-				'sqlcnd' => "where `batchid`=\${chainid} and `dept`=(select `dept` from `batches` where `batchid`=\${parent})",
-				'errormsg' => 'Unable to Authorize',
-				'successmsg' => 'Batch information given successfully'
-			),
-		);
 		
 		if($memory['me']){
-			$rel = '`willingnesses` w, `students` s, `visits` v';
-			$prj = "w.`wlgsid`, w.`visitid`, w.`resume`, w.`status`, w.`approval`, w.`name` as `wname`, w.`batch`, s.`stdid`, s.`username`, v.`comuser`, v.`comid`, v.`vtype`, v.`year`, v.`visitdate`, (case (select `course` from `batches` where `btname`=w.`batch`) when 'btech' then v.`bpackage` when 'idd' then v.`ipackage` when 'mtech' then v.`mpackage` else '' end) as `package`, v.`vstatus`";
-			$cnd = "where s.`stdid`=\${visitid} and w.`owner`=s.`owner` and v.`visitid`=w.`visitid` order by w.`wlgsid` desc";
-			$authcustom = $batchauth;
+			$order = $memory['me'] == 'me' ? '`vstatusnum` asc' : 'w.`approval` desc';
+			$where = $memory['me'] == 'me' ? " and (v.`vstatus`<>'Process Completed' or w.`status`<1)" : " and (v.`vstatus`='Process Completed' and w.`status`=1)";
+			
+			$rel = '`willingnesses` w, `students` s, `visits` v, `companies` c';
+			$prj = "w.`wlgsid`, w.`visitid`, w.`resume`, w.`status`, w.`approval`, w.`experience`, w.`name` as `wname`, w.`batch`, s.`stdid`, s.`username`, c.`name` as `comname`, v.`profile`, v.`remarks`, v.`deadline`, v.`comuser`, v.`comid`, v.`vtype`, v.`year`, v.`visitdate`, (case (select `course` from `batches` where `btname`=w.`batch`) when 'btech' then v.`bpackage` when 'idd' then v.`ipackage` when 'mtech' then v.`mpackage` else '' end) as `package`, (case v.`vstatus` when 'Open for Willingness' then 0 when 'Willingness Sent' then 1 when 'Interview Shortlist' then 2 else 3 end) as `vstatusnum`, v.`vstatus`";
+			$cnd = "where s.`stdid`=\${visitid} and w.`owner`=s.`owner` and v.`visitid`=w.`visitid` and v.`comid`=c.`comid` $where order by $order, w.`wlgsid` desc";
+			$authcustom = false;
 		}
-		elseif($memory['export']){
+		elseif($memory['exportall']){
 			$rel = '`willingnesses` w, `students` s, `grades` g, `persons` p, `batches` b';
 			$prj = "(case w.`status` when 0 then 'Eligible' when 1 then 'Willing' when -1 then 'Not Willing' else '' end) as `wstatus`, s.`name`, s.`rollno`, 
 			(case b.`course` when 'btech' then 'B Tech' when 'idd' then (case b.`dept` when 'apc' then 'IMD' when 'apm' then 'IMD' when 'app' then 'IMD' else 'IDD' end) when 'mtech' then 'M Tech' else '' end) as `course`, s.`specialization`,
-			(case b.`dept` when 'cer' then 'Ceramic Engineering' when 'che' then 'Chemical Engineering' when 'civ' then 'Civil Engineering' when 'cse' then 'Computer Engineering' when 'eee' then 'Electrical Engineering' when 'ece' then 'Electronics Engineering' when 'mec' then 'Mechanical Engineering' when 'met' then 'Metallurgical Engineering' when 'min' then 'Mining Engineering' when 'phe' then 'Pharmaceutical Engineering' when 'apc' then 'Industrial Chemistry' when 'apm' then 'Mathematics and Computing' when 'app' then 'Engineering Physics' when 'bce' then 'Bio-Chemical Engineering' when 'bme' then 'Bio-Medical Engineering' when 'mst' then 'Material Science & Technology' else '' end) as `dept`, b.`year`, s.`email`, p.`phone`, p.`address`, s.`resphone`, s.`resaddress`, s.`city`, p.`dateofbirth`, p.`gender`, s.`category`, s.`language`, s.`father`, s.`foccupation`, s.`mother`, s.`moccupation`, g.`cgpa`, g.`sscx`, g.`sscyear`, g.`hscxii`, g.`hscyear`, g.`gradcent`, g.`gradyear`, g.`jee`, g.`gate`, g.`sgpa1`, g.`sgpa2`, g.`sgpa3`, g.`sgpa4`, g.`sgpa5`, g.`sgpa6`, g.`sgpa7`, g.`sgpa8`, g.`sgpa9`, g.`sgpa10`, g.`ygpa1`, g.`ygpa2`, g.`ygpa3`, g.`ygpa4`, g.`ygpa5`";
-			$cnd = "where $qry and w.`owner`=s.`owner` and s.`grade`=g.`gradeid` and p.`pnid`=s.`stdid` and b.`batchid`=w.`batchid`";
-			$authcustom = false;
+			(case b.`dept` when 'cer' then 'Ceramic Engineering' when 'che' then 'Chemical Engineering' when 'civ' then 'Civil Engineering' when 'cse' then 'Computer Engineering' when 'eee' then 'Electrical Engineering' when 'ece' then 'Electronics Engineering' when 'mec' then 'Mechanical Engineering' when 'met' then 'Metallurgical Engineering' when 'min' then 'Mining Engineering' when 'phe' then 'Pharmaceutical Engineering' when 'apc' then 'Industrial Chemistry' when 'apm' then 'Mathematics and Computing' when 'app' then 'Engineering Physics' when 'bce' then 'Bio-Chemical Engineering' when 'bme' then 'Bio-Medical Engineering' when 'mst' then 'Material Science & Technology' else '' end) as `dept`, b.`year`, s.`email`, p.`phone`, p.`address`, s.`resphone`, s.`resaddress`, s.`city`, p.`dateofbirth`, p.`gender`, s.`category`, s.`language`, s.`father`, s.`foccupation`, s.`mother`, s.`moccupation`, g.`cgpa`, g.`sscx`, g.`sscyear`, g.`sscboard`, g.`hscxii`, g.`hscyear`, g.`hscboard`, g.`gradcent`, g.`gradyear`, g.`gradboard`, g.`jee`, g.`gate`, g.`sgpa1`, g.`sgpa2`, g.`sgpa3`, g.`sgpa4`, g.`sgpa5`, g.`sgpa6`, g.`sgpa7`, g.`sgpa8`, g.`sgpa9`, g.`sgpa10`, g.`ygpa1`, g.`ygpa2`, g.`ygpa3`, g.`ygpa4`, g.`ygpa5`, g.`backlogs`";
+			$cnd = "where $qry and w.`owner`=s.`owner` and s.`grade`=g.`gradeid` and p.`pnid`=s.`stdid` and b.`batchid`=w.`batchid` order by b.`year` desc, b.`dept` asc, b.`course` asc, s.`ustatus` asc, s.`rollno` asc";
+		}
+		elseif($memory['export']){
+			$rel = '`willingnesses` w, `students` s, `grades` g, `persons` p, `batches` b';
+			$prj = "s.`name`, s.`rollno`, 
+			(case b.`course` when 'btech' then 'B Tech' when 'idd' then (case b.`dept` when 'apc' then 'IMD' when 'apm' then 'IMD' when 'app' then 'IMD' else 'IDD' end) when 'mtech' then 'M Tech' else '' end) as `course`, s.`specialization`,
+			(case b.`dept` when 'cer' then 'Ceramic Engineering' when 'che' then 'Chemical Engineering' when 'civ' then 'Civil Engineering' when 'cse' then 'Computer Engineering' when 'eee' then 'Electrical Engineering' when 'ece' then 'Electronics Engineering' when 'mec' then 'Mechanical Engineering' when 'met' then 'Metallurgical Engineering' when 'min' then 'Mining Engineering' when 'phe' then 'Pharmaceutical Engineering' when 'apc' then 'Industrial Chemistry' when 'apm' then 'Mathematics and Computing' when 'app' then 'Engineering Physics' when 'bce' then 'Bio-Chemical Engineering' when 'bme' then 'Bio-Medical Engineering' when 'mst' then 'Material Science & Technology' else '' end) as `dept`, s.`email`, p.`phone`, g.`cgpa`, g.`sscx`, g.`sscyear`, g.`hscxii`, g.`hscyear`, g.`gradcent`, g.`gradyear`, g.`gradboard`";
+			$cnd = "where $qry and w.`owner`=s.`owner` and s.`grade`=g.`gradeid` and p.`pnid`=s.`stdid` and b.`batchid`=w.`batchid` order by b.`year` desc, b.`dept` asc, b.`course` asc, s.`ustatus` asc, s.`rollno` asc";
 		}
 		elseif($memory['archive']){
 			$rel = '`willingnesses` w, `students` s, `directories` d, `files` f';
-			$prj = "concat(s.`rollno`, '_', s.`name`, '_Resume.pdf') as `asname`, d.`path` as `filepath`, f.`filename`, (case w.`resume` when 0 then s.`resume` else (select `fileid` from `files` where `fileid`=w.`resume`) end) as `fresume`";
+			$prj = "concat(s.`rollno`, '_', s.`name`, '_Resume', substring(f.`name`, locate( '.', f.`name` )) ) as `asname`, d.`path` as `filepath`, f.`filename`, (case w.`resume` when 0 then s.`resume` else (select `fileid` from `files` where `fileid`=w.`resume`) end) as `fresume`";
 			$cnd = "where $qry and w.`owner`=s.`owner` and f.`fileid`=(case w.`resume` when 0 then (select max(`fileid`) from `files` where `owner`=s.`owner`) else if((select `fileid` from `files` where `fileid`=w.`resume`), w.`resume`, (select max(`fileid`) from `files` where `owner`=s.`owner`)) end) and d.`dirid`=w.`resdir`";
-			$authcustom = false;
 		}
 		else {
-			$rel = '`willingnesses` w, `students` s, `grades` g';
-			$prj = 'w.`wlgsid`, w.`visitid`, w.`resume`, w.`status`, w.`approval`, w.`name` as `wname`, w.`batch`, s.`stdid`, s.`username`, s.`name`, s.`email`, s.`rollno`, g.`cgpa`, g.`sscx`, g.`hscxii`';
-			$cnd = "where $qry and w.`owner`=s.`owner` and s.`grade`=g.`gradeid`";
-			$authcustom = $batchauth;
+			$rel = '`willingnesses` w, `students` s, `batches` b, `visits` v';
+			$prj = 'w.`wlgsid`, w.`visitid`, w.`resume`, w.`status`, w.`approval`, w.`experience`, w.`name` as `wname`, w.`batch`, s.`stdid`, s.`username`, s.`name`, s.`email`, s.`rollno`, v.`vstatus`, v.`profile`';
+			$cnd = "where $qry and w.`owner`=s.`owner` and v.`visitid`=w.`visitid` and b.`batchid`=w.`batchid` order by w.approval desc, b.`year` desc, b.`dept` asc, b.`course` asc, s.`ustatus` asc, s.`rollno` asc";
 		}
 		
 		$workflow = array(
@@ -146,12 +113,11 @@ class WillingnessListWorkflow implements Service {
 			'escparam' => array('btname'),
 			//'lsttrack' => true,
 			'output' => array('entities' => 'willingnesses'),
-			'action' => 'add',
-			'ismap' => !$memory['export'] && !$memory['archive'],
+			'action' => $memory['export'] || $memory['exportall'] || $memory['archive'] ? 'add' : 'list',
+			'ismap' => !$memory['export'] && !$memory['exportall'] && !$memory['archive'],
 			'mapkey' => 'wlgsid',
 			'mapname' => 'willingness',
-			'saction' => 'add',
-			'authcustom' => $authcustom
+			'saction' => 'add'
 		));
 		
 		if($memory['btname'] != ''){
@@ -162,12 +128,29 @@ class WillingnessListWorkflow implements Service {
 			));
 		}
 		
+		if($memory['exportall']){
+			array_push($workflow, array(
+				'service' => 'cbcore.data.export.service',
+				'input' => array('data' => 'willingnesses'),
+				'type' => 'csv',
+				'default' => '"Status","Student Name","Roll No","Course","Specialization","Department","Year of Passing","Email","Phone","Address (Current)","Phone (Residential)","Address (Permanent)","City","Date of Birth","Gender","Category","Mother Tongue","Father\'s Name","Father\'s Occupation","Mother\'s Name","Mother\'s Occupation","CGPA","X %","X Year of Passing","X Board","XII %","XII Year of Passing","XII Board","Graduation %","Graduation Year of Passing","Graduation Board","JEE AIR","GATE AIR","SGPA I","SGPA II","SGPA III","SGPA IV","SGPA V","SGPA VI","SGPA VII","SGPA VIII","SGPA IX","SGPA X","YGPA I","YGPA II","YGPA III","YGPA IV","YGPA V","Arrears"'."\r\n",
+				'filename' => $name.'.csv',
+				'output' => array('result' => 'csv')
+			),
+			array(
+				'service' => 'storage.file.download.service',
+				'filepath' => 'storage/private/exports/',
+				'filename' => $name.'.csv',
+				'mime' => 'application/vnd.ms-excel'
+			));
+		}
+		
 		if($memory['export']){
 			array_push($workflow, array(
 				'service' => 'cbcore.data.export.service',
 				'input' => array('data' => 'willingnesses'),
 				'type' => 'csv',
-				'default' => '"Status","Student Name","Roll No","Course","Specialization","Department","Year of Passing","Email","Phone","Address (Current)","Phone (Residential)","Address (Permanent)","City","Date of Birth","Gender","Category","Mother Tongue","Father\'s Name","Father\'s Occupation","Mother\'s Name","Mother\'s Occupation","CGPA","X %","X Year of Passing","XII %","XII Year of Passing","Graduation %","Graduation Year of Passing","JEE AIR","GATE AIR","SGPA I","SGPA II","SGPA III","SGPA IV","SGPA V","SGPA VI","SGPA VII","SGPA VIII","SGPA IX","SGPA X","YGPA I","YGPA II","YGPA III","YGPA IV","YGPA V"'."\r\n",
+				'default' => '"Student Name","Roll No","Course","Specialization","Department","Email","Phone","CGPA","X %","X Year of Passing","XII %","XII Year of Passing","Graduation %","Graduation Year of Passing","Graduation Board"'."\r\n",
 				'filename' => $name.'.csv',
 				'output' => array('result' => 'csv')
 			),
@@ -194,7 +177,7 @@ class WillingnessListWorkflow implements Service {
 			));
 		}
 		
-		if($memory['me']){
+		if($memory['me'] == 'me'){
 			array_push($workflow, array(
 				'service' => 'storage.file.list.workflow',
 				'input' => array('dirid' => 'resumes', 'filter' => 'keyid'),
@@ -208,6 +191,8 @@ class WillingnessListWorkflow implements Service {
 			
 		$memory['uiadmin'] = ($memory['admin'] || $memory['padmin']) && ($memory['btname'] != '');
 		$memory['vstname'] = isset($memory['willingnesses'][0]) ? $memory['willingnesses'][0]['willingness']['wname'] : '';
+		$memory['profile'] = isset($memory['willingnesses'][0]) ? $memory['willingnesses'][0]['willingness']['profile'] : '';
+		$memory['vstatus'] = isset($memory['willingnesses'][0]) ? $memory['willingnesses'][0]['willingness']['vstatus'] : '';
 		
 		return $memory;
 	}
@@ -216,7 +201,7 @@ class WillingnessListWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function output(){
-		return array('willingnesses', 'visitid', 'vstname', 'batchid', 'btname', 'admin', 'padmin', 'pchain', 'total', 'pgno', 'pgsz', 'uiadmin', 'resumelist');
+		return array('willingnesses', 'visitid', 'vstname', 'batchid', 'btname', 'admin', 'padmin', 'pchain', 'total', 'pgno', 'pgsz', 'uiadmin', 'resumelist', 'me', 'vstatus', 'profile');
 	}
 	
 }

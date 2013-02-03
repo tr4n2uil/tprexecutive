@@ -138,6 +138,8 @@
 	Snowblozm::init('form_mailto', array(
 		'response' => 'tpo@itbhu.ac.in, web.tpo@itbhu.ac.in',
 		'contact' => 'tpo@itbhu.ac.in, web.tpo@itbhu.ac.in',
+		'digest' => 'vibhaj8@gmail.com',
+		'digest_intern' => 'vibhaj8@gmail.com'
 	));
 	
 	/**
@@ -189,9 +191,10 @@
 				'visit' => 'executive.visit.info',
 				'willinglists' => 'executive.willingness.visit',
 				'willingness' => 'executive.willingness.list',
+				'filter' => 'executive.student.filter',
 				'opportunities' => 'executive.willingness.list',
-				'candidates' => 'executive.selection.list',
-				'selections' => 'executive.selection.list',
+				'experiences' => 'executive.willingness.list',
+				'candidates' => 'executive.willingness.list',
 				'calendar' => 'executive.visit.list',
 				'workshops' => 'executive.visit.list',
 				'contacts' => 'manager.contact.list',

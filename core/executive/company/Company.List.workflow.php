@@ -44,7 +44,7 @@ class CompanyListWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function run($memory){
-		$memory['portalid'] = $memory['portalid'] ? $memory['portalid'] : $memory['id'];
+		$memory['portalid'] = $memory['portalid'] ? $memory['portalid'] : ( $memory['id'] ? $memory['id'] : COMPANY_PORTAL_ID );
 		$memory['plname'] = $memory['plname'] ? $memory['plname'] : $memory['name'];
 		
 		$args = $esc = array();

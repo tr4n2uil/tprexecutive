@@ -35,6 +35,16 @@ class VisitRemoveWorkflow implements Service {
 		),
 		array(
 			'service' => 'transpera.entity.remove.workflow',
+			'input' => array('id' => 'visitid', 'parent' => 'portalid'),
+			'conn' => 'exconn',
+			'relation' => '`willingnesses`',
+			'type' => 'willingness',
+			'sqlcnd' => "where `visitid`=\${id}",
+			'errormsg' => 'Invalid Visit ID',
+			'successmsg' => 'Willingnesses removed successfully'
+		),
+		array(
+			'service' => 'transpera.entity.remove.workflow',
 			'args' => array('files', 'shortlist', 'comid'),
 			'input' => array('id' => 'visitid', 'parent' => 'portalid'),
 			'conn' => 'exconn',

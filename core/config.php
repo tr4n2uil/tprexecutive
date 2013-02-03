@@ -4,7 +4,7 @@
 	 *	@config Defaults
 	**/
 	$YEAR = '2012';
-	$TILES_0 = $TILES_1 = $HTML = $STATEMENU = $SHTML = '';
+	$TILES_0 = $TILES_1 = $HTML = $MAINMENU = $STATEMENU = $SHTML = '';
 	$TPR = false;
 	$PORTAL = '';
 	
@@ -57,6 +57,7 @@
 	define('CURRENT_YEAR', 2013);
 	
 	date_default_timezone_set('Asia/Kolkata');
+	ini_set('include_path', EXROOT. 'pear/' . PATH_SEPARATOR . ini_get('include_path'));
 	
 	/**
 	 *	@data Defaults

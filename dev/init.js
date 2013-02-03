@@ -54,24 +54,30 @@ FireSpark.smart.constant.statusduration = 150;
 FireSpark.smart.constant.moveup = true;
 FireSpark.smart.constant.moveduration = 1000;
 
+FireSpark.core.helper.readDate = function($time){
+	if($time == '0000-00-00') return 'Date yet to confirm';
+	var $d = new Date($time);
+	return $d.toDateString();
+}
 
 /**
  *	@initialization Snowblozm and Executive
 **/
 $(document).ready(function(){
-	Snowblozm.Registry.add('#tab', FireSpark.smart.workflow.InterfaceTab);
-	Snowblozm.Registry.add('#html', FireSpark.smart.workflow.ReadHtml);
-	Snowblozm.Registry.add('#read', FireSpark.smart.workflow.ReadTmpl);
-	Snowblozm.Registry.add('#write', FireSpark.smart.workflow.WriteData);
-	Snowblozm.Registry.add('#bind', FireSpark.ui.workflow.TemplateBind);
-	Snowblozm.Registry.add('#ui', FireSpark.smart.workflow.InterfaceLoad);
-	Snowblozm.Registry.add('#view', FireSpark.smart.workflow.InterfaceTile);
-	Snowblozm.Registry.add('#sync', FireSpark.smart.service.InterfaceUrl);
-	Snowblozm.Registry.add('#login', FireSpark.core.workflow.WindowLogin);
-	Snowblozm.Registry.add('#refresh', FireSpark.core.service.WindowReload);
-	Snowblozm.Registry.add('#close', FireSpark.ui.service.ContainerRemove);
+
+	'#tab'.save( FireSpark.smart.workflow.InterfaceTab );
+	'#html'.save( FireSpark.smart.workflow.ReadHtml );
+	'#read'.save( FireSpark.smart.workflow.ReadTmpl );
+	'#write'.save( FireSpark.smart.workflow.WriteData );
+	'#bind'.save( FireSpark.ui.workflow.TemplateBind );
+	'#ui'.save( FireSpark.smart.workflow.InterfaceLoad );
+	'#view'.save( FireSpark.smart.workflow.InterfaceTile );
+	'#sync'.save( FireSpark.smart.service.InterfaceUrl );
+	'#login'.save( FireSpark.core.workflow.WindowLogin );
+	'#refresh'.save( FireSpark.core.service.WindowReload );
+	'#close'.save( FireSpark.ui.service.ContainerRemove );
 	
-	Snowblozm.Kernel.execute([{
+	[{
 		service : FireSpark.smart.service.InterfaceTrigger,
 		selector : 'a.navigate',
 		event : 'click',
@@ -106,7 +112,7 @@ $(document).ready(function(){
 		escaped : false
 	},{
 		service : FireSpark.smart.service.InterfaceHistory
-	}]);
+	}].execute();
 	
 	/*FireSpark.ui.helper.transformRobin($('div.partners a'), {
 		selector : '.data',
@@ -115,7 +121,7 @@ $(document).ready(function(){
 	});*/
 	
 	for(var $i in Executive.data.launch){
-		Snowblozm.Kernel.launch(Executive.data.launch[$i]);
+		Executive.data.launch[$i].launch();
 	}
 	
 	/**
@@ -128,7 +134,7 @@ $(document).ready(function(){
 			nofrc : true
 		});
 	}
-	window.setInterval(urlcheck, 3500);
+	//window.setInterval(urlcheck, 3500);
 	$('#main-container>.tile-content').eq(0).fadeIn(1000);
 	urlcheck();
 	

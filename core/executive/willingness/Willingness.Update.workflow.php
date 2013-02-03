@@ -33,7 +33,7 @@ class WillingnessUpdateWorkflow implements Service {
 	public function input(){
 		return array(
 			'required' => array('keyid', 'user', 'wlgsid', 'wstatus', 'batchid', 'btname'),
-			'optional' => array('resume' => 0)
+			'optional' => array('resume' => 0, 'experience' => false, 'approval' => 0, 'me' => 'me')
 		);
 	}
 	
@@ -44,17 +44,20 @@ class WillingnessUpdateWorkflow implements Service {
 		$memory['public'] = 1;
 		$qry = '';
 		
-		if($memory['resume']) $qry = "`resume`='\${resume}', ";
+		if($memory['resume']) $qry .= "`resume`=\${resume}, ";
+		if($memory['experience']) $qry .= "`experience`='\${experience}', ";
+		if($memory['approval'] && ($memory['approval'] > 1 || $memory['approval'] < -1)) $qry .= "`approval`=\${approval}, ";
 		
 		$workflow = array(
 		array(
 			'service' => 'transpera.entity.edit.workflow',
-			'args' => array('resume', 'wstatus'),
+			'args' => array('resume', 'wstatus', 'experience', 'approval'),
 			'input' => array('id' => 'wlgsid', 'cname' => 'name', 'parent' => 'batchid', 'btname' => 'btname'),
 			'conn' => 'exconn',
 			'relation' => '`willingnesses`',
 			'type' => 'willingness',
 			'sqlcnd' => "set $qry `status`=(case `approval` when 0 then \${wstatus} else `status` end) where `wlgsid`=\${id}",
+			'escparam' => array('experience'),
 			'check' => false,
 			'errormsg' => 'Willingness Not Editable / No Change',
 			'successmsg' => 'Willingness edited successfully'
@@ -64,7 +67,7 @@ class WillingnessUpdateWorkflow implements Service {
 			'input' => array('id' => 'wlgsid', 'parent' => 'batchid', 'cname' => 'name', 'btname' => 'btname'),
 			'conn' => 'exconn',
 			'relation' => '`willingnesses` w, `students` s, `grades` g,`visits` v',
-			'sqlprj' => "w.`wlgsid`, w.`visitid`, w.`resume`, w.`status`, w.`approval`, w.`name` as `wname`, w.`batch`, s.`stdid`, s.`username`, s.`name`, s.`email`, s.`rollno`, g.`cgpa`, g.`sscx`, g.`hscxii`, v.`comuser`, v.`comid`, v.`vtype`, v.`year`, v.`visitdate`,  (case (select `course` from `batches` where `btname`=w.`batch`) when 'btech' then v.`bpackage` when 'idd' then v.`ipackage` when 'mtech' then v.`mpackage` else '' end) as `package`",
+			'sqlprj' => "w.`wlgsid`, w.`visitid`, w.`resume`, w.`status`, w.`approval`, w.`experience`, w.`name` as `wname`, w.`batch`, s.`stdid`, s.`username`, s.`name`, s.`email`, s.`rollno`, g.`cgpa`, g.`sscx`, g.`hscxii`, v.`comuser`, v.`comid`, v.`vtype`, v.`year`, v.`visitdate`, v.`vstatus`,  (case (select `course` from `batches` where `btname`=w.`batch`) when 'btech' then v.`bpackage` when 'idd' then v.`ipackage` when 'mtech' then v.`mpackage` else '' end) as `package`",
 			'sqlcnd' => "where `wlgsid`=\${id} and w.`owner`=s.`owner` and s.`grade`=g.`gradeid` and v.`visitid`=w.`visitid`",
 			'errormsg' => 'Invalid Willingness ID',
 			'type' => 'willingness',
@@ -107,7 +110,7 @@ class WillingnessUpdateWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function output(){
-		return array('wlgsid', 'batchid', 'btname', 'willingness', 'chain', 'pchain', 'admin', 'padmin', 'resumelist');
+		return array('wlgsid', 'batchid', 'btname', 'willingness', 'chain', 'pchain', 'admin', 'padmin', 'resumelist', 'me');
 	}
 	
 }
